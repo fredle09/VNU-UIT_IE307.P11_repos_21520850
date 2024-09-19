@@ -14,17 +14,19 @@ export default function Home() {
         <ScreenContent path="app/index.tsx" title="Home" />
         <Link
           className="mt-2"
-          href={{ pathname: '/(auth)/login' }}
+          href={{ pathname: '/login' }}
           asChild
         >
           <Button><Text>Login</Text></Button>
         </Link>
         <Link
           className="mt-2"
-          href={{ pathname: '/(auth)/register' }}
+          href={{ pathname: '/register' }}
           asChild
         >
-          <Button variant={"outline"}><Text>Login</Text></Button>
+          <Button variant={"outline"}>
+            <Text>Register</Text>
+          </Button>
         </Link>
       </Container>
     </>

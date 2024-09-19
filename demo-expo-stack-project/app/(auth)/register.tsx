@@ -3,7 +3,7 @@ import { Text } from "~/components/ui/text";
 
 export default function RegisterScreen() {
   return (
-    <KeyboardAvoidingView behavior="height" className="flex-1">
+    <KeyboardAvoidingView behavior="height" className="flex">
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View
           className="flex-1 justify-center items-center"

@@ -9,6 +9,7 @@ import { useRouter } from 'expo-router';
 
 import { supabase } from '~/utils/supabase';
 import { Text } from '~/components/ui/text';
+import { Label } from '~/components/ui/label';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -36,8 +37,9 @@ export default function LoginScreen() {
   }
 
   return (
-    <KeyboardAvoidingView behavior="height" className="flex-1">
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <KeyboardAvoidingView behavior="height" className="flex">
+      {/* <ScrollView contentContainerStyle={{ flexGrow: 1 }}> */}
+      <ScrollView>
         <View
           className="flex-1 justify-center items-center"
           // style={{ backgroundColor: isDarkmode ? '#17171E' : themeColor.white100 }}
@@ -54,9 +56,9 @@ export default function LoginScreen() {
         <View className={`flex-3 px-5 pb-5 ${'bg-dark'}`}>
           <Text className="text-center font-bold py-7 text-lg">Login</Text>
 
-          <Text>Email</Text>
+          <Label nativeID='email' className="mt-4">Email</Label>
           <Input
-            className="mt-4"
+            id="email"
             placeholder="Enter your email"
             value={email}
             autoCapitalize="none"
@@ -66,9 +68,9 @@ export default function LoginScreen() {
             onChangeText={(text: string) => setEmail(text)}
           />
 
-          <Text className="mt-4">Password</Text>
+          <Label nativeID="password" className="mt-4">Password</Label>
           <Input
-            className="mt-4"
+            id="password"
             placeholder="Enter your password"
             value={password}
             autoCapitalize="none"
@@ -79,25 +81,24 @@ export default function LoginScreen() {
           />
 
           <Button
-            // text={loading ? 'Loading' : 'Continue'}
             onPress={() => login()}
             className="mt-5"
             disabled={loading}
           >
-            {loading ? 'Loading' : 'Continue'}
+            <Text>{loading ? 'Loading' : 'Continue'}</Text>
           </Button>
 
           <View className="flex-row items-center mt-4 justify-center">
             <Text className="text-base">Don't have an account?</Text>
-            <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
+            <Button variant="ghost" onPress={() => router.push('/(auth)/register')}>
               <Text className="text-base font-bold ml-2">Register here</Text>
-            </TouchableOpacity>
+            </Button>
           </View>
 
           <View className="flex-row items-center mt-2 justify-center">
-            <TouchableOpacity onPress={() => router.push('/(auth)/forget-password')}>
+            <Button variant="ghost" onPress={() => router.push('/(auth)/forget-password')}>
               <Text className="text-base font-bold">Forget password</Text>
-            </TouchableOpacity>
+            </Button>
           </View>
 
           {/* <View className="flex-row items-center mt-8 justify-center">
