@@ -16,12 +16,10 @@ SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
   return (
-    <>
-      <ThemeProvider>
-        <AuthProvider>
-          <Stack />
-        </AuthProvider>
-      </ThemeProvider>
-    </>
+    <ThemeProvider>
+      <AuthProvider>
+        <Stack />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

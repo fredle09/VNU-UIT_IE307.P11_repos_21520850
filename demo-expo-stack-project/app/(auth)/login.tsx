@@ -1,175 +1,116 @@
 // import { NativeStackScreenProps } from '@react-navigation/native-stack';
-// import React, { useState } from 'react';
-// import { ScrollView, TouchableOpacity, View, KeyboardAvoidingView, Image } from 'react-native';
-// // import { Layout, Text, TextInput, Button, useTheme, themeColor } from 'react-native-rapi-ui';
+import React, { useState } from 'react';
+import { ScrollView, TouchableOpacity, View, KeyboardAvoidingView } from 'react-native';
+import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
+import { useRouter } from 'expo-router';
 
-// import { supabase } from '~/utils/supabase';
+// import { Layout, Text, TextInput, Button, useTheme, themeColor } from 'react-native-rapi-ui';
 
-// export default function ({
-//   navigation,
-// }: NativeStackScreenProps<
-//   {
-//     login: undefined;
-//     register: undefined;
-//     forgetPassword: undefined;
-//   },
-//   'login'
-// >) {
-//   const { isDarkmode, setTheme } = useTheme();
-//   const [email, setEmail] = useState<string>('');
-//   const [password, setPassword] = useState<string>('');
-//   const [loading, setLoading] = useState<boolean>(false);
+import { supabase } from '~/utils/supabase';
+import { Text } from '~/components/ui/text';
 
-//   async function login() {
-//     setLoading(true);
-//     const { user, error } = await supabase.auth.signIn({
-//       email,
-//       password,
-//     });
-//     if (!error && !user) {
-//       setLoading(false);
-//       alert('Check your email for the login link!');
-//     }
-//     if (error) {
-//       setLoading(false);
-//       alert(error.message);
-//     }
-//   }
-//   return (
-//     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
-//       <Layout>
-//         <ScrollView
-//           contentContainerStyle={{
-//             flexGrow: 1,
-//           }}>
-//           <View
-//             style={{
-//               flex: 1,
-//               justifyContent: 'center',
-//               alignItems: 'center',
-//               backgroundColor: isDarkmode ? '#17171E' : themeColor.white100,
-//             }}>
-//             <Image
-//               resizeMode="contain"
-//               style={{
-//                 height: 220,
-//                 width: 220,
-//               }}
-//               source={require('../../../assets/images/login.png')}
-//             />
-//           </View>
-//           <View
-//             style={{
-//               flex: 3,
-//               paddingHorizontal: 20,
-//               paddingBottom: 20,
-//               backgroundColor: isDarkmode ? themeColor.dark : themeColor.white,
-//             }}>
-//             <Text
-//               fontWeight="bold"
-//               style={{
-//                 alignSelf: 'center',
-//                 padding: 30,
-//               }}
-//               size="h3">
-//               Login
-//             </Text>
-//             <Text>Email</Text>
-//             <TextInput
-//               containerStyle={{ marginTop: 15 }}
-//               placeholder="Enter your email"
-//               value={email}
-//               autoCapitalize="none"
-//               autoCompleteType="off"
-//               autoCorrect={false}
-//               keyboardType="email-address"
-//               onChangeText={(text: string) => setEmail(text)}
-//             />
+export default function LoginScreen() {
+  const router = useRouter();
+  // const { isDarkmode, setTheme } = useTheme();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-//             <Text style={{ marginTop: 15 }}>Password</Text>
-//             <TextInput
-//               containerStyle={{ marginTop: 15 }}
-//               placeholder="Enter your password"
-//               value={password}
-//               autoCapitalize="none"
-//               autoCompleteType="off"
-//               autoCorrect={false}
-//               secureTextEntry
-//               onChangeText={(text: string) => setPassword(text)}
-//             />
-//             <Button
-//               text={loading ? 'Loading' : 'Continue'}
-//               onPress={() => {
-//                 login();
-//               }}
-//               style={{
-//                 marginTop: 20,
-//               }}
-//               disabled={loading}
-//             />
+  async function login() {
+    setLoading(true);
+    const { data: user, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-//             <View
-//               style={{
-//                 flexDirection: 'row',
-//                 alignItems: 'center',
-//                 marginTop: 15,
-//                 justifyContent: 'center',
-//               }}>
-//               <Text size="md">Don't have an account?</Text>
-//               <TouchableOpacity
-//                 onPress={() => {
-//                   navigation.navigate('Register');
-//                 }}>
-//                 <Text
-//                   size="md"
-//                   fontWeight="bold"
-//                   style={{
-//                     marginLeft: 5,
-//                   }}>
-//                   Register here
-//                 </Text>
-//               </TouchableOpacity>
-//             </View>
-//             <View
-//               style={{
-//                 flexDirection: 'row',
-//                 alignItems: 'center',
-//                 marginTop: 10,
-//                 justifyContent: 'center',
-//               }}>
-//               <TouchableOpacity
-//                 onPress={() => {
-//                   navigation.navigate('ForgetPassword');
-//                 }}>
-//                 <Text size="md" fontWeight="bold">
-//                   Forget password
-//                 </Text>
-//               </TouchableOpacity>
-//             </View>
-//             <View
-//               style={{
-//                 flexDirection: 'row',
-//                 alignItems: 'center',
-//                 marginTop: 30,
-//                 justifyContent: 'center',
-//               }}>
-//               <TouchableOpacity
-//                 onPress={() => {
-//                   setTheme(isDarkmode ? 'light' : 'dark');
-//                 }}>
-//                 <Text
-//                   size="md"
-//                   fontWeight="bold"
-//                   style={{
-//                     marginLeft: 5,
-//                   }}>
-//                   {isDarkmode ? '☀️ light theme' : '🌑 dark theme'}
-//                 </Text>
-//               </TouchableOpacity>
-//             </View>
-//           </View>
-//         </ScrollView>
-//       </Layout>
-//     </KeyboardAvoidingView>
-//   );
-// }
+    if (!error && !user) {
+      setLoading(false);
+      alert('Check your email for the login link!');
+    }
+
+    if (error) {
+      setLoading(false);
+      alert(error.message);
+    }
+  }
+
+  return (
+    <KeyboardAvoidingView behavior="height" className="flex-1">
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View
+          className="flex-1 justify-center items-center"
+          // style={{ backgroundColor: isDarkmode ? '#17171E' : themeColor.white100 }}
+          style={{ backgroundColor: '#17171E' }}
+        >
+          {/* <Image
+            resizeMode="contain"
+            className="h-56 w-56"
+            source={require('../../../assets/images/login.png')}
+          /> */}
+        </View>
+
+        {/* <View className={`flex-3 px-5 pb-5 ${isDarkmode ? 'bg-dark' : 'bg-white'}`}> */}
+        <View className={`flex-3 px-5 pb-5 ${'bg-dark'}`}>
+          <Text className="text-center font-bold py-7 text-lg">Login</Text>
+
+          <Text>Email</Text>
+          <Input
+            className="mt-4"
+            placeholder="Enter your email"
+            value={email}
+            autoCapitalize="none"
+            autoComplete="off"
+            autoCorrect={false}
+            keyboardType="email-address"
+            onChangeText={(text: string) => setEmail(text)}
+          />
+
+          <Text className="mt-4">Password</Text>
+          <Input
+            className="mt-4"
+            placeholder="Enter your password"
+            value={password}
+            autoCapitalize="none"
+            autoComplete="off"
+            autoCorrect={false}
+            secureTextEntry
+            onChangeText={(text: string) => setPassword(text)}
+          />
+
+          <Button
+            // text={loading ? 'Loading' : 'Continue'}
+            onPress={() => login()}
+            className="mt-5"
+            disabled={loading}
+          >
+            {loading ? 'Loading' : 'Continue'}
+          </Button>
+
+          <View className="flex-row items-center mt-4 justify-center">
+            <Text className="text-base">Don't have an account?</Text>
+            <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
+              <Text className="text-base font-bold ml-2">Register here</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View className="flex-row items-center mt-2 justify-center">
+            <TouchableOpacity onPress={() => router.push('/(auth)/forget-password')}>
+              <Text className="text-base font-bold">Forget password</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* <View className="flex-row items-center mt-8 justify-center">
+            <TouchableOpacity onPress={() => setTheme(isDarkmode ? 'light' : 'dark')}>
+              <Text className="text-base font-bold ml-2">
+                {isDarkmode ? '☀️ light theme' : '🌑 dark theme'}
+                {'🌑 dark theme'}
+              </Text>
+            </TouchableOpacity>
+          </View> */}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+
+}
