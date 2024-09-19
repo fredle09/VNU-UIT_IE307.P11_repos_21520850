@@ -1,117 +1,205 @@
-// import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
+import { Link } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { ScrollView, TouchableOpacity, View, KeyboardAvoidingView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+} from 'react-native';
+import { Container } from '~/components/container';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
-import { useRouter } from 'expo-router';
-
-// import { Layout, Text, TextInput, Button, useTheme, themeColor } from 'react-native-rapi-ui';
-
-import { supabase } from '~/utils/supabase';
-import { Text } from '~/components/ui/text';
 import { Label } from '~/components/ui/label';
+import { Text } from '~/components/ui/text';
+
+// import utils
+import { supabase } from '~/utils/supabase';
 
 export default function LoginScreen() {
   const router = useRouter();
-  // const { isDarkmode, setTheme } = useTheme();
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+  });
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   async function login() {
-    setLoading(true);
-    const { data: user, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    setIsLoading(true);
+    if (!form?.email || !form?.password) {
+      setIsLoading(false);
+      return alert('All fields are required!');
+    }
+
+    const { data: user, error } = await supabase.auth.signInWithPassword(form);
 
     if (!error && !user) {
-      setLoading(false);
-      alert('Check your email for the login link!');
+      setIsLoading(false);
+      return alert('Check your email for the login link!');
     }
 
     if (error) {
-      setLoading(false);
+      setIsLoading(false);
       alert(error.message);
     }
   }
 
   return (
-    <KeyboardAvoidingView behavior="height" className="flex">
-      {/* <ScrollView contentContainerStyle={{ flexGrow: 1 }}> */}
-      <ScrollView>
-        <View
-          className="flex-1 justify-center items-center"
-          // style={{ backgroundColor: isDarkmode ? '#17171E' : themeColor.white100 }}
-          style={{ backgroundColor: '#17171E' }}
-        >
-          {/* <Image
-            resizeMode="contain"
-            className="h-56 w-56"
-            source={require('../../../assets/images/login.png')}
-          /> */}
+    <>
+      <Stack.Screen options={{ headerShown: true, title: 'Login' }} />
+      {/* <KeyboardAvoidingView> */}
+      <View className="flex p-6">
+        <View className="flex-1">
+          <Text style={styles.title}>Welcome back!</Text>
+
+          <Text style={styles.subtitle}>Sign in to your account</Text>
         </View>
 
-        {/* <View className={`flex-3 px-5 pb-5 ${isDarkmode ? 'bg-dark' : 'bg-white'}`}> */}
-        <View className={`flex-3 px-5 pb-5 ${'bg-dark'}`}>
-          <Text className="text-center font-bold py-7 text-lg">Login</Text>
+        <View className="flex-3" style={styles.form}>
+          <View className="mt-2">
+            <Label nativeID='email-address'>Email address</Label>
 
-          <Label nativeID='email' className="mt-4">Email</Label>
-          <Input
-            id="email"
-            placeholder="Enter your email"
-            value={email}
-            autoCapitalize="none"
-            autoComplete="off"
-            autoCorrect={false}
-            keyboardType="email-address"
-            onChangeText={(text: string) => setEmail(text)}
-          />
+            <Input
+              id="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              clearButtonMode="while-editing"
+              keyboardType="email-address"
+              onChangeText={email => setForm({ ...form, email })}
+              placeholder="john@example.com"
+              placeholderTextColor="#6b7280"
+              // style={styles.inputControl}
+              value={form.email} />
+          </View>
 
-          <Label nativeID="password" className="mt-4">Password</Label>
-          <Input
-            id="password"
-            placeholder="Enter your password"
-            value={password}
-            autoCapitalize="none"
-            autoComplete="off"
-            autoCorrect={false}
-            secureTextEntry
-            onChangeText={(text: string) => setPassword(text)}
-          />
+          <View className="mt-2">
+            <Label nativeID='password'>Password</Label>
+
+            <Input
+              id="password"
+              autoCorrect={false}
+              clearButtonMode="while-editing"
+              onChangeText={password => setForm({ ...form, password })}
+              placeholder="********"
+              placeholderTextColor="#6b7280"
+              // style={styles.inputControl}
+              secureTextEntry={true}
+              value={form.password} />
+          </View>
 
           <Button
-            onPress={() => login()}
-            className="mt-5"
-            disabled={loading}
+            onPress={login}
+            disabled={isLoading}
+            className="mt-8"
           >
-            <Text>{loading ? 'Loading' : 'Continue'}</Text>
+            <Text>Login</Text>
           </Button>
-
-          <View className="flex-row items-center mt-4 justify-center">
-            <Text className="text-base">Don't have an account?</Text>
-            <Button variant="ghost" onPress={() => router.push('/(auth)/register')}>
-              <Text className="text-base font-bold ml-2">Register here</Text>
-            </Button>
-          </View>
-
-          <View className="flex-row items-center mt-2 justify-center">
-            <Button variant="ghost" onPress={() => router.push('/(auth)/forget-password')}>
-              <Text className="text-base font-bold">Forget password</Text>
-            </Button>
-          </View>
-
-          {/* <View className="flex-row items-center mt-8 justify-center">
-            <TouchableOpacity onPress={() => setTheme(isDarkmode ? 'light' : 'dark')}>
-              <Text className="text-base font-bold ml-2">
-                {isDarkmode ? '☀️ light theme' : '🌑 dark theme'}
-                {'🌑 dark theme'}
-              </Text>
+          {/* <View style={styles.formAction}>
+            
+            <TouchableOpacity
+              onPress={() => {
+                // handle onPress
+              }}>
+              <View style={styles.btn}>
+                <Text style={styles.btnText}>Sign in</Text>
+              </View>
             </TouchableOpacity>
           </View> */}
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  );
 
+          <Button
+            variant={"ghost"}
+            className="space-x-2 mt-4"
+            onPress={() => router.push("/(auth)/register")}
+          >
+            <Text>Don't have an account? <Text className="underline">Register</Text></Text>
+          </Button>
+
+          {/* <TouchableOpacity
+            disabled={isLoading}
+            onPress={login}>
+            <Text style={styles.formFooter}>
+              Don't have an account?{' '}
+              <Text style={{ textDecorationLine: 'underline' }}>Sign up</Text>
+            </Text>
+          </TouchableOpacity> */}
+        </View>
+      </View>
+      {/* </KeyboardAvoidingView> */}
+    </>
+  );
 }
+
+const styles = StyleSheet.create({
+  // container: {
+  //   padding: 24,
+  //   flexGrow: 1,
+  //   flexShrink: 1,
+  //   flexBasis: 0,
+  // },
+  // header: {
+  //   marginVertical: 36,
+  // },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#1d1d1d',
+    marginBottom: 6,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#929292',
+    textAlign: 'center',
+  },
+  /** Form */
+  form: {
+    marginBottom: 24,
+  },
+  formAction: {
+    marginVertical: 24,
+  },
+  formFooter: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#222',
+    textAlign: 'center',
+  },
+  /** Input */
+  input: {
+    marginBottom: 16,
+  },
+  inputLabel: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#222',
+    marginBottom: 8,
+  },
+  inputControl: {
+    height: 44,
+    backgroundColor: '#f1f5f9',
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#222',
+  },
+  /** Button */
+  btn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    backgroundColor: '#007aff',
+    borderColor: '#007aff',
+  },
+  btnText: {
+    fontSize: 17,
+    lineHeight: 24,
+    fontWeight: '600',
+    color: '#fff',
+  },
+});

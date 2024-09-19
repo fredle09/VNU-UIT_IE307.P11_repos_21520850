@@ -1,6 +1,6 @@
 import '~/global.css';
 
-import { Slot, SplashScreen } from 'expo-router';
+import { SplashScreen, Stack } from 'expo-router';
 import * as React from 'react';
 
 import { AuthProvider } from '~/provider/auth-provider';
@@ -18,7 +18,7 @@ export default function Layout() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Slot />
+        <Stack screenOptions={{ headerShown: false }} />
       </AuthProvider>
     </ThemeProvider>
   );
