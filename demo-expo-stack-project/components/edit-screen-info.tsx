@@ -6,7 +6,7 @@ export const EditScreenInfo = ({ path }: { path: string }) => {
     'Change any of the text, save the file, and your app will automatically update.';
 
   return (
-    <View>
+    // <View className="flex flex-1">
       <View className={styles.getStartedContainer}>
         <Text className={styles.getStartedText}>{title}</Text>
         <View className={styles.codeHighlightContainer + styles.homeScreenFilename}>
@@ -14,7 +14,7 @@ export const EditScreenInfo = ({ path }: { path: string }) => {
         </View>
         <Text className={styles.getStartedText}>{description}</Text>
       </View>
-    </View>
+    // </View>
   );
 };
 

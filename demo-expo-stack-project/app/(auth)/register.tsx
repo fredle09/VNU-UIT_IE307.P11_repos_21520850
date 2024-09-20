@@ -11,6 +11,7 @@ import { Checkbox } from '~/components/ui/checkbox';
 import { useRouter } from 'expo-router';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
+import { PasswordInput } from '~/components/customize-ui/password-input';
 
 // import utils
 import { supabase } from '~/utils/supabase';
@@ -25,7 +26,6 @@ export default function RegisterScreen() {
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
   async function register() {
     setIsLoading(true);
@@ -67,20 +67,17 @@ export default function RegisterScreen() {
         </View> */}
 
         <View>
-          <View style={styles.input}>
+          <View className="mb-4">
             <Label nativeID="name">Full Name</Label>
 
             <Input
               id="name"
-              clearButtonMode="while-editing"
               onChangeText={name => setForm({ ...form, name })}
               placeholder="John Doe"
-              // placeholderTextColor="#6b7280"
-              // style={styles.inputControl}
               value={form.name} />
           </View>
 
-          <View style={styles.input}>
+          <View className="mb-4">
             <Label nativeID='email'>Email Address</Label>
 
             <Input
@@ -96,7 +93,7 @@ export default function RegisterScreen() {
               value={form.email} />
           </View>
 
-          <View style={styles.input}>
+          <View className="mb-4">
             <Label nativeID='password'>Password</Label>
 
             <Input
@@ -111,32 +108,52 @@ export default function RegisterScreen() {
               value={form.password} />
           </View>
 
-          <View style={styles.input}>
+          <View className="mb-4">
             <Label nativeID='confirm-password'>Confirm Password</Label>
 
-            <Input
+            <PasswordInput
               id="confirm-password"
-              // autoCorrect={false}
-              // clearButtonMode="while-editing"
               onChangeText={confirmPassword => setForm({ ...form, confirmPassword })}
               placeholder="********"
-              // placeholderTextColor="#6b7280"
-              // style={styles.inputControl}
               secureTextEntry={true}
-              value={form.confirmPassword} />
+              value={form.confirmPassword}
+            />
           </View>
 
-          <View>
-            <Button
-              variant="ghost" className='mt-2 flex flex-row justify-center gap-2 flex-shrink-0'
-              onPress={() => setRememberMe(prev => !prev)}
-            >
-              <Checkbox
-                checked={rememberMe}
-                onCheckedChange={setRememberMe}
-              />
-              <Text>Renember me?</Text>
-            </Button>
+          <View className="mb-4">
+            <Label nativeID='confirm-password'>Confirm Password</Label>
+
+            <PasswordInput
+              id="confirm-password"
+              onChangeText={confirmPassword => setForm({ ...form, confirmPassword })}
+              placeholder="********"
+              secureTextEntry={true}
+              value={form.confirmPassword}
+            />
+          </View>
+
+          <View className="mb-4">
+            <Label nativeID='confirm-password'>Confirm Password</Label>
+
+            <PasswordInput
+              id="confirm-password"
+              onChangeText={confirmPassword => setForm({ ...form, confirmPassword })}
+              placeholder="********"
+              secureTextEntry={true}
+              value={form.confirmPassword}
+            />
+          </View>
+
+          <View className="mb-4">
+            <Label nativeID='confirm-password'>Confirm Password</Label>
+
+            <PasswordInput
+              id="confirm-password"
+              onChangeText={confirmPassword => setForm({ ...form, confirmPassword })}
+              placeholder="********"
+              secureTextEntry={true}
+              value={form.confirmPassword}
+            />
           </View>
 
           <View className="mt-4">
@@ -149,10 +166,13 @@ export default function RegisterScreen() {
           </View>
         </View>
 
-        <Button variant="ghost" className="mt-8" onPress={() => router.push("/(auth)/login")}>
+        <Button
+          variant="ghost" className="mt-8"
+          onPress={() => router.replace("/(auth)/login")}
+        >
           <Text>
             Already have an account?{' '}
-            <Text className='text-bold'>Login</Text>
+            <Text className='underline'>Login</Text>
           </Text>
         </Button>
         {/* </View> */}
@@ -213,10 +233,6 @@ const styles = StyleSheet.create({
     color: '#222',
     textAlign: 'center',
     letterSpacing: 0.15,
-  },
-  /** Input */
-  input: {
-    marginBottom: 16,
   },
   inputLabel: {
     fontSize: 17,

@@ -1,6 +1,8 @@
 import { Text, View } from 'react-native';
 
 import { EditScreenInfo } from './edit-screen-info';
+import { useContext } from 'react';
+import { AuthContext } from '~/provider/auth-provider';
 
 type ScreenContentProps = {
   title: string;
@@ -9,11 +11,15 @@ type ScreenContentProps = {
 };
 
 export const ScreenContent = ({ title, path, children }: ScreenContentProps) => {
+  const { user, session } = useContext(AuthContext);
+
   return (
     <View className={styles.container}>
       <Text className={styles.title}>{title}</Text>
       <View className={styles.separator} />
       <EditScreenInfo path={path} />
+      <Text>User: {user ? "Auth" : "Unauth"}</Text>
+      <Text>Session: {JSON.stringify(session?.user?.email)}</Text>
       {children}
     </View>
   );

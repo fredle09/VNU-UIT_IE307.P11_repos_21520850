@@ -1,13 +1,19 @@
 // import components
-import { SafeAreaView } from 'react-native';
-
-// import utils
-import { cn } from '~/lib/utils';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView
+} from 'react-native';
 
 export const Container = ({ children, className }: { children: React.ReactNode, className?: string }) => {
-  return <SafeAreaView className={cn(styles.container, className)}>{children}</SafeAreaView>;
-};
-
-const styles = {
-  container: 'flex flex-1 m-6',
+  return (
+    <KeyboardAvoidingView className='flex flex-1' behavior={Platform.OS === "ios" ? "padding" : "height"} enabled>
+      <ScrollView className='flex flex-1'>
+        <SafeAreaView className="flex flex-1 m-6 mb-40">
+          {children}
+        </SafeAreaView>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
 };
