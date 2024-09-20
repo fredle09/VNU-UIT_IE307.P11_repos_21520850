@@ -5,10 +5,14 @@ import * as React from 'react';
 import { AppState } from 'react-native';
 import { SplashScreen, Stack } from 'expo-router';
 
+// import components
+import { Toaster } from 'sonner-native';
+
 // import utils
 import { supabase } from '~/utils/supabase';
 import { AuthProvider } from '~/provider/auth-provider';
 import { ThemeProvider } from '~/provider/theme-provider';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 // Prevent the splash screen from auto-hiding before getting the color scheme.
@@ -28,10 +32,13 @@ AppState.addEventListener('change', (state) => {
 
 export default function Layout() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-      </AuthProvider>
-    </ThemeProvider>
+    <GestureHandlerRootView>
+      <ThemeProvider>
+        <AuthProvider>
+          <Stack screenOptions={{ headerShown: false }} />
+          <Toaster richColors visibleToasts={2} gap={8} />
+        </AuthProvider>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }

@@ -1,6 +1,7 @@
 // import libs
 import { useContext } from 'react';
 import { Stack, Link } from 'expo-router';
+import { toast } from "sonner-native";
 
 // import components
 import { Container } from '~/components/container';
@@ -61,6 +62,15 @@ export default function Home() {
               <Text>Exit</Text>
             </Button>
           </>}
+        <Button
+          className="mt-2"
+          variant="ghost"
+          onPress={() => {
+            toast.info("Hello", { description: "Description" })
+          }}
+        >
+          <Text>Test Toast</Text>
+        </Button>
       </Container>
     </>
   );
