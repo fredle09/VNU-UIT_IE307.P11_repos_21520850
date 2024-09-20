@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 
 import { EditScreenInfo } from './edit-screen-info';
 import { useContext } from 'react';
-import { AuthContext } from '~/provider/auth-provider';
+import { AuthContext } from '@/provider/auth-provider';
 
 type ScreenContentProps = {
   title: string;

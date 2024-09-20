@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { Redirect, Slot } from 'expo-router';
 
 // import utils
-import { AuthContext } from '~/provider/auth-provider';
+import { AuthContext } from '@/provider/auth-provider';
 
 export default function AppLayout() {
   const { user } = useContext(AuthContext);

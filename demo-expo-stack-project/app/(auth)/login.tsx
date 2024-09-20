@@ -7,16 +7,16 @@ import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // import components
-import { Container } from '~/components/container';
-import { PasswordInput } from '~/components/customize-ui/password-input';
-import { Button } from '~/components/ui/button';
-import { Checkbox } from '~/components/ui/checkbox';
-import { Input } from '~/components/ui/input';
-import { Text } from '~/components/ui/text';
-import { FormController } from '~/components/customize-ui/form';
+import { Container } from '@/components/container';
+import { PasswordInput } from '@/components/customize-ui/password-input';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Text } from '@/components/ui/text';
+import { FormController } from '@/components/customize-ui/form';
 
 // import utils
-import { DEFAULT_LOGIN_FORM_VALUES, loginFormSchema, onSubmit } from '~/utils/form/login';
+import { DEFAULT_LOGIN_FORM_VALUES, loginFormSchema, onSubmit } from '@/utils/form/login';
 
 export default function LoginScreen() {
   const router = useRouter();

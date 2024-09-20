@@ -1,7 +1,7 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 
-import { Container } from '~/components/container';
-import { ScreenContent } from '~/components/screen-content';
+import { Container } from '@/components/container';
+import { ScreenContent } from '@/components/screen-content';
 
 export default function Details() {
   const { name } = useLocalSearchParams();

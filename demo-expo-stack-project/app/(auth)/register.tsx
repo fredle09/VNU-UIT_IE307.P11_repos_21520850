@@ -4,17 +4,16 @@ import { Stack } from 'expo-router';
 
 // import components
 import { StyleSheet, View, } from 'react-native';
-import { Text } from '~/components/ui/text';
-import { Container } from '~/components/container';
-import { Button } from "~/components/ui/button";
-import { Checkbox } from '~/components/ui/checkbox';
+import { Text } from '@/components/ui/text';
+import { Container } from '@/components/container';
+import { Button } from "@/components/ui/button";
 import { useRouter } from 'expo-router';
-import { Input } from '~/components/ui/input';
-import { Label } from '~/components/ui/label';
-import { PasswordInput } from '~/components/customize-ui/password-input';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { PasswordInput } from '@/components/customize-ui/password-input';
 
 // import utils
-import { supabase } from '~/utils/supabase';
+import { supabase } from '@/utils/supabase';
 
 export default function RegisterScreen() {
   const router = useRouter();

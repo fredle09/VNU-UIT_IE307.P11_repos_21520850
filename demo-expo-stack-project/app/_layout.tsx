@@ -1,4 +1,4 @@
-import '~/global.css';
+import '@/global.css';
 
 // import libs
 import * as React from 'react';
@@ -7,12 +7,12 @@ import { SplashScreen, Stack } from 'expo-router';
 
 // import components
 import { Toaster } from 'sonner-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // import utils
-import { supabase } from '~/utils/supabase';
-import { AuthProvider } from '~/provider/auth-provider';
-import { ThemeProvider } from '~/provider/theme-provider';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { supabase } from '@/utils/supabase';
+import { AuthProvider } from '@/provider/auth-provider';
+import { ThemeProvider } from '@/provider/theme-provider';
 
 
 // Prevent the splash screen from auto-hiding before getting the color scheme.

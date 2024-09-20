@@ -4,14 +4,14 @@ import { Stack, Link } from 'expo-router';
 import { toast } from "sonner-native";
 
 // import components
-import { Container } from '~/components/container';
-import { ScreenContent } from '~/components/screen-content';
-import { Button } from '~/components/ui/button';
-import { Text } from '~/components/ui/text';
+import { Container } from '@/components/container';
+import { ScreenContent } from '@/components/screen-content';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 
 // import utils
-import { AuthContext } from '~/provider/auth-provider';
-import { supabase } from '~/utils/supabase';
+import { AuthContext } from '@/provider/auth-provider';
+import { supabase } from '@/utils/supabase';
 
 export default function Home() {
   const { user } = useContext(AuthContext);

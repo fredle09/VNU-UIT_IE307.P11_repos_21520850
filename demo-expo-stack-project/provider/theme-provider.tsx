@@ -1,4 +1,4 @@
-import '~/global.css';
+import '@/global.css';
 
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,8 +8,8 @@ import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
 
-import { NAV_THEME } from '~/lib/constants';
-import { useColorScheme } from '~/lib/useColorScheme';
+import { NAV_THEME } from '@/lib/constants';
+import { useColorScheme } from '@/lib/useColorScheme';
 
 const LIGHT_THEME: Theme = {
   dark: false,

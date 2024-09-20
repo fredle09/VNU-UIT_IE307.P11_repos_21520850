@@ -6,11 +6,11 @@ import { TextInput } from "react-native";
 import { View } from "react-native";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { EyeShow } from "~/lib/icons/eye-show";
-import { EyeOff } from "~/lib/icons/eye-off";
+import { EyeShow } from "@/lib/icons/eye-show";
+import { EyeOff } from "@/lib/icons/eye-off";
 
 // import utils
-import { cn } from "~/lib/utils";
+import { cn } from "@/lib/utils";
 
 const PasswordInput = React.forwardRef<
   React.ElementRef<typeof TextInput>,
