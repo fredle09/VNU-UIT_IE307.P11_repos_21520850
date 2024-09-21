@@ -10,7 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Container } from '@/components/container';
 import { PasswordInput } from '@/components/customize-ui/password-input';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
 import { FormController } from '@/components/customize-ui/form';
@@ -20,7 +19,7 @@ import { DEFAULT_LOGIN_FORM_VALUES, loginFormSchema, onSubmit } from '@/utils/fo
 
 export default function LoginScreen() {
   const router = useRouter();
-  const [rememberMe, setRememberMe] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -67,26 +66,12 @@ export default function LoginScreen() {
             errors={errors}
             render={({ field: { onChange, ...field } }) => (
               <PasswordInput
-                nativeID="password"
                 placeholder="********"
                 onChangeText={onChange}
                 {...field}
               />
             )}
           />
-
-          <View className="mt-2">
-            <Button
-              variant="ghost" className='mt-2 flex flex-row justify-start gap-2 flex-shrink-0 !px-3'
-              onPress={() => setRememberMe(prev => !prev)}
-            >
-              <Checkbox
-                checked={rememberMe}
-                onCheckedChange={setRememberMe}
-              />
-              <Text>Renember me?</Text>
-            </Button>
-          </View>
 
           <Button
             onPress={handleSubmit(onSubmit)}

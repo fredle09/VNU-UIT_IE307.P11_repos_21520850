@@ -1,5 +1,6 @@
 // import libs
 import { z } from "zod";
+import { toast } from "sonner-native";
 
 // import utils
 import { supabase } from "../supabase";
@@ -16,11 +17,15 @@ export const loginFormSchema = z
   })
 
 export const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
-  const { data: user, error } = await supabase.auth.signInWithPassword(data);
-  if (error) {
-    console.error(">> error in login:", error.message);
-    throw error;
-  }
+  const promise = new Promise(async (resolve, reject) => {
+    const { data: user, error } = await supabase.auth.signInWithPassword(data);
+    if (error) return reject(error.message);
+    return resolve(user);
+  })
 
-  return data;
+  toast.promise(promise, {
+    loading: "Loading...",
+    success: (result) => "Login Sucessful!!!",
+    error: (error) => error as string
+  })
 }

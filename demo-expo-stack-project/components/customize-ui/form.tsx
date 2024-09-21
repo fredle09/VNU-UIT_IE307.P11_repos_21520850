@@ -2,10 +2,13 @@
 import { useId } from "react"
 import {
   Controller,
+  type ControllerFieldState,
+  type ControllerRenderProps,
+  type UseFormStateReturn,
   type ControllerProps,
   type FieldErrors,
   type FieldPath,
-  type FieldValues
+  type FieldValues,
 } from "react-hook-form"
 
 // import components
@@ -16,8 +19,13 @@ import { Text } from "../ui/text"
 type TFormController = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
->(props: ControllerProps<TFieldValues, TName>
+>(props: Omit<ControllerProps<TFieldValues, TName>, "render">
   & {
+    render: (props: {
+      field: ControllerRenderProps<TFieldValues, TName> & { nativeID: string };
+      fieldState: ControllerFieldState;
+      formState: UseFormStateReturn<TFieldValues>;
+    }) => React.ReactElement;
     className?: string,
     label: string,
     errors: FieldErrors<TFieldValues>
@@ -26,13 +34,14 @@ type TFormController = <
   | import("react").JSXElementConstructor<any>>
 
 const FormController: TFormController = ({ className, label, control, name, render, errors }) => {
-  const id = useId();
+  const nativeID = useId();
   return <View className={className ?? "mb-4"}>
-    <Label nativeID={id}>{label}</Label>
+    <Label nativeID={nativeID}>{label}</Label>
     <Controller
       control={control}
       name={name}
-      render={render}
+      render={({ field, ...props }) =>
+        render({ field: { nativeID, ...field }, ...props })}
     />
     {errors[name]
       && <Text className="text-red-500">

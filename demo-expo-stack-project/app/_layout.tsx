@@ -4,9 +4,10 @@ import '@/global.css';
 import * as React from 'react';
 import { AppState } from 'react-native';
 import { SplashScreen, Stack } from 'expo-router';
+import { getNetworkStateAsync } from 'expo-network';
 
 // import components
-import { Toaster } from 'sonner-native';
+import { toast, Toaster } from 'sonner-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // import utils
@@ -22,15 +23,37 @@ SplashScreen.preventAutoHideAsync();
 // the app is in the foreground. When this is added, you will continue to receive
 // `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
 // if the user's session is terminated. This should only be registered once.
-AppState.addEventListener('change', (state) => {
-  if (state === 'active') {
-    supabase.auth.startAutoRefresh()
-  } else {
-    supabase.auth.stopAutoRefresh()
-  }
-})
 
 export default function Layout() {
+  // Check network states
+  React.useEffect(() => {
+    const checkNetwork = async () => {
+      const { isConnected, isInternetReachable } = await getNetworkStateAsync();
+      if (!isConnected || !isInternetReachable)
+        toast.warning("Your network is not ok!!!", {
+          description: "Please check your network again."
+        });
+    }
+
+    const subscription = setInterval(checkNetwork, 60000);
+    return () => clearInterval(subscription);
+  }, []);
+
+  // Check auth-auth-refresh
+  React.useEffect(() => {
+    const handleAppStateChange = () => {
+      if (AppState.currentState === 'active') {
+        supabase.auth.startAutoRefresh();
+      } else {
+        supabase.auth.stopAutoRefresh();
+      }
+    };
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => subscription.remove();
+  }, []);
+
   return (
     <GestureHandlerRootView>
       <ThemeProvider>
