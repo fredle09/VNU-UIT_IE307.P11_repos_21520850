@@ -24,6 +24,7 @@
     "@rn-primitives/portal": "^1.0.4",
     "@rn-primitives/slot": "^1.0.4",
     "@rn-primitives/switch": "^1.0.4",
+    "@rn-primitives/tabs": "^1.0.4",
     "@rn-primitives/toggle": "^1.0.4",
     "@rn-primitives/types": "^1.0.4",
     "@supabase/supabase-js": "^2.38.4",
