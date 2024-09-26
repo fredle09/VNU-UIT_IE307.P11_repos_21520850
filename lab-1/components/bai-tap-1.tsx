@@ -33,7 +33,7 @@ interface TThreadPostProps {
   content: string;
   name: string;
   userImg: string;
-  image: {
+  image?: {
     uri: string;
     width: number;
     height: number;

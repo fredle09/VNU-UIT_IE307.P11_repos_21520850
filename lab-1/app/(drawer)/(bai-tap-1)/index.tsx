@@ -18,8 +18,8 @@ export default function BaiTap1Screen() {
       isReposted: boolean;
       content: string;
       name: string;
-      userImg: string,
-      image: {
+      userImg: string;
+      image?: {
         uri: string;
         width: number;
         height: number;
@@ -29,7 +29,7 @@ export default function BaiTap1Screen() {
 
   useEffect(() => {
     setTimeout(() => {
-      setData(Array.from({ length: 6 }, (_, index) => generateRandomPost(index + 1)));
+      return setData(Array.from({ length: 6 }, (_, index) => generateRandomPost(index + 1)));
     }, 1000);
   }, []);
 
