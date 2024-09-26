@@ -29,6 +29,17 @@ const DrawerLayout = () => (
       }}
     />
     <Drawer.Screen
+      name="(bai-tap-2)/index"
+      options={{
+        headerTitle: 'Bài tập 2',
+        drawerLabel: 'Bài tập 2',
+        headerRight: () => <DarkToggle className="pr-2" />,
+        drawerIcon: ({ size, color }) => (
+          <Ionicons name="document-text-outline" size={size} color={color} />
+        ),
+      }}
+    />
+    <Drawer.Screen
       name="(tabs)"
       options={{
         headerTitle: 'Tabs',

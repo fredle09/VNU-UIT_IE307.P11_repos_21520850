@@ -19,6 +19,7 @@
     "@react-navigation/native": "^6.1.7",
     "@rn-primitives/alert-dialog": "^1.0.4",
     "@rn-primitives/avatar": "^1.0.5",
+    "@rn-primitives/checkbox": "^1.0.4",
     "@rn-primitives/label": "^1.0.4",
     "@rn-primitives/portal": "^1.0.4",
     "@rn-primitives/slot": "^1.0.4",
