@@ -4,8 +4,8 @@ import { Drawer } from 'expo-router/drawer';
 // import { View } from 'react-native';
 
 // import { DarkSwitch } from '~/components/customize-ui/dark-switch';
-import { HeaderButton } from '~/components/HeaderButton';
 import { DarkToggle } from '~/components/customize-ui/dark-toggle';
+import { HeaderButton } from '~/components/header-button';
 
 const DrawerLayout = () => (
   <Drawer>
