@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FlatList, Image, SafeAreaView, SectionList, View } from 'react-native';
+import { FlatList, Image, SafeAreaView, SectionList, View, ImageBackground } from 'react-native';
 
 import { fruits_vegetables, workouts } from './data';
 
@@ -51,65 +51,85 @@ export default function BaiTap2Screen() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent className="relative flex-1" value="workouts">
-            <FlatList
-              data={workouts}
-              renderItem={({ item: { type } }) => (
-                <ExampleCardWithCheckbox
-                  value={type}
-                  isChoose={displayTextList.includes(type)}
-                  setIsChoose={(value) => {
-                    if (value) {
-                      setDisplayTextList((prev) => [...prev, type]);
-                    } else {
-                      setDisplayTextList((prev) => prev.filter((value) => value !== type));
-                    }
-                  }}
+          <TabsContent className="-mx-4 flex-1" value="workouts">
+            <ImageBackground
+              source={{
+                uri: 'https://th.bing.com/th/id/OIP.M8nbdX0MwxeYiOHZ3hRYHAAAAA?rs=1&pid=ImgDetMain',
+              }}
+              resizeMode="cover"
+              blurRadius={10}>
+              <View className="dark:bg-black/75">
+                <FlatList
+                  className="mx-4"
+                  data={workouts}
+                  renderItem={({ item: { type } }) => (
+                    <ExampleCardWithCheckbox
+                      value={type}
+                      isChoose={displayTextList.includes(type)}
+                      setIsChoose={(value) => {
+                        if (value) {
+                          setDisplayTextList((prev) => [...prev, type]);
+                        } else {
+                          setDisplayTextList((prev) => prev.filter((value) => value !== type));
+                        }
+                      }}
+                    />
+                  )}
+                  ListHeaderComponent={<Text className="pt-4 text-3xl font-bold">Workouts</Text>}
+                  keyExtractor={(item) => item.id}
                 />
-              )}
-              ListHeaderComponent={<Text className="text-3xl font-bold">Workouts</Text>}
-              keyExtractor={(item) => item.id}
-            />
+              </View>
+            </ImageBackground>
           </TabsContent>
 
-          <TabsContent className="relative flex-1" value="fruits_vegetables">
-            <SectionList
-              sections={fruits_vegetables}
-              keyExtractor={(item, index) => JSON.stringify(item) + index}
-              ListHeaderComponent={
-                <Text className="text-3xl font-bold">
-                  {fruits_vegetables.map((item) => item.title).join(' ')}
-                </Text>
-              }
-              renderSectionHeader={({ section: { title, url: uri } }) => (
-                <View className="mt-6 flex flex-row items-center gap-2">
-                  <Text className="text-xl font-bold">{title}</Text>
-                  <Image className="object-cover" source={{ uri }} height={24} width={24} />
-                </View>
-              )}
-              stickySectionHeadersEnabled={false}
-              renderItem={({ item }) => (
-                <ExampleCardWithCheckbox
-                  value={
-                    <View className="flex flex-row items-center gap-1.5">
-                      <Text>{item.text}</Text>
-                      <Image source={{ uri: item.icon }} height={20} width={20} />
-                      {/* <SvgUri className="dark:fill-white" height={20} width={20} uri={item.icon} /> */}
-                    </View>
+          <TabsContent className="-mx-4 flex-1" value="fruits_vegetables">
+            <ImageBackground
+              source={{
+                uri: 'https://th.bing.com/th/id/OIP.cL0hMjLYokcGu6Ad7jhB5AHaE8?rs=1&pid=ImgDetMain',
+              }}
+              resizeMode="cover"
+              blurRadius={10}>
+              <View className="bg-muted/75 dark:bg-black/50">
+                <SectionList
+                  className="mx-4"
+                  sections={fruits_vegetables}
+                  keyExtractor={(item, index) => JSON.stringify(item) + index}
+                  ListHeaderComponent={
+                    <Text className="mt-4 text-3xl font-bold">
+                      {fruits_vegetables.map((item) => item.title).join(' ')}
+                    </Text>
                   }
-                  isChoose={displayTextList.includes(item)}
-                  setIsChoose={(value) => {
-                    if (value) {
-                      setDisplayTextList((prev) => [...prev, item]);
-                    } else {
-                      setDisplayTextList((prev) =>
-                        prev.filter((value) => JSON.stringify(value) !== JSON.stringify(item))
-                      );
-                    }
-                  }}
+                  renderSectionHeader={({ section: { title, url: uri } }) => (
+                    <View className="mt-6 flex flex-row items-center gap-2">
+                      <Text className="text-xl font-bold">{title}</Text>
+                      <Image className="object-cover" source={{ uri }} height={24} width={24} />
+                    </View>
+                  )}
+                  stickySectionHeadersEnabled={false}
+                  renderItem={({ item }) => (
+                    <ExampleCardWithCheckbox
+                      value={
+                        <View className="flex flex-row items-center gap-1.5">
+                          <Text>{item.text}</Text>
+                          <Image source={{ uri: item.icon }} height={20} width={20} />
+                          {/* <SvgUri className="dark:fill-white" height={20} width={20} uri={item.icon} /> */}
+                        </View>
+                      }
+                      isChoose={displayTextList.includes(item)}
+                      setIsChoose={(value) => {
+                        if (value) {
+                          setDisplayTextList((prev) => [...prev, item]);
+                        } else {
+                          setDisplayTextList((prev) =>
+                            prev.filter((value) => JSON.stringify(value) !== JSON.stringify(item))
+                          );
+                        }
+                      }}
+                    />
+                  )}
                 />
-              )}
-            />
+              </View>
+            </ImageBackground>
           </TabsContent>
         </Tabs>
       </View>

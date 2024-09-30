@@ -1,5 +1,5 @@
 // import components
-import { useId } from 'react';
+import { useCallback, useId } from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import { Text } from './ui/text';
@@ -15,9 +15,10 @@ interface IExampleCardProps {
 
 export const ExampleCardWithCheckbox = ({ value, isChoose, setIsChoose }: IExampleCardProps) => {
   const id = useId();
+  const toggleCheckbox = useCallback(() => setIsChoose(!isChoose), []);
 
   return (
-    <TouchableOpacity className="mt-4" activeOpacity={0.6} onPress={() => setIsChoose(!isChoose)}>
+    <TouchableOpacity className="mt-4" activeOpacity={0.9} onPress={toggleCheckbox}>
       <Card>
         <CardHeader className="flex w-full flex-row items-center justify-between">
           {typeof value === 'string' ? <Text className="text-xl">{value}</Text> : value}
