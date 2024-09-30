@@ -10,6 +10,7 @@ import { Platform } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Toaster } from 'sonner-native';
 
+import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
 import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
 
@@ -47,11 +48,13 @@ export default function RootLayout() {
         document.documentElement.classList.add('bg-background');
       }
       if (!theme) {
+        setAndroidNavigationBar(colorScheme);
         AsyncStorage.setItem('theme', colorScheme);
         setIsColorSchemeLoaded(true);
         return;
       }
       const colorTheme = theme === 'dark' ? 'dark' : 'light';
+      setAndroidNavigationBar(colorTheme);
       if (colorTheme !== colorScheme) {
         setColorScheme(colorTheme);
 
