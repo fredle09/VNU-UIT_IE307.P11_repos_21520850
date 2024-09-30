@@ -30,9 +30,9 @@ interface TThreadPostProps {
   currentComments: number;
   currentReposts: number;
   isReposted: boolean;
-  content: string;
-  name: string;
   userImg: string;
+  name: string;
+  content: string;
   image?: {
     uri: string;
     width: number;
@@ -51,7 +51,7 @@ export const ThreadPost = (props: TThreadPostProps) => {
 
     const promise = new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (Math.random() * 3 > 1) {
+        if (Math.random() * 4 > 1) {
           return resolve('Comment posted!');
         } else {
           const error = new Error('Error while posting comment!');
@@ -91,7 +91,7 @@ export const ThreadPost = (props: TThreadPostProps) => {
         <View className="flex flex-row gap-4 py-2 pt-0">
           <View className="w-10" />
           <View className="flex flex-row gap-2">
-            <Repeat2 className="text-zinc-700" />
+            <Repeat2 className="text-zinc-700 dark:text-white" />
             <Text>Reposted</Text>
           </View>
         </View>
@@ -127,7 +127,9 @@ export const ThreadPost = (props: TThreadPostProps) => {
               variant="ghost"
               className="flex flex-row items-center justify-center gap-1 p-1 px-1.5"
               onPress={toggleLiked}>
-              <Heart className={isLiked ? 'fill-red-700 text-red-700' : 'text-zinc-700'} />
+              <Heart
+                className={isLiked ? 'fill-red-700 text-red-700' : 'text-zinc-700 dark:text-white'}
+              />
               <Text>{props.currentLikes + (isLiked ? 1 : 0)}</Text>
             </Button>
             <Button
@@ -136,7 +138,7 @@ export const ThreadPost = (props: TThreadPostProps) => {
               variant="ghost"
               className="flex flex-row items-center justify-center gap-1 p-1 px-1.5"
               onPress={postComment}>
-              <MessageCircle className="text-zinc-700" />
+              <MessageCircle className="text-zinc-700 dark:text-white" />
               <Text>{props.currentComments + countYourComment}</Text>
             </Button>
             <Button
@@ -144,7 +146,7 @@ export const ThreadPost = (props: TThreadPostProps) => {
               variant="ghost"
               className="flex flex-row items-center justify-center gap-1 p-1 px-1.5"
               onPress={toggleRepost}>
-              <Repeat2 className="text-zinc-700" />
+              <Repeat2 className="text-zinc-700 dark:text-white" />
               <Text>{props.currentReposts + (isReposted ? 1 : 0)}</Text>
             </Button>
           </View>
