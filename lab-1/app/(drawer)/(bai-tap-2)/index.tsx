@@ -1,181 +1,118 @@
 import { useState } from 'react';
-import { FlatList, SectionList } from 'react-native';
+import { FlatList, Image, SafeAreaView, SectionList, View } from 'react-native';
 
 import { fruits_vegetables, workouts } from './data';
 
 import { ExampleCardWithCheckbox } from '~/components/bai-tap-2';
-// import { Container } from '~/components/container';
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { Badge } from '~/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { Text } from '~/components/ui/text';
 
 export default function BaiTap2Screen() {
-  const [displayText, setDisplayText] = useState('');
-  // const [tabValue, setTabValue] = useState('account');
+  const [displayTextList, setDisplayTextList] = useState<
+    (string | { icon: string; text: string })[]
+  >([]);
+  const [tabValue, setTabValue] = useState('workouts');
 
   return (
-    <>
-      {/* <View className="relative h-full">
-        <Image
-          className="absolute inset-0 object-cover"
-          source={{ uri: fruits_vegetables[0].url }}
-        /> */}
-      {/* <NavigationContainer independent>
-        <Tabs
-          value={tabValue}
-          onValueChange={setTabValue}
-          className="mx-auto w-full max-w-[400px] flex-col gap-1.5">
+    <SafeAreaView className="flex-1">
+      <View className="flex flex-1 gap-2 px-4">
+        <View>
+          <Text className="text-3xl font-bold">Result</Text>
+          <View className="border-1 flex h-36 flex-row flex-wrap gap-1.5 overflow-scroll rounded-md border-zinc-100 p-1.5 dark:border-zinc-900">
+            {displayTextList.map((value) => (
+              <Badge
+                key={JSON.stringify(value)}
+                variant="secondary"
+                className="flex flex-row items-center gap-1">
+                {typeof value === 'string' ? (
+                  <Text>{value}</Text>
+                ) : (
+                  <>
+                    <Image
+                      className="-ml-0.5"
+                      source={{ uri: value.icon }}
+                      style={{ width: 12, height: 12 }}
+                    />
+                    <Text>{value.text}</Text>
+                  </>
+                )}
+              </Badge>
+            ))}
+          </View>
+        </View>
+        <Tabs value={tabValue} onValueChange={setTabValue} className="flex-1 gap-4">
           <TabsList className="w-full flex-row">
-            <TabsTrigger value="account" className="flex-1">
-              <Text>Account</Text>
+            <TabsTrigger value="workouts" className="flex-1">
+              <Text>Workouts</Text>
             </TabsTrigger>
-            <TabsTrigger value="password" className="flex-1">
-              <Text>Password</Text>
+            <TabsTrigger value="fruits_vegetables" className="flex-1">
+              <Text>Fruits Vegetables</Text>
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="account"> */}
-      <FlatList
-        className="px-6"
-        data={workouts}
-        renderItem={({ item: { type } }) => (
-          <ExampleCardWithCheckbox
-            text={type}
-            isChoose={displayText.includes(type)}
-            setIsChoose={(value) => {
-              if (value) {
-                setDisplayText((prev) => prev + ' ' + type);
-              } else {
-                setDisplayText((prev) => prev.replace(type, ''));
-              }
-            }}
-          />
-        )}
-        ListHeaderComponent={<Text className="text-3xl font-bold">Workouts</Text>}
-        // ListEmptyComponent={ThreadPostSkeleton}
-        keyExtractor={(item) => item.id}
-      />
-      {/* </View> */}
-      {/* </TabsContent>
 
-          <TabsContent value="password"> */}
-      <SectionList
-        className="mt-6 h-2/5 px-6"
-        sections={fruits_vegetables}
-        keyExtractor={(item, index) => item + index}
-        ListHeaderComponent={
-          <Text className="text-3xl font-bold">
-            {fruits_vegetables.map((item) => item.title).join(' ')}
-          </Text>
-        }
-        renderSectionHeader={({ section: { title } }) => (
-          <Text className="mt-6 text-xl font-bold">{title}</Text>
-        )}
-        renderItem={({ item }) => (
-          <ExampleCardWithCheckbox
-            text={item}
-            isChoose={displayText.includes(item)}
-            setIsChoose={(value) => {
-              if (value) {
-                setDisplayText((prev) => prev + ' ' + item);
-              } else {
-                setDisplayText((prev) => prev.replace(item, ''));
+          <TabsContent className="relative flex-1" value="workouts">
+            <FlatList
+              data={workouts}
+              renderItem={({ item: { type } }) => (
+                <ExampleCardWithCheckbox
+                  value={type}
+                  isChoose={displayTextList.includes(type)}
+                  setIsChoose={(value) => {
+                    if (value) {
+                      setDisplayTextList((prev) => [...prev, type]);
+                    } else {
+                      setDisplayTextList((prev) => prev.filter((value) => value !== type));
+                    }
+                  }}
+                />
+              )}
+              ListHeaderComponent={<Text className="text-3xl font-bold">Workouts</Text>}
+              keyExtractor={(item) => item.id}
+            />
+          </TabsContent>
+
+          <TabsContent className="relative flex-1" value="fruits_vegetables">
+            <SectionList
+              sections={fruits_vegetables}
+              keyExtractor={(item, index) => JSON.stringify(item) + index}
+              ListHeaderComponent={
+                <Text className="text-3xl font-bold">
+                  {fruits_vegetables.map((item) => item.title).join(' ')}
+                </Text>
               }
-            }}
-          />
-        )}
-      />
-      {/* </TabsContent>
+              renderSectionHeader={({ section: { title, url: uri } }) => (
+                <View className="mt-6 flex flex-row items-center gap-2">
+                  <Text className="text-xl font-bold">{title}</Text>
+                  <Image className="object-cover" source={{ uri }} height={24} width={24} />
+                </View>
+              )}
+              stickySectionHeadersEnabled={false}
+              renderItem={({ item }) => (
+                <ExampleCardWithCheckbox
+                  value={
+                    <View className="flex flex-row items-center gap-1.5">
+                      <Text>{item.text}</Text>
+                      <Image source={{ uri: item.icon }} height={20} width={20} />
+                      {/* <SvgUri className="dark:fill-white" height={20} width={20} uri={item.icon} /> */}
+                    </View>
+                  }
+                  isChoose={displayTextList.includes(item)}
+                  setIsChoose={(value) => {
+                    if (value) {
+                      setDisplayTextList((prev) => [...prev, item]);
+                    } else {
+                      setDisplayTextList((prev) =>
+                        prev.filter((value) => JSON.stringify(value) !== JSON.stringify(item))
+                      );
+                    }
+                  }}
+                />
+              )}
+            />
+          </TabsContent>
         </Tabs>
-      </NavigationContainer> */}
-    </>
+      </View>
+    </SafeAreaView>
   );
 }
-
-// import * as React from 'react';
-// import { View } from 'react-native';
-
-// import { Button } from '~/components/ui/button';
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardFooter,
-//   CardHeader,
-//   CardTitle,
-// } from '~/components/ui/card';
-// import { Input } from '~/components/ui/input';
-// import { Label } from '~/components/ui/label';
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
-// import { Text } from '~/components/ui/text';
-
-// export default function TabsScreen() {
-//   const [value, setValue] = React.useState('account');
-//   return (
-//     // <NavigationContainer independent>
-//     <View className="flex-1 justify-center p-6">
-//       <Tabs
-//         value={value}
-//         onValueChange={setValue}
-//         className="mx-auto w-full max-w-[400px] flex-col gap-1.5">
-//         <TabsList className="w-full flex-row">
-//           <TabsTrigger value="account" className="flex-1">
-//             <Text>Account</Text>
-//           </TabsTrigger>
-//           <TabsTrigger value="password" className="flex-1">
-//             <Text>Password</Text>
-//           </TabsTrigger>
-//         </TabsList>
-//         <TabsContent value="account">
-//           <Card>
-//             <CardHeader>
-//               <CardTitle>Account</CardTitle>
-//               <CardDescription>
-//                 Make changes to your account here. Click save when you're done.
-//               </CardDescription>
-//             </CardHeader>
-//             <CardContent className="native:gap-2 gap-4">
-//               <View className="gap-1">
-//                 <Label nativeID="name">Name</Label>
-//                 <Input aria-aria-labelledby="name" defaultValue="Pedro Duarte" />
-//               </View>
-//               <View className="gap-1">
-//                 <Label nativeID="username">Username</Label>
-//                 <Input id="username" defaultValue="@peduarte" />
-//               </View>
-//             </CardContent>
-//             <CardFooter>
-//               <Button>
-//                 <Text>Save changes</Text>
-//               </Button>
-//             </CardFooter>
-//           </Card>
-//         </TabsContent>
-//         <TabsContent value="password">
-//           <Card>
-//             <CardHeader>
-//               <CardTitle>Password</CardTitle>
-//               <CardDescription>
-//                 Change your password here. After saving, you'll be logged out.
-//               </CardDescription>
-//             </CardHeader>
-//             <CardContent className="native:gap-2 gap-4">
-//               <View className="gap-1">
-//                 <Label nativeID="current">Current password</Label>
-//                 <Input placeholder="********" aria-labelledby="current" secureTextEntry />
-//               </View>
-//               <View className="gap-1">
-//                 <Label nativeID="new">New password</Label>
-//                 <Input placeholder="********" aria-labelledby="new" secureTextEntry />
-//               </View>
-//             </CardContent>
-//             <CardFooter>
-//               <Button>
-//                 <Text>Save password</Text>
-//               </Button>
-//             </CardFooter>
-//           </Card>
-//         </TabsContent>
-//       </Tabs>
-//     </View>
-//     // </NavigationContainer>
-//   );
-// }
