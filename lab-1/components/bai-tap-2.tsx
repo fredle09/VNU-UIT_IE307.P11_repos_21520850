@@ -15,7 +15,7 @@ interface ICardWithCheckboxProps {
 
 export const CardWithCheckbox = ({ value, isChoose, setIsChoose }: ICardWithCheckboxProps) => {
   const id = useId();
-  const toggleCheckbox = useCallback(() => setIsChoose(!isChoose), []);
+  const toggleCheckbox = useCallback(() => setIsChoose(!isChoose), [isChoose]);
 
   return (
     <TouchableOpacity className="mt-4" activeOpacity={0.9} onPress={toggleCheckbox}>

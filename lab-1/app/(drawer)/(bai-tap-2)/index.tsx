@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FlatList, Image, SafeAreaView, SectionList, View, ImageBackground } from 'react-native';
 
 import { fruits_vegetables, workouts } from './data';
@@ -14,6 +14,18 @@ export default function BaiTap2Screen() {
     (string | { icon: string; text: string })[]
   >([]);
   const [tabValue, setTabValue] = useState('workouts');
+  const setIsChoose = useCallback(
+    (value: boolean, type: string | { icon: string; text: string }) => {
+      if (value) {
+        setDisplayTextList((prev) => [...prev, type]);
+      } else {
+        setDisplayTextList((prev) =>
+          prev.filter((value) => JSON.stringify(value) !== JSON.stringify(type))
+        );
+      }
+    },
+    []
+  );
 
   return (
     <SafeAreaView className="flex-1">
@@ -70,14 +82,10 @@ export default function BaiTap2Screen() {
                   renderItem={({ item: { type } }) => (
                     <CardWithCheckbox
                       value={type}
-                      isChoose={displayTextList.includes(type)}
-                      setIsChoose={(value) => {
-                        if (value) {
-                          setDisplayTextList((prev) => [...prev, type]);
-                        } else {
-                          setDisplayTextList((prev) => prev.filter((value) => value !== type));
-                        }
-                      }}
+                      isChoose={displayTextList.some(
+                        (item) => typeof item === 'string' && item === type
+                      )}
+                      setIsChoose={(value) => setIsChoose(value, type)}
                     />
                   )}
                   ListHeaderComponent={<Text className="pt-4 text-3xl font-bold">Workouts</Text>}
@@ -120,16 +128,10 @@ export default function BaiTap2Screen() {
                           {/* <SvgUri className="dark:fill-white" height={20} width={20} uri={item.icon} /> */}
                         </View>
                       }
-                      isChoose={displayTextList.includes(item)}
-                      setIsChoose={(value) => {
-                        if (value) {
-                          setDisplayTextList((prev) => [...prev, item]);
-                        } else {
-                          setDisplayTextList((prev) =>
-                            prev.filter((value) => JSON.stringify(value) !== JSON.stringify(item))
-                          );
-                        }
-                      }}
+                      isChoose={displayTextList.some(
+                        (value) => typeof value === 'object' && value.text === item.text
+                      )}
+                      setIsChoose={(value) => setIsChoose(value, item)}
                     />
                   )}
                 />
