@@ -3,10 +3,11 @@ import { FlatList, Image, SafeAreaView, SectionList, View, ImageBackground } fro
 
 import { fruits_vegetables, workouts } from './data';
 
-import { ExampleCardWithCheckbox } from '~/components/bai-tap-2';
+import { CardWithCheckbox } from '~/components/bai-tap-2';
 import { Badge } from '~/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { Text } from '~/components/ui/text';
+import { cn } from '~/lib/utils';
 
 export default function BaiTap2Screen() {
   const [displayTextList, setDisplayTextList] = useState<
@@ -19,7 +20,11 @@ export default function BaiTap2Screen() {
       <View className="flex flex-1 gap-2 px-4">
         <View>
           <Text className="text-3xl font-bold">Result</Text>
-          <View className="border-1 flex h-36 flex-row flex-wrap gap-1.5 overflow-scroll rounded-md border-zinc-100 p-1.5 dark:border-zinc-900">
+          <View
+            className={cn(
+              'border-1 flex h-36 flex-row flex-wrap gap-1.5',
+              'overflow-scroll rounded-md border-zinc-100 p-1.5 dark:border-zinc-900'
+            )}>
             {displayTextList.map((value) => (
               <Badge
                 key={JSON.stringify(value)}
@@ -63,7 +68,7 @@ export default function BaiTap2Screen() {
                   className="mx-4"
                   data={workouts}
                   renderItem={({ item: { type } }) => (
-                    <ExampleCardWithCheckbox
+                    <CardWithCheckbox
                       value={type}
                       isChoose={displayTextList.includes(type)}
                       setIsChoose={(value) => {
@@ -107,7 +112,7 @@ export default function BaiTap2Screen() {
                   )}
                   stickySectionHeadersEnabled={false}
                   renderItem={({ item }) => (
-                    <ExampleCardWithCheckbox
+                    <CardWithCheckbox
                       value={
                         <View className="flex flex-row items-center gap-1.5">
                           <Text>{item.text}</Text>

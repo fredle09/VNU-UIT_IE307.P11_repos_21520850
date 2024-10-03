@@ -7,13 +7,13 @@ import { Text } from './ui/text';
 import { Card, CardHeader } from '~/components/ui/card';
 import { Checkbox } from '~/components/ui/checkbox';
 
-interface IExampleCardProps {
+interface ICardWithCheckboxProps {
   value: string | React.ReactNode;
   isChoose: boolean;
   setIsChoose: (value: boolean) => void;
 }
 
-export const ExampleCardWithCheckbox = ({ value, isChoose, setIsChoose }: IExampleCardProps) => {
+export const CardWithCheckbox = ({ value, isChoose, setIsChoose }: ICardWithCheckboxProps) => {
   const id = useId();
   const toggleCheckbox = useCallback(() => setIsChoose(!isChoose), []);
 
