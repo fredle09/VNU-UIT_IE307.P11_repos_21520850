@@ -1,7 +1,7 @@
 // import libs
 import { Image } from 'expo-image';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { toast } from 'sonner-native';
 
 // import components
@@ -39,6 +39,10 @@ interface TThreadPostProps {
     height: number;
   };
 }
+
+const PostImageStyles = StyleSheet.create({
+  imgStyle: { aspectRatio: 16 / 9 },
+});
 
 export const ThreadPost = (props: TThreadPostProps) => {
   const [isLiked, setIsLiked] = useState(props.isLiked);
@@ -108,9 +112,9 @@ export const ThreadPost = (props: TThreadPostProps) => {
           <Text className="font-bold">{props.name}</Text>
           <Text>{props.content}</Text>
           {props.image && (
-            <View className="mt-2 h-fit w-full overflow-hidden rounded-lg border-2 border-zinc-100 dark:border-zinc-900">
+            <View className="mt-2 aspect-video w-full overflow-hidden rounded-lg border-2 border-zinc-100 dark:border-zinc-900">
               <Image
-                style={{ width: '100%', aspectRatio: 16 / 9 }}
+                style={PostImageStyles.imgStyle}
                 className="h-full w-full rounded-lg"
                 source={{ uri: props.image.uri }}
                 placeholder={{
