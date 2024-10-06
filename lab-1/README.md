@@ -6,15 +6,21 @@ This repository contains the code and documentation for the VNU-UIT IE307.P11 co
 
 ## Demo
 
-<div style="display: flex; ">
+<div style="display: flex; flex-direction: row">
 <div>
 <h3>Video demo bai-tap-1</h3>
-<video src="./public/demo-bai-tap-1.mov"></video>
+
+https://github.com/user-attachments/assets/cd0aff64-8ecb-4059-96ba-c07db485d824
+
 </div>
 
 <div>
 <h3>Video demo bai-tap-2</h3>
-<video src="./public/demo-bai-tap-2.mov"></video>
+
+
+https://github.com/user-attachments/assets/5f23df84-8a22-47d4-b763-8011f5aaac3b
+
+
 </div>
 </div>
 
