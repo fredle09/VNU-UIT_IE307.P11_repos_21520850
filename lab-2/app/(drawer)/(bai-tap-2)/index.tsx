@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { toast } from 'sonner-native';
 
+import { DarkSwitch } from '~/components/customize-ui/dark-switch';
 import { Button } from '~/components/ui/button';
 import { Switch } from '~/components/ui/switch';
 import { Text } from '~/components/ui/text';
@@ -17,7 +18,7 @@ import { Textarea } from '~/components/ui/textarea';
 import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function BaiTap2Screen() {
-  const { isDarkColorScheme, toggleColorScheme } = useColorScheme();
+  const { toggleColorScheme } = useColorScheme();
   const [isNotification, setIsNotification] = useState(false);
   const [isTyping, setIsTyping] = useState(true);
   const toggleIsNotification = useCallback(() => setIsNotification((prev) => !prev), []);
@@ -78,7 +79,8 @@ export default function BaiTap2Screen() {
               className="flex w-full flex-row items-center justify-between !px-4"
               onPress={toggleColorScheme}>
               <Text>Dark Mode</Text>
-              <Switch checked={isDarkColorScheme} onCheckedChange={toggleColorScheme} />
+              <DarkSwitch />
+              {/* <Switch checked={isDarkColorScheme} onCheckedChange={toggleColorScheme} /> */}
               {/* <Switch value={isDarkColorScheme} onValueChange={toggleColorScheme} /> */}
             </Button>
             <Button
