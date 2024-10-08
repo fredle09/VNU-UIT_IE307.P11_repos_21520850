@@ -46,23 +46,33 @@ const RGB_COLORS = {
   },
 } as const;
 
+const THUMB_POSITION = { off: 0, on: 18 };
+const ANIMATION_DURATION = 200;
+
 const SwitchNative = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
 >(({ className, ...props }, ref) => {
   const { colorScheme } = useColorScheme();
-  const translateX = useDerivedValue(() => (props.checked ? 18 : 0));
-  const animatedRootStyle = useAnimatedStyle(() => {
-    return {
-      backgroundColor: interpolateColor(
-        translateX.value,
-        [0, 18],
-        [RGB_COLORS[colorScheme].input, RGB_COLORS[colorScheme].primary]
-      ),
-    };
-  });
+
+  const translateX = useDerivedValue(() =>
+    props.checked ? THUMB_POSITION.on : THUMB_POSITION.off
+  );
+
+  const animatedRootStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      translateX.value,
+      [THUMB_POSITION.off, THUMB_POSITION.on],
+      [RGB_COLORS[colorScheme].input, RGB_COLORS[colorScheme].primary]
+    ),
+  }));
+
   const animatedThumbStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: withTiming(translateX.value, { duration: 200 }) }],
+    transform: [
+      {
+        translateX: withTiming(translateX.value, { duration: ANIMATION_DURATION }),
+      },
+    ],
   }));
   return (
     <Animated.View

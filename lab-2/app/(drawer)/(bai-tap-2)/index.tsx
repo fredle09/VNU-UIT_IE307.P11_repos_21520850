@@ -1,145 +1,124 @@
 import { useCallback, useState } from 'react';
-import { FlatList, Image, SafeAreaView, SectionList, View, ImageBackground } from 'react-native';
+import {
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import { toast } from 'sonner-native';
 
-import { fruits_vegetables, workouts } from './data';
-
-import { CardWithCheckbox } from '~/components/bai-tap-2';
-import { Badge } from '~/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { Button } from '~/components/ui/button';
+import { Switch } from '~/components/ui/switch';
 import { Text } from '~/components/ui/text';
-import { cn } from '~/lib/utils';
+import { Textarea } from '~/components/ui/textarea';
+import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function BaiTap2Screen() {
-  const [displayTextList, setDisplayTextList] = useState<
-    (string | { icon: string; text: string })[]
-  >([]);
-  const [tabValue, setTabValue] = useState('workouts');
-  const setIsChoose = useCallback(
-    (value: boolean, type: string | { icon: string; text: string }) => {
-      if (value) {
-        setDisplayTextList((prev) => [...prev, type]);
+  const { isDarkColorScheme, toggleColorScheme } = useColorScheme();
+  const [isNotification, setIsNotification] = useState(false);
+  const [isTyping, setIsTyping] = useState(true);
+  const toggleIsNotification = useCallback(() => setIsNotification((prev) => !prev), []);
+
+  const normalizeText = useCallback((text: string) => text.trim().replace(/\s+/g, ' '), []);
+
+  const [currentQuestion, setCurrentQuestion] = useState('');
+  const [listQuestions, setListQuestions] = useState<string[]>([]);
+  const addQuestion = useCallback((value: string) => {
+    !!value && setListQuestions((prev) => [...new Set([normalizeText(value), ...prev])]);
+  }, []);
+
+  const handleSubmit = useCallback(
+    (isNotification: boolean, currentQuestion: string) => {
+      Keyboard.dismiss();
+      if (isNotification) {
+        setIsTyping(false);
+        toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+          loading: 'Sending feedback...',
+          success: (_data) => {
+            setIsTyping(true);
+            addQuestion(currentQuestion);
+            setCurrentQuestion('');
+            return 'Thank you for your feedback!';
+          },
+          error: () => {
+            setIsTyping(true);
+            return 'Failed to send feedback.';
+          },
+        });
       } else {
-        setDisplayTextList((prev) =>
-          prev.filter((value) => JSON.stringify(value) !== JSON.stringify(type))
-        );
+        addQuestion(currentQuestion);
+        setCurrentQuestion('');
       }
     },
-    []
+    [addQuestion]
   );
 
   return (
-    <SafeAreaView className="flex-1">
-      <View className="flex flex-1 gap-2 px-4">
-        <View>
-          <Text className="text-3xl font-bold">Result</Text>
-          <View
-            className={cn(
-              'border-1 flex h-36 flex-row flex-wrap gap-1.5',
-              'overflow-scroll rounded-md border-zinc-100 p-1.5 dark:border-zinc-900'
-            )}>
-            {displayTextList.map((value) => (
-              <Badge
-                key={JSON.stringify(value)}
-                variant="secondary"
-                className="flex flex-row items-center gap-1">
-                {typeof value === 'string' ? (
-                  <Text>{value}</Text>
-                ) : (
-                  <>
-                    <Image
-                      className="-ml-0.5"
-                      source={{ uri: value.icon }}
-                      style={{ width: 12, height: 12 }}
-                    />
-                    <Text>{value.text}</Text>
-                  </>
-                )}
-              </Badge>
-            ))}
+    <KeyboardAvoidingView
+      className="my-4 flex flex-1 flex-col px-4"
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View className="flex flex-1 flex-col items-center justify-start gap-4">
+          <View className="flex flex-col gap-2">
+            <Image
+              className="size-32 rounded-full"
+              source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+            />
+            <Text>React Native App</Text>
+          </View>
+          <View className="flex">
+            <Text className="text-2xl font-bold">Settings</Text>
+            <Button
+              variant="ghost"
+              size="lg"
+              className="flex w-full flex-row items-center justify-between !px-4"
+              onPress={toggleColorScheme}>
+              <Text>Dark Mode</Text>
+              <Switch checked={isDarkColorScheme} onCheckedChange={toggleColorScheme} />
+              {/* <Switch value={isDarkColorScheme} onValueChange={toggleColorScheme} /> */}
+            </Button>
+            <Button
+              variant="ghost"
+              size="lg"
+              className="flex w-full flex-row items-center justify-between !px-4"
+              onPress={toggleIsNotification}>
+              <Text>Notifications</Text>
+              <Switch checked={isNotification} onCheckedChange={setIsNotification} />
+              {/* <Switch value={isNotification} onValueChange={setIsNotification} /> */}
+            </Button>
+          </View>
+          <View className="flex w-full flex-col gap-2">
+            <Text className="text-2xl font-bold">Feedback</Text>
+            <Textarea
+              editable={isTyping}
+              placeholder="Enter your feedback"
+              value={currentQuestion}
+              onChangeText={setCurrentQuestion}
+            />
+            <Button
+              variant="default"
+              size="lg"
+              disabled={!isTyping || !currentQuestion}
+              onPress={() => handleSubmit(isNotification, currentQuestion)}>
+              <Text>Send Feedback</Text>
+            </Button>
+          </View>
+          <View className="w-full flex-1">
+            <Text className="text-2xl font-bold">Frequently Asked Questions</Text>
+            <ScrollView className="flex flex-1">
+              {listQuestions.map((item, index) => (
+                <View key={index}>
+                  <Text>Q: {item}</Text>
+                </View>
+              ))}
+            </ScrollView>
           </View>
         </View>
-        <Tabs value={tabValue} onValueChange={setTabValue} className="flex-1 gap-4">
-          <TabsList className="w-full flex-row">
-            <TabsTrigger value="workouts" className="flex-1">
-              <Text>Workouts</Text>
-            </TabsTrigger>
-            <TabsTrigger value="fruits_vegetables" className="flex-1">
-              <Text>Fruits Vegetables</Text>
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent className="-mx-4 flex-1" value="workouts">
-            <ImageBackground
-              source={{
-                uri: 'https://th.bing.com/th/id/OIP.M8nbdX0MwxeYiOHZ3hRYHAAAAA?rs=1&pid=ImgDetMain',
-              }}
-              resizeMode="cover"
-              blurRadius={10}>
-              <View className="dark:bg-black/75">
-                <FlatList
-                  className="mx-4"
-                  data={workouts}
-                  renderItem={({ item: { type } }) => (
-                    <CardWithCheckbox
-                      value={type}
-                      isChoose={displayTextList.some(
-                        (item) => typeof item === 'string' && item === type
-                      )}
-                      setIsChoose={(value) => setIsChoose(value, type)}
-                    />
-                  )}
-                  ListHeaderComponent={<Text className="pt-4 text-3xl font-bold">Workouts</Text>}
-                  keyExtractor={(item) => item.id}
-                />
-              </View>
-            </ImageBackground>
-          </TabsContent>
-
-          <TabsContent className="-mx-4 flex-1" value="fruits_vegetables">
-            <ImageBackground
-              source={{
-                uri: 'https://th.bing.com/th/id/OIP.cL0hMjLYokcGu6Ad7jhB5AHaE8?rs=1&pid=ImgDetMain',
-              }}
-              resizeMode="cover"
-              blurRadius={10}>
-              <View className="bg-muted/75 dark:bg-black/50">
-                <SectionList
-                  className="mx-4"
-                  sections={fruits_vegetables}
-                  keyExtractor={(item, index) => JSON.stringify(item) + index}
-                  ListHeaderComponent={
-                    <Text className="mt-4 text-3xl font-bold">
-                      {fruits_vegetables.map((item) => item.title).join(' ')}
-                    </Text>
-                  }
-                  renderSectionHeader={({ section: { title, url: uri } }) => (
-                    <View className="mt-6 flex flex-row items-center gap-2">
-                      <Text className="text-xl font-bold">{title}</Text>
-                      <Image className="object-cover" source={{ uri }} height={24} width={24} />
-                    </View>
-                  )}
-                  stickySectionHeadersEnabled={false}
-                  renderItem={({ item }) => (
-                    <CardWithCheckbox
-                      value={
-                        <View className="flex flex-row items-center gap-1.5">
-                          <Text>{item.text}</Text>
-                          <Image source={{ uri: item.icon }} height={20} width={20} />
-                          {/* <SvgUri className="dark:fill-white" height={20} width={20} uri={item.icon} /> */}
-                        </View>
-                      }
-                      isChoose={displayTextList.some(
-                        (value) => typeof value === 'object' && value.text === item.text
-                      )}
-                      setIsChoose={(value) => setIsChoose(value, item)}
-                    />
-                  )}
-                />
-              </View>
-            </ImageBackground>
-          </TabsContent>
-        </Tabs>
-      </View>
-    </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
