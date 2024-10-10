@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "lab-1",
-    "slug": "lab-1",
+    "name": "lab-2",
+    "slug": "lab-2",
     "version": "1.0.0",
 
-    "scheme": "lab-1",
+    "scheme": "lab-2",
     "web": {
       "bundler": "metro",
       "output": "static",

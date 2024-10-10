@@ -80,8 +80,6 @@ export default function BaiTap2Screen() {
               onPress={toggleColorScheme}>
               <Text>Dark Mode</Text>
               <DarkSwitch />
-              {/* <Switch checked={isDarkColorScheme} onCheckedChange={toggleColorScheme} /> */}
-              {/* <Switch value={isDarkColorScheme} onValueChange={toggleColorScheme} /> */}
             </Button>
             <Button
               variant="ghost"
@@ -90,7 +88,6 @@ export default function BaiTap2Screen() {
               onPress={toggleIsNotification}>
               <Text>Notifications</Text>
               <Switch checked={isNotification} onCheckedChange={setIsNotification} />
-              {/* <Switch value={isNotification} onValueChange={setIsNotification} /> */}
             </Button>
           </View>
           <View className="flex w-full flex-col gap-2">

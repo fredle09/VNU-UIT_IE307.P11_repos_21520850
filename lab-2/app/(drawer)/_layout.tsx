@@ -29,10 +29,26 @@ const DrawerLayout = () => (
       }}
     />
     <Drawer.Screen
-      name="(bai-tap-2)/index"
+      name="(bai-tap-2)"
       options={{
         headerTitle: 'Bài tập 2',
         drawerLabel: 'Bài tập 2',
+        // headerRight: () => <DarkToggle className="pr-2" />,
+        headerRight: () => (
+          <Link href="/(bai-tap-2)/feedback" asChild>
+            <HeaderButton />
+          </Link>
+        ),
+        drawerIcon: ({ size, color }) => (
+          <Ionicons name="document-text-outline" size={size} color={color} />
+        ),
+      }}
+    />
+    <Drawer.Screen
+      name="(bai-tap-3)"
+      options={{
+        headerTitle: 'Bài tập 3',
+        drawerLabel: 'Bài tập 3',
         headerRight: () => <DarkToggle className="pr-2" />,
         drawerIcon: ({ size, color }) => (
           <Ionicons name="document-text-outline" size={size} color={color} />
