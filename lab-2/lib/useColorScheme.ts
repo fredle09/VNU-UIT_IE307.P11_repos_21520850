@@ -8,11 +8,14 @@ export function useColorScheme() {
   const { colorScheme, setColorScheme: setNativewindColorScheme } = useNativewindColorScheme();
   const safetyColorScheme = colorScheme ?? 'dark';
 
-  const setColorScheme = useCallback((newColorScheme: 'light' | 'dark') => {
-    setNativewindColorScheme(newColorScheme);
-    setAndroidNavigationBar(newColorScheme);
-    AsyncStorage.setItem('theme', newColorScheme);
-  }, []);
+  const setColorScheme = useCallback(
+    (newColorScheme: 'light' | 'dark') => {
+      setNativewindColorScheme(newColorScheme);
+      setAndroidNavigationBar(newColorScheme);
+      AsyncStorage.setItem('theme', newColorScheme);
+    },
+    [setNativewindColorScheme]
+  );
 
   const toggleColorScheme = () => {
     const newTheme = safetyColorScheme === 'dark' ? 'light' : 'dark';
