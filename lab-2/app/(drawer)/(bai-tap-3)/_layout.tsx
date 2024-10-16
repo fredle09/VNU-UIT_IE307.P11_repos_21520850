@@ -1,6 +1,11 @@
 import { Slot } from 'expo-router';
-import { Keyboard, KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import {
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+} from 'react-native';
 
 import { AuthProvider } from '~/providers';
 

@@ -36,13 +36,13 @@ const SwitchWeb = React.forwardRef<
 SwitchWeb.displayName = 'SwitchWeb';
 
 const RGB_COLORS = {
-  light: {
-    primary: 'rgb(24, 24, 27)',
-    input: 'rgb(228, 228, 231)',
+  off: {
+    light: 'rgb(228, 228, 231)',
+    dark: 'rgb(39, 39, 42)',
   },
-  dark: {
-    primary: 'rgb(250, 250, 250)',
-    input: 'rgb(39, 39, 42)',
+  on: {
+    light: 'rgb(24, 24, 27)',
+    dark: 'rgb(250, 250, 250)',
   },
 } as const;
 
@@ -55,25 +55,33 @@ const SwitchNative = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const { colorScheme } = useColorScheme();
 
-  const translateX = useDerivedValue(() =>
-    props.checked ? THUMB_POSITION.on : THUMB_POSITION.off
+  const translateX = useDerivedValue(
+    () => (props.checked ? THUMB_POSITION.on : THUMB_POSITION.off),
+    [props.checked]
   );
 
-  const animatedRootStyle = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(
-      translateX.value,
-      [THUMB_POSITION.off, THUMB_POSITION.on],
-      [RGB_COLORS[colorScheme].input, RGB_COLORS[colorScheme].primary]
-    ),
-  }));
+  const animatedRootStyle = useAnimatedStyle(
+    () => ({
+      backgroundColor: interpolateColor(
+        translateX.value,
+        [THUMB_POSITION.off, THUMB_POSITION.on],
+        [RGB_COLORS.off[colorScheme], RGB_COLORS.on[colorScheme]]
+      ),
+    }),
+    [colorScheme, translateX.value]
+  );
 
-  const animatedThumbStyle = useAnimatedStyle(() => ({
-    transform: [
-      {
-        translateX: withTiming(translateX.value, { duration: ANIMATION_DURATION }),
-      },
-    ],
-  }));
+  const animatedThumbStyle = useAnimatedStyle(
+    () => ({
+      transform: [
+        {
+          translateX: withTiming(translateX.value, { duration: ANIMATION_DURATION }),
+        },
+      ],
+    }),
+    [translateX.value]
+  );
+
   return (
     <Animated.View
       style={animatedRootStyle}
@@ -92,6 +100,7 @@ const SwitchNative = React.forwardRef<
     </Animated.View>
   );
 });
+
 SwitchNative.displayName = 'SwitchNative';
 
 const Switch = Platform.select({

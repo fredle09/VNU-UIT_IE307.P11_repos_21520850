@@ -57,17 +57,23 @@ const SwitchNative = React.forwardRef<
 
   const translateX = useDerivedValue(() => (isOn ? THUMB_POSITION.on : THUMB_POSITION.off));
 
-  const animatedRootStyle = useAnimatedStyle(() => ({
-    backgroundColor: isOn ? RGB_COLORS.dark.on : RGB_COLORS.light.off,
-  }));
+  const animatedRootStyle = useAnimatedStyle(
+    () => ({
+      backgroundColor: isOn ? RGB_COLORS.dark.on : RGB_COLORS.light.off,
+    }),
+    [isOn]
+  );
 
-  const animatedThumbStyle = useAnimatedStyle(() => ({
-    transform: [
-      {
-        translateX: withTiming(translateX.value, { duration: ANIMATION_DURATION }),
-      },
-    ],
-  }));
+  const animatedThumbStyle = useAnimatedStyle(
+    () => ({
+      transform: [
+        {
+          translateX: withTiming(translateX.value, { duration: ANIMATION_DURATION }),
+        },
+      ],
+    }),
+    [translateX.value]
+  );
 
   return (
     <Animated.View
