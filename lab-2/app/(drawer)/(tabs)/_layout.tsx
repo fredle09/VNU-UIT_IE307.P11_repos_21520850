@@ -1,13 +1,15 @@
 import { Tabs } from 'expo-router';
 
 import { TabBarIcon } from '~/components/tab-bar-icon';
+import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function TabLayout() {
+  const { isDarkColorScheme } = useColorScheme();
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: 'black',
+        tabBarActiveTintColor: isDarkColorScheme ? 'white' : 'black',
         tabBarHideOnKeyboard: true,
       }}>
       <Tabs.Screen
