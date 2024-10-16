@@ -3,7 +3,6 @@ import { Link } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 // import { View } from 'react-native';
 
-// import { DarkSwitch } from '~/components/customize-ui/dark-switch';
 import { DarkToggle } from '~/components/customize-ui/dark-toggle';
 import { HeaderButton } from '~/components/header-button';
 
@@ -29,16 +28,11 @@ const DrawerLayout = () => (
       }}
     />
     <Drawer.Screen
-      name="(bai-tap-2)"
+      name="(bai-tap-2)/index"
       options={{
         headerTitle: 'Bài tập 2',
         drawerLabel: 'Bài tập 2',
-        // headerRight: () => <DarkToggle className="pr-2" />,
-        headerRight: () => (
-          <Link href="/(bai-tap-2)/feedback" asChild>
-            <HeaderButton />
-          </Link>
-        ),
+        headerRight: () => <DarkToggle className="pr-2" />,
         drawerIcon: ({ size, color }) => (
           <Ionicons name="document-text-outline" size={size} color={color} />
         ),

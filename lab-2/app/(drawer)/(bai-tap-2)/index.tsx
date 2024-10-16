@@ -100,7 +100,6 @@ export default function BaiTap2Screen() {
             />
             <Button
               variant="default"
-              size="lg"
               disabled={!isTyping || !currentQuestion}
               onPress={() => handleSubmit(isNotification, currentQuestion)}>
               <Text>Send Feedback</Text>
