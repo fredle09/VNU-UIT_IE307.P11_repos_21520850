@@ -1,7 +1,6 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
-// import { View } from 'react-native';
 
 import { DarkToggle } from '~/components/customize-ui/dark-toggle';
 import { HeaderButton } from '~/components/header-button';

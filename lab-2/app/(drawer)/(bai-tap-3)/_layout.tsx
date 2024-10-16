@@ -1,11 +1,5 @@
 import { Slot } from 'expo-router';
-import {
-  TouchableWithoutFeedback,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native';
 
 import { AuthProvider } from '~/providers';
 
@@ -17,9 +11,7 @@ export default function BaiTap3LayoutScreen() {
           className="my-4 flex flex-col px-4"
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
-          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <Slot />
-          </TouchableWithoutFeedback>
+          <Slot />
         </KeyboardAvoidingView>
       </SafeAreaView>
     </AuthProvider>

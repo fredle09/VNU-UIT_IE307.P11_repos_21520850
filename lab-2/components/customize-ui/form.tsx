@@ -46,21 +46,18 @@ const FormField = <
   }) => React.ReactElement;
 }) => {
   return (
-    <FormFieldContext.Provider value={{ name: props.name }}>
-      <Controller
-        render={({ field: { onChange, ...restField }, ...rest }) =>
-          render({ field: { onChangeText: onChange, ...restField }, ...rest })
-        }
-        {...props}
-      />
-      <FormMessage />
-    </FormFieldContext.Provider>
+    <Controller
+      render={({ field: { onChange, ...restField }, ...rest }) =>
+        render({ field: { onChangeText: onChange, ...restField }, ...rest })
+      }
+      {...props}
+    />
   );
 };
 
 const useFormField = () => {
-  const fieldContext = React.useContext(FormFieldContext);
   const itemContext = React.useContext(FormItemContext);
+  const fieldContext = React.useContext(FormFieldContext);
   const { getFieldState, formState } = useFormContext();
 
   const fieldState = getFieldState(fieldContext.name, formState);
@@ -136,16 +133,16 @@ const FormMessage = React.forwardRef<TextRef, SlottableTextProps>(
     const { error, formMessageId } = useFormField();
     const body = error ? String(error?.message) : children;
 
+    if (!body) return null;
+
     return (
-      body && (
-        <Text
-          ref={ref}
-          id={formMessageId}
-          className={cn('text-xs font-medium text-red-500', className)}
-          {...props}>
-          {body}
-        </Text>
-      )
+      <Text
+        ref={ref}
+        id={formMessageId}
+        className={cn('text-xs font-medium text-red-500', className)}
+        {...props}>
+        {body}
+      </Text>
     );
   }
 );
@@ -174,9 +171,12 @@ const FormController = <
     description?: string;
   }) => (
   <FormItem className={cn(className, 'mb-4')}>
-    <FormLabel>{label}</FormLabel>
-    <FormField {...{ name, render }} />
-    {description && <FormDescription>{description}</FormDescription>}
+    <FormFieldContext.Provider value={{ name }}>
+      <FormLabel>{label}</FormLabel>
+      <FormField {...{ name, render }} />
+      <FormMessage />
+      {description && <FormDescription>{description}</FormDescription>}
+    </FormFieldContext.Provider>
   </FormItem>
 );
 
@@ -187,6 +187,6 @@ export {
   FormLabel,
   FormController,
   FormDescription,
-  FormMessage,
+  // FormMessage,
   FormField,
 };
