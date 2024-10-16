@@ -41,8 +41,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "11080d38-db59-4288-b26e-97e7a4c1f102"
+        "projectId": "46c0d1df-cb40-4dcb-b7b4-b20acdedb4df"
       }
-    }
+    },
+    "owner": "fredle09"
   }
 }
