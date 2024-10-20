@@ -9,8 +9,7 @@ export default function BaiTap3LayoutScreen() {
       <SafeAreaView>
         <KeyboardAvoidingView
           className="my-4 flex flex-col px-4"
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
           <Slot />
         </KeyboardAvoidingView>
       </SafeAreaView>

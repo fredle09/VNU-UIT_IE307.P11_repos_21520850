@@ -1,0 +1,49 @@
+import React, { useCallback, useState } from 'react';
+import { ActivityIndicator, GestureResponderEvent, Pressable } from 'react-native';
+
+import { Button, ButtonProps } from '../ui/button';
+import { Text } from '../ui/text';
+
+import { cn } from '~/lib/utils';
+
+const StateButton = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonProps>(
+  ({ className, disabled, onPress, children, ...props }, ref) => {
+    const [isPending, setIsPending] = useState(false);
+    const handlePress = useCallback(
+      async (event: GestureResponderEvent) => {
+        if (!onPress) return;
+
+        setIsPending(true);
+        try {
+          await onPress(event);
+        } catch (error) {
+          console.error('Error in StateButton onPress:', error);
+        } finally {
+          setIsPending(false);
+        }
+      },
+      [onPress]
+    );
+
+    return (
+      <Button
+        ref={ref}
+        className={cn(className, isPending && 'flex flex-row')}
+        disabled={disabled || isPending}
+        onPress={handlePress}
+        {...props}>
+        {isPending ? (
+          <>
+            <ActivityIndicator className="pr-2" size="small" color="white" />
+            <Text>Loading...</Text>
+          </>
+        ) : (
+          children
+        )}
+      </Button>
+    );
+  }
+);
+StateButton.displayName = 'StateButton';
+
+export { StateButton };
