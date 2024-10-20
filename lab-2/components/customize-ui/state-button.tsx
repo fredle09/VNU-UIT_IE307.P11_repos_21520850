@@ -4,11 +4,13 @@ import { ActivityIndicator, GestureResponderEvent, Pressable } from 'react-nativ
 import { Button, ButtonProps } from '../ui/button';
 import { Text } from '../ui/text';
 
+import { useColorScheme } from '~/lib/useColorScheme';
 import { cn } from '~/lib/utils';
 
 const StateButton = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonProps>(
   ({ className, disabled, onPress, children, ...props }, ref) => {
     const [isPending, setIsPending] = useState(false);
+    const { isDarkColorScheme } = useColorScheme();
     const handlePress = useCallback(
       async (event: GestureResponderEvent) => {
         if (!onPress) return;
@@ -34,7 +36,11 @@ const StateButton = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonP
         {...props}>
         {isPending ? (
           <>
-            <ActivityIndicator className="pr-2" size="small" color="white" />
+            <ActivityIndicator
+              className="pr-2"
+              size="small"
+              color={isDarkColorScheme ? 'dark' : 'white'}
+            />
             <Text>Loading...</Text>
           </>
         ) : (

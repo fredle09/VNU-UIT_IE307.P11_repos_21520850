@@ -22,7 +22,7 @@ export default function BaiTap3MainScreen() {
   }, []);
 
   return (
-    <View>
+    <View className="my-4 flex flex-1 flex-col items-center justify-center px-4">
       <Text>BaiTap3Main</Text>
       <StateButton onPress={signOut}>
         <Text>Sign Out</Text>

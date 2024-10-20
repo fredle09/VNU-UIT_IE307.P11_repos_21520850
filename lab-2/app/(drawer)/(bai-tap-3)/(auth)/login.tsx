@@ -51,19 +51,31 @@ export default function LogicScreen() {
     }
   }, []);
 
+  const formSubmit = useCallback(
+    form.handleSubmit(async (data) => {
+      Keyboard.dismiss();
+      await onSubmit(data);
+    }),
+    [form.handleSubmit, onSubmit]
+  );
+
   return (
     <View>
       <Form {...form}>
         <FormController
           name="email"
           label="Email:"
-          render={({ field }) => <Input placeholder="Enter your email" {...field} />}
+          render={({ field }) => (
+            <Input autoCapitalize="none" placeholder="Enter your email" {...field} />
+          )}
         />
 
         <FormController
           name="password"
           label="Password:"
-          render={({ field }) => <PasswordInput placeholder="Enter your password" {...field} />}
+          render={({ field }) => (
+            <PasswordInput autoCapitalize="none" placeholder="Enter your password" {...field} />
+          )}
         />
 
         <View className="flex flex-row justify-end">
@@ -72,11 +84,7 @@ export default function LogicScreen() {
           </Button>
         </View>
 
-        <StateButton
-          onPress={form.handleSubmit(async (data) => {
-            Keyboard.dismiss();
-            await onSubmit(data);
-          })}>
+        <StateButton onPress={formSubmit}>
           <Text>Login</Text>
         </StateButton>
       </Form>
