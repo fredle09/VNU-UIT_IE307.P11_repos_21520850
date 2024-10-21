@@ -55,31 +55,31 @@ const SwitchNative = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const { colorScheme } = useColorScheme();
 
-  const translateX = useDerivedValue(
+  const translateX = React.useMemo(
     () => (props.checked ? THUMB_POSITION.on : THUMB_POSITION.off),
     [props.checked]
   );
 
-  const animatedRootStyle = useAnimatedStyle(
+  const animatedRootStyle = React.useMemo(
     () => ({
       backgroundColor: interpolateColor(
-        translateX.value,
+        translateX,
         [THUMB_POSITION.off, THUMB_POSITION.on],
         [RGB_COLORS.off[colorScheme], RGB_COLORS.on[colorScheme]]
       ),
     }),
-    [colorScheme, translateX.value]
+    [colorScheme, translateX]
   );
 
   const animatedThumbStyle = useAnimatedStyle(
     () => ({
       transform: [
         {
-          translateX: withTiming(translateX.value, { duration: ANIMATION_DURATION }),
+          translateX: withTiming(translateX, { duration: ANIMATION_DURATION }),
         },
       ],
     }),
-    [translateX.value]
+    [translateX]
   );
 
   return (
@@ -94,7 +94,7 @@ const SwitchNative = React.forwardRef<
         {...props}
         ref={ref}>
         <Animated.View style={animatedThumbStyle}>
-          <SwitchPrimitives.Thumb className="h-7 w-7 rounded-full bg-background shadow-md shadow-foreground/25 ring-0" />
+          <SwitchPrimitives.Thumb className="size-7 rounded-full bg-background shadow-md shadow-foreground/25 ring-0" />
         </Animated.View>
       </SwitchPrimitives.Root>
     </Animated.View>
