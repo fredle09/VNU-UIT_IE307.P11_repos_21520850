@@ -9,17 +9,18 @@ import { z } from 'zod';
 
 // Import components
 import { Form, FormController } from '~/components/customize-ui/form';
+import { Input } from '~/components/customize-ui/input';
 import { PasswordInput } from '~/components/customize-ui/password-input';
 import { StateButton } from '~/components/customize-ui/state-button';
 import { Button } from '~/components/ui/button';
-import { Input } from '~/components/customize-ui/input';
+import { Separator } from '~/components/ui/separator';
 import { Text } from '~/components/ui/text';
+import { Lock } from '~/lib/icons/Lock';
+import { Mail } from '~/lib/icons/Mail';
+import { useKeyboard } from '~/lib/keyboard';
+import { triggerDevFeatureAlert } from '~/lib/utils';
 import { DEFAULT_LOGIN_FORM_VALUES, loginFormSchema } from '~/utils/form/login';
 import { supabase } from '~/utils/supabase';
-import { Mail } from '~/lib/icons/Mail';
-import { Lock } from '~/lib/icons/Lock';
-import { Separator } from '~/components/ui/separator';
-import { triggerDevFeatureAlert } from '~/lib/utils';
 
 export default function LogicScreen() {
   const form = useForm<z.infer<typeof loginFormSchema>>({
@@ -55,16 +56,10 @@ export default function LogicScreen() {
     }
   }, []);
 
-  const formSubmit = useCallback(
-    form.handleSubmit(async (data) => {
-      Keyboard.dismiss();
-      await onSubmit(data);
-    }),
-    [form.handleSubmit, onSubmit]
-  );
+  const { keyboardHeight } = useKeyboard();
 
   return (
-    <View>
+    <View style={{ paddingBottom: keyboardHeight }}>
       <Form {...form}>
         <FormController
           name="email"
@@ -98,7 +93,11 @@ export default function LogicScreen() {
           </Button>
         </View>
 
-        <StateButton onPress={formSubmit}>
+        <StateButton
+          onPress={form.handleSubmit(async (data) => {
+            Keyboard.dismiss();
+            await onSubmit(data);
+          })}>
           <Text>Login</Text>
         </StateButton>
       </Form>
