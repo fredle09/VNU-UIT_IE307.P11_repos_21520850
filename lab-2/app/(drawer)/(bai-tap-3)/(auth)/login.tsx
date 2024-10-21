@@ -12,10 +12,12 @@ import { Form, FormController } from '~/components/customize-ui/form';
 import { PasswordInput } from '~/components/customize-ui/password-input';
 import { StateButton } from '~/components/customize-ui/state-button';
 import { Button } from '~/components/ui/button';
-import { Input } from '~/components/ui/input';
+import { Input } from '~/components/customize-ui/input';
 import { Text } from '~/components/ui/text';
 import { DEFAULT_LOGIN_FORM_VALUES, loginFormSchema } from '~/utils/form/login';
 import { supabase } from '~/utils/supabase';
+import { Mail } from '~/lib/icons/Mail';
+import { Lock } from '~/lib/icons/Lock';
 
 export default function LogicScreen() {
   const form = useForm<z.infer<typeof loginFormSchema>>({
@@ -66,7 +68,12 @@ export default function LogicScreen() {
           name="email"
           label="Email:"
           render={({ field }) => (
-            <Input autoCapitalize="none" placeholder="Enter your email" {...field} />
+            <Input
+              childLeft={<Mail className="ml-1 size-6 text-zinc-500" />}
+              autoCapitalize="none"
+              placeholder="Enter your email"
+              {...field}
+            />
           )}
         />
 
@@ -74,7 +81,12 @@ export default function LogicScreen() {
           name="password"
           label="Password:"
           render={({ field }) => (
-            <PasswordInput autoCapitalize="none" placeholder="Enter your password" {...field} />
+            <PasswordInput
+              childLeft={<Lock className="ml-1 size-6 text-zinc-500" />}
+              autoCapitalize="none"
+              placeholder="Enter your password"
+              {...field}
+            />
           )}
         />
 

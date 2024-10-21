@@ -12,10 +12,13 @@ import { Form, FormController } from '~/components/customize-ui/form';
 import { PasswordInput } from '~/components/customize-ui/password-input';
 import { StateButton } from '~/components/customize-ui/state-button';
 import { Button } from '~/components/ui/button';
-import { Input } from '~/components/ui/input';
+import { Input } from '~/components/customize-ui/input';
 import { Text } from '~/components/ui/text';
 import { DEFAULT_REGISTER_FORM_VALUES, registerFormSchema } from '~/utils/form/register';
 import { supabase } from '~/utils/supabase';
+import { User } from '~/lib/icons/User';
+import { Mail } from '~/lib/icons/Mail';
+import { Lock } from '~/lib/icons/Lock';
 
 export default function RegisterScreen() {
   const form = useForm<z.infer<typeof registerFormSchema>>({
@@ -59,25 +62,53 @@ export default function RegisterScreen() {
         <FormController
           name="name"
           label="Name:"
-          render={({ field }) => <Input placeholder="Enter your name" {...field} />}
+          render={({ field }) => (
+            <Input
+              childLeft={<User className="ml-1 size-6 text-zinc-500" />}
+              autoCapitalize="words"
+              placeholder="Enter your name"
+              {...field}
+            />
+          )}
         />
 
         <FormController
           name="email"
           label="Email:"
-          render={({ field }) => <Input placeholder="Enter your email" {...field} />}
+          render={({ field }) => (
+            <Input
+              childLeft={<Mail className="ml-1 size-6 text-zinc-500" />}
+              autoCapitalize="none"
+              placeholder="Enter your email"
+              {...field}
+            />
+          )}
         />
 
         <FormController
           name="password"
           label="Password:"
-          render={({ field }) => <PasswordInput placeholder="Enter your password" {...field} />}
+          render={({ field }) => (
+            <PasswordInput
+              childLeft={<Lock className="ml-1 size-6 text-zinc-500" />}
+              autoCapitalize="none"
+              placeholder="Enter your password"
+              {...field}
+            />
+          )}
         />
 
         <FormController
           name="passwordConfirm"
           label="Password Confimation:"
-          render={({ field }) => <PasswordInput placeholder="Repeat your password" {...field} />}
+          render={({ field }) => (
+            <PasswordInput
+              childLeft={<Lock className="ml-1 size-6 text-zinc-500" />}
+              autoCapitalize="none"
+              placeholder="Repeat your password"
+              {...field}
+            />
+          )}
         />
 
         <StateButton

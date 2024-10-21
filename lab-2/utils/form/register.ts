@@ -20,18 +20,7 @@ export const registerFormSchema = z
     password: z.string().min(8, 'Password must be at least 8 characters'),
     passwordConfirm: z.string().min(8, 'Password must be at least 8 characters'),
   })
-  .superRefine((data, ctx) => {
-    if (data.password !== data.passwordConfirm) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'Passwords do not match',
-        path: ['passwordConfirm'],
-      });
-
-      ctx.addIssue({
-        code: 'custom',
-        message: 'Passwords do not match',
-        path: ['password'],
-      });
-    }
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: 'Passwords do not match',
+    path: ['passwordConfirm'],
   });
