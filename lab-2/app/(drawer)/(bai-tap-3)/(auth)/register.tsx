@@ -19,6 +19,7 @@ import { supabase } from '~/utils/supabase';
 import { User } from '~/lib/icons/User';
 import { Mail } from '~/lib/icons/Mail';
 import { Lock } from '~/lib/icons/Lock';
+import { Separator } from '~/components/ui/separator';
 
 export default function RegisterScreen() {
   const form = useForm<z.infer<typeof registerFormSchema>>({
@@ -120,8 +121,10 @@ export default function RegisterScreen() {
         </StateButton>
       </Form>
 
-      <View className="flex items-center justify-center py-2">
-        <Text className="text-lg font-bold">OR</Text>
+      <View className="mx-4 flex flex-row items-center justify-center py-4">
+        <Separator />
+        <Text className="mx-4 text-lg font-bold">OR</Text>
+        <Separator />
       </View>
 
       <Button

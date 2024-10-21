@@ -18,6 +18,8 @@ import { DEFAULT_LOGIN_FORM_VALUES, loginFormSchema } from '~/utils/form/login';
 import { supabase } from '~/utils/supabase';
 import { Mail } from '~/lib/icons/Mail';
 import { Lock } from '~/lib/icons/Lock';
+import { Separator } from '~/components/ui/separator';
+import { triggerDevFeatureAlert } from '~/lib/utils';
 
 export default function LogicScreen() {
   const form = useForm<z.infer<typeof loginFormSchema>>({
@@ -91,7 +93,7 @@ export default function LogicScreen() {
         />
 
         <View className="flex flex-row justify-end">
-          <Button size="extraSm" variant="link" className="mb-4">
+          <Button size="extraSm" variant="link" className="mb-4" onPress={triggerDevFeatureAlert}>
             <Text>Forgot Password?</Text>
           </Button>
         </View>
@@ -101,17 +103,19 @@ export default function LogicScreen() {
         </StateButton>
       </Form>
 
-      <View className="flex items-center justify-center py-2">
-        <Text className="text-lg font-bold">OR</Text>
+      <View className="mx-4 flex flex-row items-center justify-center py-4">
+        <Separator />
+        <Text className="mx-4 text-lg font-bold">OR</Text>
+        <Separator />
       </View>
 
       <View className="flex flex-col gap-4">
-        <Button variant="outline" className="flex flex-row">
+        <Button variant="outline" className="flex flex-row" onPress={triggerDevFeatureAlert}>
           <Image className="mr-2 size-6" source={require('~/assets/google.png')} />
           <Text>Sign in with Google</Text>
         </Button>
 
-        <Button variant="outline" className="flex flex-row">
+        <Button variant="outline" className="flex flex-row" onPress={triggerDevFeatureAlert}>
           <Image className="mr-2 size-6" source={require('~/assets/facebook.png')} />
           <Text>Sign in with Facebook</Text>
         </Button>

@@ -6,7 +6,7 @@ import { StateButton } from '~/components/customize-ui/state-button';
 import { Text } from '~/components/ui/text';
 import { supabase } from '~/utils/supabase';
 
-export default function BaiTap3MainScreen() {
+export default function BaiTap3ProfileScreen() {
   const signOut = useCallback(async () => {
     try {
       await supabase.auth.signOut();
@@ -23,7 +23,7 @@ export default function BaiTap3MainScreen() {
 
   return (
     <View className="my-4 flex flex-1 flex-col items-center justify-center px-4">
-      <Text>BaiTap3Main</Text>
+      <Text>Profile Screen</Text>
       <StateButton onPress={signOut}>
         <Text>Sign Out</Text>
       </StateButton>

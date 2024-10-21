@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import { toast } from 'sonner-native';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -47,4 +48,8 @@ export function composeRefs<T>(...refs: (React.Ref<T> | undefined)[]): (node: T 
       }
     });
   };
+}
+
+export function triggerDevFeatureAlert() {
+  toast.warning('This feature is under development');
 }
