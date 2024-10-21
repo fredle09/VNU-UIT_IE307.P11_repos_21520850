@@ -3,7 +3,7 @@ import '~/global.css';
 import { PortalHost } from '@rn-primitives/portal';
 import { SplashScreen, Stack } from 'expo-router';
 import * as React from 'react';
-import { AppState, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { AppState } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Toaster } from 'sonner-native';
 
@@ -40,17 +40,15 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <GestureHandlerRootView className="flex flex-1">
-        <ThemeProvider>
-          <Stack>
-            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ title: 'Modal', presentation: 'modal' }} />
-          </Stack>
-          <PortalHost />
-          <Toaster richColors position="bottom-center" visibleToasts={2} />
-        </ThemeProvider>
-      </GestureHandlerRootView>
-    </TouchableWithoutFeedback>
+    <GestureHandlerRootView className="flex flex-1">
+      <ThemeProvider>
+        <Stack>
+          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ title: 'Modal', presentation: 'modal' }} />
+        </Stack>
+        <PortalHost />
+        <Toaster richColors position="top-center" visibleToasts={2} />
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }

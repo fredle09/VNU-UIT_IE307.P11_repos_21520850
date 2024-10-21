@@ -1,6 +1,8 @@
 import { Redirect, Slot } from 'expo-router';
 import { useContext } from 'react';
-import { KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, SafeAreaView, View } from 'react-native';
+import { Container } from '~/components/container';
+import { Text } from '~/components/ui/text';
 
 import { AuthContext } from '~/providers/auth-provider';
 
@@ -11,12 +13,12 @@ export default function AuthLayoutScreen() {
   }
 
   return (
-    <SafeAreaView>
-      <KeyboardAvoidingView
-        className="my-4 px-4"
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <Slot />
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <Container>
+      <View className="flex items-center justify-center">
+        <Image className="size-48 rounded-full" source={require('~/assets/avatar.jpg')} />
+        <Text className="my-4 text-lg font-bold">React Native App</Text>
+      </View>
+      <Slot />
+    </Container>
   );
 }
