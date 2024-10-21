@@ -11,6 +11,12 @@ import {
 import { toast } from 'sonner-native';
 
 import { DarkSwitch } from '~/components/customize-ui/dark-switch';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '~/components/ui/accordion';
 import { Button } from '~/components/ui/button';
 import { Switch } from '~/components/ui/switch';
 import { Text } from '~/components/ui/text';
@@ -108,11 +114,22 @@ export default function BaiTap2Screen() {
           <View className="w-full flex-1">
             <Text className="text-2xl font-bold">Frequently Asked Questions</Text>
             <ScrollView className="flex flex-1">
-              {listQuestions.map((item, index) => (
-                <View key={index}>
-                  <Text>Q: {item}</Text>
-                </View>
-              ))}
+              <Accordion
+                type="multiple"
+                collapsible
+                defaultValue={['item-1']}
+                className="native:max-w-md w-full max-w-sm">
+                {listQuestions.map((item, index) => (
+                  <AccordionItem key={item} value={item}>
+                    <AccordionTrigger>
+                      <Text>Q: {item}</Text>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <Text>A: Yes. It adheres to the WAI-ARIA design pattern.</Text>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </ScrollView>
           </View>
         </View>
