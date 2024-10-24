@@ -13,6 +13,7 @@ import {
   UseFormStateReturn,
 } from 'react-hook-form';
 import { View, ViewProps } from 'react-native';
+import Animated, { FadeInDown, FadeOut } from 'react-native-reanimated';
 
 import { Label } from '../ui/label';
 import { Text } from '../ui/text';
@@ -128,24 +129,27 @@ const FormDescription = React.forwardRef<TextRef, SlottableTextProps>(
 );
 FormDescription.displayName = 'FormDescription';
 
-const FormMessage = React.forwardRef<TextRef, SlottableTextProps>(
-  ({ className, children, ...props }, ref) => {
-    const { error, formMessageId } = useFormField();
-    const body = error ? String(error?.message) : children;
+const FormMessage = React.forwardRef<
+  React.ElementRef<typeof Animated.Text>,
+  React.ComponentPropsWithoutRef<typeof Animated.Text>
+>(({ className, children, ...props }, ref) => {
+  const { error, formMessageId } = useFormField();
+  const body = error ? String(error?.message) : children;
 
-    if (!body) return null;
+  if (!body) return null;
 
-    return (
-      <Text
-        ref={ref}
-        id={formMessageId}
-        className={cn('text-xs font-medium text-red-500', className)}
-        {...props}>
-        {body}
-      </Text>
-    );
-  }
-);
+  return (
+    <Animated.Text
+      entering={FadeInDown}
+      exiting={FadeOut.duration(275)}
+      ref={ref}
+      id={formMessageId}
+      className={cn('text-xs font-medium text-red-500', className)}
+      {...props}>
+      {body}
+    </Animated.Text>
+  );
+});
 FormMessage.displayName = 'FormMessage';
 
 const FormController = <
@@ -166,10 +170,7 @@ const FormController = <
     fieldState: ControllerFieldState;
     formState: UseFormStateReturn<TFieldValues>;
   }) => React.ReactElement;
-} & ViewProps & {
-    label: string;
-    description?: string;
-  }) => (
+} & ViewProps & { label: string; description?: string }) => (
   <FormItem className={cn(className, 'mb-4')}>
     <FormFieldContext.Provider value={{ name }}>
       <FormLabel>{label}</FormLabel>
