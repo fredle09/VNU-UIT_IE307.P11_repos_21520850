@@ -15,7 +15,7 @@ export default function AuthLayoutScreen() {
   return (
     <Container>
       <View className="flex items-center justify-center">
-        <Image className="size-48 rounded-full" source={require('~/assets/avatar.jpg')} />
+        <Image className="size-32 rounded-full" source={require('~/assets/avatar.jpg')} />
         <Text className="my-4 text-lg font-bold">React Native App</Text>
       </View>
       <Slot />
