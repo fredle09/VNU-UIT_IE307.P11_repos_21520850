@@ -53,3 +53,7 @@ export function composeRefs<T>(...refs: (React.Ref<T> | undefined)[]): (node: T 
 export function triggerDevFeatureAlert() {
   toast.warning('This feature is under development');
 }
+
+export function isTextChildren(children: any) {
+  return typeof children === 'string' || typeof children === 'number';
+}
