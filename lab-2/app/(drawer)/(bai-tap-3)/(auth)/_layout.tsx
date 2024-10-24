@@ -1,9 +1,9 @@
 import { Redirect, Slot } from 'expo-router';
 import { useContext } from 'react';
-import { Image, KeyboardAvoidingView, Platform, SafeAreaView, View } from 'react-native';
+import { Image, View } from 'react-native';
+
 import { Container } from '~/components/container';
 import { Text } from '~/components/ui/text';
-
 import { AuthContext } from '~/providers/auth-provider';
 
 export default function AuthLayoutScreen() {
