@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository contains the code and documentation for the VNU-UIT IE307.P11 course project. The project is built using React Native and focuses on [briefly describe the main topic or objective of the project].
+This repository contains the code and documentation for the VNU-UIT IE307.P11 course project. The project is built using React Native and focuses on [this lab](https://drive.google.com/file/d/1FqOqd9T-RYlgU5KaXemaNBlbbE8qXZe9/view).
 
 ## Demo
 
@@ -18,7 +18,16 @@ https://github.com/user-attachments/assets/cd0aff64-8ecb-4059-96ba-c07db485d824
 <h3>Video demo bai-tap-2</h3>
 
 
-https://github.com/user-attachments/assets/5f23df84-8a22-47d4-b763-8011f5aaac3b
+https://github.com/user-attachments/assets/8c4355fd-fdc4-41c7-865b-3f4a37b9f51c
+
+
+</div>
+
+<div>
+<h3>Video demo bai-tap-3</h3>
+
+
+https://github.com/user-attachments/assets/12ea6635-93b9-49e1-83a5-70e5808c9e60
 
 
 </div>
@@ -40,12 +49,15 @@ https://github.com/user-attachments/assets/5f23df84-8a22-47d4-b763-8011f5aaac3b
    ```
 2. Navigate to the project directory:
    ```sh
-   cd VNU-UIT_IE307.P11_repos_21520850/lab-1
+   cd VNU-UIT_IE307.P11_repos_21520850/lab-2
    ```
 3. Install the required dependencies:
    ```sh
-   npm install --legacy-peer-deps
+   npm install
    ```
+4. Rename `.env.example` to `.env`
+
+5. Create project in [supabase](https://supabase.com/) and add `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY` in `.env` 
 
 ## Running the Project
 
