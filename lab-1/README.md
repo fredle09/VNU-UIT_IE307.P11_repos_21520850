@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository contains the code and documentation for the VNU-UIT IE307.P11 course project. The project is built using React Native and focuses on [briefly describe the main topic or objective of the project].
+This repository contains the code and documentation for the VNU-UIT IE307.P11 course project. The project is built using React Native and focuses on [this lab](https://drive.google.com/file/d/1EvizTCLBF27nCS-QQFE51V6IygMOIEQI/view?pli=1).
 
 ## Demo
 
