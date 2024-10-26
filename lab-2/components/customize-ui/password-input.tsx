@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { TextInput } from 'react-native';
 
-import { Button } from '../ui/button';
 import { Input as CInput } from './input';
+import { Button } from '../ui/button';
 
 import { Eye } from '~/lib/icons/Eye';
 import { EyeOff } from '~/lib/icons/EyeOff';
