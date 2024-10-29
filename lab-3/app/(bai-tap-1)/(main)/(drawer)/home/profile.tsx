@@ -4,12 +4,15 @@ import { toast } from 'sonner-native';
 
 import { StateButton } from '~/components/customize-ui/state-button';
 import { Text } from '~/components/ui/text';
-import { supabase } from '~/utils/supabase';
+import { useAuthSession } from '~/providers/auth-provider';
 
 export default function BaiTap3ProfileScreen() {
+  const { session, signOut: _signOut } = useAuthSession();
   const signOut = useCallback(async () => {
     try {
-      await supabase.auth.signOut();
+      // await supabase.auth.signOut();
+      await _signOut();
+      console.log('Signed out successfully:', session);
       toast.success('Signed out successfully');
     } catch (error) {
       if (!(error instanceof Error)) {

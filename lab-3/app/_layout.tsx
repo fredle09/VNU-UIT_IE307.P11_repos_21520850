@@ -3,7 +3,7 @@ import '~/global.css';
 import { PortalHost } from '@rn-primitives/portal';
 import { Slot, SplashScreen } from 'expo-router';
 import * as React from 'react';
-import { AppState } from 'react-native';
+import { AppState, Platform, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Toaster } from 'sonner-native';
 
@@ -44,7 +44,12 @@ export default function RootLayout() {
       <ThemeProvider>
         <Slot />
         <PortalHost />
-        <Toaster richColors position="top-center" visibleToasts={2} />
+        <Toaster
+          richColors
+          position="top-center"
+          visibleToasts={2}
+          offset={Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0 + 14) : 0}
+        />
       </ThemeProvider>
     </GestureHandlerRootView>
   );

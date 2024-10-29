@@ -1,13 +1,22 @@
 import { Redirect, Slot } from 'expo-router';
-import { useContext } from 'react';
-import { Image, View } from 'react-native';
+import { ActivityIndicator, Image, View } from 'react-native';
 
 import { Container } from '~/components/container';
 import { Text } from '~/components/ui/text';
-import { AuthContext } from '~/providers/auth-provider';
+import { useColorScheme } from '~/lib/useColorScheme';
+import { useAuthSession } from '~/providers/auth-provider';
 
 export default function AuthLayoutScreen() {
-  const { session } = useContext(AuthContext);
+  const { session, isLoading } = useAuthSession();
+  const { isDarkColorScheme } = useColorScheme();
+  if (isLoading) {
+    return (
+      <View className="flex flex-1 items-center justify-center">
+        <ActivityIndicator size="small" color={isDarkColorScheme ? 'dark' : 'white'} />
+      </View>
+    );
+  }
+
   if (session) {
     return <Redirect href="/(bai-tap-1)/(main)" />;
   }
