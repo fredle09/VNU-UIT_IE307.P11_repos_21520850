@@ -10,7 +10,7 @@ This repository contains the code and documentation for the VNU-UIT IE307.P11 co
 <div>
 <h3>Video demo bai-tap-1</h3>
 
-https://github.com/user-attachments/assets/cd0aff64-8ecb-4059-96ba-c07db485d824
+https://github.com/user-attachments/assets/fecc778e-887d-4983-94f7-ff8b7becf161
 
 </div>
 
