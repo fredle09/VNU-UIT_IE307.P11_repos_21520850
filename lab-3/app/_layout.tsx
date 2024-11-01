@@ -7,7 +7,7 @@ import { AppState, Platform, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Toaster } from 'sonner-native';
 
-import { ThemeProvider } from '~/providers/theme-provider';
+import { ThemeProvider } from '~/providers';
 import { supabase } from '~/utils/supabase';
 
 export const unstable_settings = {
