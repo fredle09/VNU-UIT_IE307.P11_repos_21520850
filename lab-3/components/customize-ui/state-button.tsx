@@ -37,11 +37,11 @@ const StateButton = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonP
         {isPending ? (
           <>
             <ActivityIndicator
-              className="pr-2"
+              className={cn(props.size !== 'icon' && '-ml-2 pr-2')}
               size="small"
               color={isDarkColorScheme ? 'dark' : 'white'}
             />
-            <Text>Loading...</Text>
+            {props.size === 'icon' ? null : <Text>Loading...</Text>}
           </>
         ) : (
           children

@@ -11,7 +11,7 @@ const Input = React.forwardRef<
     childRight?: React.ReactNode;
   }
 >(({ className, childLeft, childRight, ...props }, ref) => {
-  return (
+  return childLeft || childRight ? (
     <View className="relative">
       {childLeft && (
         <View className="absolute left-1 top-1/2 z-50 -translate-y-1/2">{childLeft}</View>
@@ -25,6 +25,8 @@ const Input = React.forwardRef<
         <View className="absolute right-1 top-1/2 z-50 -translate-y-1/2">{childRight}</View>
       )}
     </View>
+  ) : (
+    <RNRInput ref={ref} {...props} />
   );
 });
 
