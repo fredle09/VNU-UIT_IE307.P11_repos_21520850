@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 import useSWR, { Fetcher } from 'swr';
 
@@ -10,6 +10,7 @@ import { Skeleton } from '~/components/ui/skeleton';
 import { Text } from '~/components/ui/text';
 import { Database, Tables } from '~/database.types';
 import { getNotes } from '~/lib/data-handler';
+import { BadgePlus } from '~/lib/icons/BadgePlus';
 import { Pencil } from '~/lib/icons/Pencil';
 import { useColorScheme } from '~/lib/useColorScheme';
 
@@ -30,9 +31,21 @@ export default function NotesIndexScreen() {
 
   return (
     <FlatList
-      className="p-6"
+      className="px-6 py-2"
       data={data}
       keyExtractor={(item) => item.id}
+      ListHeaderComponent={
+        <View className="flex flex-row items-center justify-between pb-4">
+          <Text>All Notes</Text>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="flex flex-row gap-2"
+            onPress={() => router.push('/(bai-tap-2)/notes/add')}>
+            <BadgePlus className="text-black dark:text-white" />
+          </Button>
+        </View>
+      }
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -53,24 +66,24 @@ export default function NotesIndexScreen() {
         )
       }
       renderItem={({ item }) => (
-        <Card className="mb-4">
-          <View className="flex flex-row items-center justify-between pr-3">
-            <CardHeader>
-              <CardTitle>{item.title}</CardTitle>
-            </CardHeader>
-            <Button
-              size="icon"
-              variant="ghost"
-              onPress={() => router.push(`/(bai-tap-2)/notes/edit?id=${item.id}`)}>
-              <Pencil className="text-black dark:text-white" />
-            </Button>
-          </View>
-          <CardContent>
-            <Text numberOfLines={1} ellipsizeMode="tail" className="text-ellipsis">
-              {item.content}
-            </Text>
-          </CardContent>
-        </Card>
+        <TouchableWithoutFeedback
+          onPress={() => router.push(`/(bai-tap-2)/notes/edit?id=${item.id}`)}>
+          <Card className="mb-4">
+            <View className="flex flex-row items-center justify-between pr-2.5">
+              <CardHeader>
+                <CardTitle>{item.title}</CardTitle>
+              </CardHeader>
+              <Button size="icon" variant="ghost" onPress={() => console.log('Hehe')}>
+                <Pencil className="text-black dark:text-white" />
+              </Button>
+            </View>
+            <CardContent>
+              <Text numberOfLines={2} ellipsizeMode="tail" className="text-ellipsis">
+                {item.content}
+              </Text>
+            </CardContent>
+          </Card>
+        </TouchableWithoutFeedback>
       )}
     />
   );

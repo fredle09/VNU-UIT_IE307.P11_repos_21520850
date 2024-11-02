@@ -7,7 +7,7 @@ import { AppState, Platform, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Toaster } from 'sonner-native';
 
-import { ThemeProvider } from '~/providers';
+import { AuthProvider, FontSizeProvider, ThemeProvider } from '~/providers';
 import { supabase } from '~/utils/supabase';
 
 export const unstable_settings = {
@@ -41,16 +41,20 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView className="flex flex-1">
-      <ThemeProvider>
-        <Slot />
-        <PortalHost />
-        <Toaster
-          richColors
-          position="top-center"
-          visibleToasts={2}
-          offset={Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0 + 14) : 0}
-        />
-      </ThemeProvider>
+      <AuthProvider>
+        <FontSizeProvider>
+          <ThemeProvider>
+            <Slot />
+            <PortalHost />
+            <Toaster
+              richColors
+              position="top-center"
+              visibleToasts={2}
+              offset={Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0 + 14) : 0}
+            />
+          </ThemeProvider>
+        </FontSizeProvider>
+      </AuthProvider>
     </GestureHandlerRootView>
   );
 }

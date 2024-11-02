@@ -30,7 +30,7 @@ const StateButton = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonP
     return (
       <Button
         ref={ref}
-        className={cn(className, isPending && 'flex flex-row')}
+        className={cn(className, isPending && 'flex flex-row items-center justify-center')}
         disabled={disabled || isPending}
         onPress={handlePress}
         {...props}>

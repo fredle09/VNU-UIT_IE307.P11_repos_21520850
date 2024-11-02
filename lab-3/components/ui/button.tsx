@@ -4,9 +4,10 @@ import { Pressable } from 'react-native';
 
 import { TextClassContext } from '~/components/ui/text';
 import { cn } from '~/lib/utils';
+import { useFontSize } from '~/providers';
 
 const buttonVariants = cva(
-  'group flex items-center justify-center rounded-md web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2',
+  'group flex flex-row items-center justify-center rounded-md web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2',
   {
     variants: {
       variant: {
@@ -69,6 +70,27 @@ type ButtonProps = React.ComponentPropsWithoutRef<typeof Pressable> &
 
 const Button = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonProps>(
   ({ className, variant, size, ...props }, ref) => {
+    const { fontSize } = useFontSize();
+    const buttonClassName = cn(
+      props.disabled && 'opacity-50 web:pointer-events-none',
+      buttonVariants({ variant, size, className })
+    );
+
+    // Find width class
+    const widthClass = buttonClassName
+      .split(' ')
+      .reverse()
+      .find((cls) => cls.startsWith('w-'));
+    const heightClass = buttonClassName
+      .split(' ')
+      .reverse()
+      .find((cls) => cls.startsWith('h-'));
+
+    const widthValue = widthClass ? parseInt(widthClass.replace('w-', ''), 10) : undefined;
+    const calculatedWidth = widthValue ? (fontSize / 4) * widthValue : undefined;
+    const heightValue = heightClass ? parseInt(heightClass.replace('h-', ''), 10) : undefined;
+    const calculatedHeight = heightValue ? (fontSize / 4) * heightValue : undefined;
+
     return (
       <TextClassContext.Provider
         value={cn(
@@ -76,12 +98,13 @@ const Button = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonProps>
           buttonTextVariants({ variant, size })
         )}>
         <Pressable
-          className={cn(
-            props.disabled && 'opacity-50 web:pointer-events-none',
-            buttonVariants({ variant, size, className })
-          )}
+          className={buttonClassName}
           ref={ref}
           role="button"
+          style={{
+            height: calculatedHeight,
+            width: calculatedWidth,
+          }}
           {...props}
         />
       </TextClassContext.Provider>
