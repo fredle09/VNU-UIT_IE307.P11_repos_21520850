@@ -1,37 +1,12 @@
 import { Tabs } from 'expo-router';
-import { AppState, type AppStateStatus } from 'react-native';
-import { SWRConfig } from 'swr';
 
 import { Home } from '~/lib/icons/Home';
 import { Settings } from '~/lib/icons/Settings';
+import { SWRConfigProvider } from '~/providers';
 
 export default function BaiTap2LayoutScreen() {
   return (
-    <SWRConfig
-      value={{
-        provider: () => new Map(),
-        isVisible: () => {
-          return true;
-        },
-        initFocus(callback) {
-          let appState = AppState.currentState;
-
-          const onAppStateChange = (nextAppState: AppStateStatus) => {
-            /* If it's resuming from background or inactive mode to active one */
-            if (appState.match(/inactive|background/) && nextAppState === 'active') {
-              callback();
-            }
-            appState = nextAppState;
-          };
-
-          // Subscribe to the app state change events
-          const subscription = AppState.addEventListener('change', onAppStateChange);
-
-          return () => {
-            subscription.remove();
-          };
-        },
-      }}>
+    <SWRConfigProvider>
       <Tabs>
         <Tabs.Screen
           name="notes"
@@ -49,6 +24,6 @@ export default function BaiTap2LayoutScreen() {
           }}
         />
       </Tabs>
-    </SWRConfig>
+    </SWRConfigProvider>
   );
 }
