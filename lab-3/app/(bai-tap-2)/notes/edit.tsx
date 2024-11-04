@@ -15,14 +15,13 @@ import { StateButton } from '~/components/customize-ui/state-button';
 import { Text } from '~/components/ui/text';
 import { Textarea } from '~/components/ui/textarea';
 import { Database, Tables } from '~/database.types';
-import { delNote, editNote, getNote } from '~/lib/data-handler';
-import { Trash2 } from '~/lib/icons/Trash2';
+import { editNote, getNote } from '~/lib/data-handler';
 import { DEFAULT_NOTE_FORM_VALUES, noteFormSchema } from '~/utils/form/note';
 
 const fetcher: Fetcher<
   Tables<'notes'> | null,
   [keyof Database['public']['Tables'], string]
-> = async ([table, id]) => await getNote(id);
+> = async ([, id]) => await getNote(id);
 
 export default function EditNoteScreen() {
   const { id: idRaw } = useGlobalSearchParams();
@@ -61,24 +60,6 @@ export default function EditNoteScreen() {
     },
     [id]
   );
-
-  const onDelete = useCallback(async () => {
-    try {
-      await delNote(id);
-      await Promise.all([
-        globalMutate('notes', (prev: (Tables<'notes'> | null)[] | undefined) =>
-          prev?.filter((item) => item?.id !== id)
-        ),
-        mutate(null),
-      ]);
-      toast.info('Delete notes successful!!!');
-      router.back();
-    } catch (error: any) {
-      const message = error?.message || 'Unknown Error';
-      console.error('>> [EditNoteScreen]: Error in onDelete:', message);
-      toast.error(message);
-    }
-  }, [id]);
 
   useEffect(() => {
     if (fetchedData) {
@@ -125,10 +106,9 @@ export default function EditNoteScreen() {
       <View className="flex flex-row gap-2">
         <StateButton
           variant="destructive"
-          size="icon"
-          onPress={onDelete}
+          onPress={() => router.back()}
           disabled={isLoading || error}>
-          <Trash2 className="text-white" />
+          <Text>Cancel</Text>
         </StateButton>
         <StateButton
           className="flex-1"
