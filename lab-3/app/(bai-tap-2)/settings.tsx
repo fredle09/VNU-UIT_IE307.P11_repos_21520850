@@ -24,7 +24,7 @@ export default function SettingsScreen() {
         <DarkSwitch />
       </Button>
       <View className="px-6">
-        <View className="flex flex-row items-center justify-between">
+        <View className="mb-4 flex flex-row items-center justify-between">
           <Text>Font Size</Text>
           <Text>{fontSize}</Text>
         </View>
