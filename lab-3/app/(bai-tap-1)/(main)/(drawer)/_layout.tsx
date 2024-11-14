@@ -6,7 +6,7 @@ import { usePathname } from '~/lib/hooks';
 
 export default function MainLayoutScreen() {
   const pathname = usePathname();
-  // console.log('MainLayoutScreen', pathname);
+
   return (
     <Drawer>
       <Drawer.Screen

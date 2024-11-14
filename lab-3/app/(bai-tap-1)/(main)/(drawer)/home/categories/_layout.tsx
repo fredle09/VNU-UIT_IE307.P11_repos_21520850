@@ -44,24 +44,9 @@ export default function BaiTap3CategoriesLayoutScreen() {
         },
         tabBarItemStyle: { width: width / TAB_COUNT },
       }}>
-      <MaterialTopTabs.Screen
-        name="category-1"
-        options={{
-          title: 'Category 1',
-        }}
-      />
-      <MaterialTopTabs.Screen
-        name="category-2"
-        options={{
-          title: 'Category 2',
-        }}
-      />
-      <MaterialTopTabs.Screen
-        name="category-3"
-        options={{
-          title: 'Category 3',
-        }}
-      />
+      <MaterialTopTabs.Screen name="category-1" options={{ title: 'Category 1' }} />
+      <MaterialTopTabs.Screen name="category-2" options={{ title: 'Category 2' }} />
+      <MaterialTopTabs.Screen name="category-3" options={{ title: 'Category 3' }} />
     </MaterialTopTabs>
   );
 }
