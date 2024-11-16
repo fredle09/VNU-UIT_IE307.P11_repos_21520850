@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { FlatList } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { toast } from 'sonner-native';
-import useSWR, { Fetcher, useSWRConfig } from 'swr';
+import useSWR, { Fetcher } from 'swr';
 
 import { NoteCard } from '~/components/bai-tap-2';
 import {
@@ -39,16 +39,10 @@ export default function NotesIndexScreen() {
     setRefreshing(false);
   }, []);
 
-  const { mutate: globalMutate } = useSWRConfig();
-
   const onDelete = useCallback(async (id: string) => {
     try {
       await delNote(id);
-      await Promise.all([
-        globalMutate('notes', (prev: (Tables<'notes'> | null)[] | undefined) =>
-          prev?.filter((item) => item?.id !== id)
-        ),
-      ]);
+      await mutate((prev) => prev?.filter((item) => item?.id !== id));
     } catch (error: any) {
       const message = error?.message || 'Unknown Error';
       console.error('>> [EditNoteScreen]: Error in onDelete:', message);
