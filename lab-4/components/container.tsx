@@ -1,16 +1,14 @@
-import { ScrollView, SafeAreaView, ScrollViewProps } from 'react-native';
+import { SafeAreaView } from 'react-native';
+import { ScrollView } from 'react-native';
 
-import { cn } from '~/lib/utils';
-
-export const Container = ({ className, ...props }: ScrollViewProps) => {
+export const Container = ({ children }: { children: React.ReactNode }) => {
   return (
-    <SafeAreaView className={cn(styles.initial, 'max-h-screen')}>
-      <ScrollView className={cn(styles.initial, className ?? styles.container)} {...props} />
+    <SafeAreaView className={styles.container}>
+      <ScrollView>{children}</ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = {
-  initial: 'flex flex-1',
-  container: 'p-6',
+  container: 'flex flex-1 m-6',
 };

@@ -1,4 +1,3 @@
-// import libs
 import { Session } from '@supabase/supabase-js';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
@@ -14,6 +13,9 @@ const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const useAuthSession = () => {
   const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuthSession must be used within an AuthProvider');
+  }
   return context;
 };
 

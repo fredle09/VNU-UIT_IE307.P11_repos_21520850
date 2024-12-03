@@ -1,10 +1,10 @@
-import { Redirect, Slot } from 'expo-router';
 import { ActivityIndicator, Image, View } from 'react-native';
+import { Redirect, Slot } from 'expo-router';
 
 import { Container } from '~/components/container';
 import { Text } from '~/components/ui/text';
-import { useColorScheme } from '~/lib/useColorScheme';
 import { useAuthSession } from '~/providers/auth-provider';
+import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function AuthLayoutScreen() {
   const { session, isLoading } = useAuthSession();
@@ -24,6 +24,7 @@ export default function AuthLayoutScreen() {
   return (
     <Container>
       <View className="flex items-center justify-center">
+        <View className="h-28" />
         <Image className="size-32 rounded-full" source={require('~/assets/avatar.jpg')} />
         <Text className="my-4 text-lg font-bold">React Native App</Text>
       </View>

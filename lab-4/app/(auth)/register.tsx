@@ -1,26 +1,24 @@
-// import libs
-import { zodResolver } from '@hookform/resolvers/zod';
-import { router } from 'expo-router';
-import { useCallback } from 'react';
-import { useForm } from 'react-hook-form';
-import { Keyboard, View } from 'react-native';
-import { toast } from 'sonner-native';
-import { z } from 'zod';
-
-// Import components
+import { DEFAULT_REGISTER_FORM_VALUES, registerFormSchema } from '~/utils/form/register';
 import { Form, FormController } from '~/components/customize-ui/form';
-import { Input } from '~/components/customize-ui/input';
-import { PasswordInput } from '~/components/customize-ui/password-input';
-import { StateButton } from '~/components/customize-ui/state-button';
+import { Keyboard, View } from 'react-native';
+
 import { Button } from '~/components/ui/button';
-import { Separator } from '~/components/ui/separator';
-import { Text } from '~/components/ui/text';
+import { Input } from '~/components/customize-ui/input';
 import { Lock } from '~/lib/icons/Lock';
 import { Mail } from '~/lib/icons/Mail';
+import { PasswordInput } from '~/components/customize-ui/password-input';
+import { Separator } from '~/components/ui/separator';
+import { StateButton } from '~/components/customize-ui/state-button';
+import { Text } from '~/components/ui/text';
 import { User } from '~/lib/icons/User';
-import { useKeyboard } from '~/lib/keyboard';
-import { DEFAULT_REGISTER_FORM_VALUES, registerFormSchema } from '~/utils/form/register';
+import { router } from 'expo-router';
 import { supabase } from '~/utils/supabase';
+import { toast } from 'sonner-native';
+import { useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import { useKeyboard } from '~/lib/keyboard';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function RegisterScreen() {
   const form = useForm<z.infer<typeof registerFormSchema>>({
@@ -130,7 +128,7 @@ export default function RegisterScreen() {
         <Separator />
       </View>
 
-      <Button variant="ghost" className="flex flex-row" onPress={() => router.replace('/(auth)/')}>
+      <Button variant="ghost" className="flex flex-row" onPress={() => router.replace('/(auth)')}>
         <Text>Already have an account? </Text>
         <Text className="font-bold underline">Sign In</Text>
       </Button>

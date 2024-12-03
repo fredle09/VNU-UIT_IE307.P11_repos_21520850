@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { router } from 'expo-router';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { Image, Keyboard, View } from 'react-native';
+import { Image, Keyboard, SafeAreaView, View } from 'react-native';
 import { toast } from 'sonner-native';
 import { z } from 'zod';
 
@@ -59,74 +59,80 @@ export default function LogicScreen() {
   const { keyboardHeight } = useKeyboard();
 
   return (
-    <View style={{ paddingBottom: keyboardHeight }}>
-      <Form {...form}>
-        <FormController
-          name="email"
-          label="Email:"
-          render={({ field }) => (
-            <Input
-              childLeft={<Mail className="ml-1 size-6 text-zinc-500" />}
-              autoCapitalize="none"
-              placeholder="Enter your email"
-              {...field}
-            />
-          )}
-        />
+    <SafeAreaView>
+      <View style={{ paddingBottom: keyboardHeight }}>
+        <Form {...form}>
+          <FormController
+            name="email"
+            label="Email:"
+            render={({ field }) => (
+              <Input
+                childLeft={<Mail className="ml-1 size-6 text-zinc-500" />}
+                autoCapitalize="none"
+                placeholder="Enter your email"
+                {...field}
+              />
+            )}
+          />
 
-        <FormController
-          name="password"
-          label="Password:"
-          render={({ field }) => (
-            <PasswordInput
-              childLeft={<Lock className="ml-1 size-6 text-zinc-500" />}
-              autoCapitalize="none"
-              placeholder="Enter your password"
-              {...field}
-            />
-          )}
-        />
+          <FormController
+            name="password"
+            label="Password:"
+            render={({ field }) => (
+              <PasswordInput
+                childLeft={<Lock className="ml-1 size-6 text-zinc-500" />}
+                autoCapitalize="none"
+                placeholder="Enter your password"
+                {...field}
+              />
+            )}
+          />
 
-        <View className="flex flex-row justify-end">
-          <Button size="extra-sm" variant="link" className="mb-4" onPress={triggerDevFeatureAlert}>
-            <Text>Forgot Password?</Text>
-          </Button>
+          <View className="flex flex-row justify-end">
+            <Button
+              size="extra-sm"
+              variant="link"
+              className="mb-4"
+              onPress={triggerDevFeatureAlert}>
+              <Text>Forgot Password?</Text>
+            </Button>
+          </View>
+
+          <StateButton
+            onPress={form.handleSubmit(async (data) => {
+              Keyboard.dismiss();
+              await onSubmit(data);
+            })}>
+            <Text>Login</Text>
+          </StateButton>
+        </Form>
+
+        <View className="mx-4 flex flex-row items-center justify-center py-4">
+          <Separator />
+          <Text className="mx-4 text-lg font-bold">OR</Text>
+          <Separator />
         </View>
 
-        <StateButton
-          onPress={form.handleSubmit(async (data) => {
-            Keyboard.dismiss();
-            await onSubmit(data);
-          })}>
-          <Text>Login</Text>
-        </StateButton>
-      </Form>
+        <View className="flex flex-col gap-4">
+          <Button variant="outline" className="flex flex-row" onPress={triggerDevFeatureAlert}>
+            <Image className="mr-2 size-6" source={require('~/assets/google.png')} />
+            <Text>Sign in with Google</Text>
+          </Button>
 
-      <View className="mx-4 flex flex-row items-center justify-center py-4">
-        <Separator />
-        <Text className="mx-4 text-lg font-bold">OR</Text>
-        <Separator />
+          <Button variant="outline" className="flex flex-row" onPress={triggerDevFeatureAlert}>
+            <Image className="mr-2 size-6" source={require('~/assets/facebook.png')} />
+            <Text>Sign in with Facebook</Text>
+          </Button>
+
+          <Button
+            variant="ghost"
+            className="flex flex-row"
+            onPress={() => router.replace('/(auth)/register')}>
+            <Text>Don't have an account? </Text>
+            <Text className="font-bold underline">Sign Up</Text>
+          </Button>
+        </View>
       </View>
-
-      <View className="flex flex-col gap-4">
-        <Button variant="outline" className="flex flex-row" onPress={triggerDevFeatureAlert}>
-          <Image className="mr-2 size-6" source={require('~/assets/google.png')} />
-          <Text>Sign in with Google</Text>
-        </Button>
-
-        <Button variant="outline" className="flex flex-row" onPress={triggerDevFeatureAlert}>
-          <Image className="mr-2 size-6" source={require('~/assets/facebook.png')} />
-          <Text>Sign in with Facebook</Text>
-        </Button>
-
-        <Button
-          variant="ghost"
-          className="flex flex-row"
-          onPress={() => router.replace('/(auth)/register')}>
-          <Text>Don't have an account? </Text>
-          <Text className="font-bold underline">Sign Up</Text>
-        </Button>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 }

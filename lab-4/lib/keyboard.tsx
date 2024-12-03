@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Keyboard, type KeyboardEvent } from 'react-native';
 
 const EVENT_TYPE = {
-  // Only keyboardDidShow and keyboardDidHide events are available on Android with 1 exception: https://reactnative.dev/docs/keyboard#addlistener
   didShow: { show: 'keyboardDidShow', hide: 'keyboardDidHide' },
   willShow: { show: 'keyboardWillShow', hide: 'keyboardWillHide' },
 } as const;

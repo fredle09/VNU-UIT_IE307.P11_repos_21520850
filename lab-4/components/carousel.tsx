@@ -1,5 +1,6 @@
-import { View, Image, Dimensions } from 'react-native';
-import RNRCarousel from 'react-native-reanimated-carousel'; // Import the snap carousel
+import { Dimensions, Image, View } from 'react-native';
+
+import RNRCarousel from 'react-native-reanimated-carousel';
 
 // Types and Interfaces
 interface ICarouselItem {
@@ -45,9 +46,9 @@ export const Carousel = ({ items, renderItem }: ICarouselProps) => {
     <View className="aspect-video">
       <RNRCarousel
         data={items}
-        width={DEFAULT_CARD_WIDTH + DEFAULT_SPACING} // Add width property
+        width={DEFAULT_CARD_WIDTH + DEFAULT_SPACING}
         renderItem={DefaultCarouselItem}
-        loop // Enable infinite loop
+        loop
       />
     </View>
   );

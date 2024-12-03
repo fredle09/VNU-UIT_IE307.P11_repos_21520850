@@ -1,8 +1,9 @@
-import * as Slot from '@rn-primitives/slot';
-import { SlottableTextProps, TextRef } from '@rn-primitives/types';
 import * as React from 'react';
-import { Text as RNText } from 'react-native';
+import * as Slot from '@rn-primitives/slot';
 
+import { SlottableTextProps, TextRef } from '@rn-primitives/types';
+
+import { Text as RNText } from 'react-native';
 import { cn } from '~/lib/utils';
 import { useFontSize } from '~/providers';
 
@@ -60,7 +61,11 @@ const Text = React.forwardRef<TextRef, SlottableTextProps>(
       <Component
         className={cn('text-foreground web:select-text', textClass, className)}
         ref={ref}
-        style={{ fontSize: adjustedFontSize, lineHeight: adjustedLineHeight }}
+        style={{
+          fontFamily: `${textClass} ${className}`.indexOf('font-bold') !== -1 ? 'heavy' : 'regular',
+          fontSize: adjustedFontSize,
+          lineHeight: adjustedLineHeight,
+        }}
         {...props}
       />
     );

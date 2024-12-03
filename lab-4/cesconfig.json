@@ -1,6 +1,6 @@
 {
-  "cesVersion": "2.11.24",
-  "projectName": "lab-3",
+  "cesVersion": "2.12.1",
+  "projectName": "lab-4",
   "packages": [
     {
       "name": "expo-router",
@@ -28,12 +28,12 @@
   },
   "packageManager": {
     "type": "npm",
-    "version": "10.8.3"
+    "version": "10.9.1"
   },
   "os": {
     "type": "Windows_NT",
     "platform": "win32",
     "arch": "x64",
-    "kernelVersion": "10.0.26120"
+    "kernelVersion": "10.0.22631"
   }
 }

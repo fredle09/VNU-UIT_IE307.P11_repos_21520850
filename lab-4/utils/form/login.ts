@@ -1,7 +1,4 @@
-// import libs
 import { z } from 'zod';
-
-// import utils
 
 export const DEFAULT_LOGIN_FORM_VALUES = {
   email: '',

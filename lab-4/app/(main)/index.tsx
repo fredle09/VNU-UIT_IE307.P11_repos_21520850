@@ -1,4 +1,4 @@
-import { View, SafeAreaView, Text, ScrollView } from 'react-native';
+import { SafeAreaView, ScrollView, Text, View } from 'react-native';
 
 import { Carousel } from '~/components/carousel';
 import { ProductCard } from '~/components/product-card';

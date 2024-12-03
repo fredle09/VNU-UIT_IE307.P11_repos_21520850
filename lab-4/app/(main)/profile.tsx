@@ -7,12 +7,10 @@ import { Text } from '~/components/ui/text';
 import { useAuthSession } from '~/providers/auth-provider';
 
 export default function BaiTap3ProfileScreen() {
-  const { session, signOut: _signOut } = useAuthSession();
+  const { signOut: _signOut } = useAuthSession();
   const signOut = useCallback(async () => {
     try {
-      // await supabase.auth.signOut();
       await _signOut();
-      console.log('Signed out successfully:', session);
       toast.success('Signed out successfully');
     } catch (error) {
       if (!(error instanceof Error)) {
@@ -27,7 +25,7 @@ export default function BaiTap3ProfileScreen() {
   return (
     <View className="my-4 flex flex-1 flex-col items-center justify-center px-4">
       <Text>Profile Screen</Text>
-      <StateButton onPress={signOut}>
+      <StateButton onPress={signOut} variant="destructive">
         <Text>Sign Out</Text>
       </StateButton>
     </View>

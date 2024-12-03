@@ -23,7 +23,7 @@ export default function BaiTap3CategoriesLayoutScreen() {
 
   return (
     <MaterialTopTabs
-      initialRouteName="index"
+      initialRouteName="category-1"
       className="flex-1"
       tabBarPosition="top"
       screenOptions={{

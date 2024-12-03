@@ -1,26 +1,22 @@
 import '~/global.css';
 
-import { PortalHost } from '@rn-primitives/portal';
-import { Slot, SplashScreen } from 'expo-router';
 import * as React from 'react';
-import { AppState, Platform, StatusBar } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Toaster } from 'sonner-native';
 
+import { AppState, Platform, StatusBar } from 'react-native';
 import { AuthProvider, FontSizeProvider, ThemeProvider } from '~/providers';
+import { Slot, SplashScreen } from 'expo-router';
+
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { PortalHost } from '@rn-primitives/portal';
+import { Toaster } from 'sonner-native';
 import { supabase } from '~/utils/supabase';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(drawer)',
 };
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
-// Prevent the splash screen from auto-hiding before getting the color scheme.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {

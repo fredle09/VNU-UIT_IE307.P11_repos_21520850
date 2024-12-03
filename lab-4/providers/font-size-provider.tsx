@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 type FontSizeContextType = {
   fontSize: number;

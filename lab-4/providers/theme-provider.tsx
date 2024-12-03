@@ -1,22 +1,32 @@
 import '~/global.css';
 
+import * as React from 'react';
+
+import { BeVietnam_400Regular, BeVietnam_500Medium, BeVietnam_600SemiBold, BeVietnam_700Bold, useFonts } from '@expo-google-fonts/be-vietnam';
+import { Platform, View } from 'react-native';
+import { ThemeProvider as RNThemeProvider, Theme } from '@react-navigation/native';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Theme, ThemeProvider as RNThemeProvider } from '@react-navigation/native';
+import { NAV_THEME } from '~/lib/constants';
 import { SplashScreen } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import * as React from 'react';
-import { Platform } from 'react-native';
-
-import { NAV_THEME } from '~/lib/constants';
+import { Text } from '~/components/ui/text';
 import { useColorScheme } from '~/lib/useColorScheme';
 
-const LIGHT_THEME: Theme = {
-  dark: false,
-  colors: NAV_THEME.light,
-};
-const DARK_THEME: Theme = {
-  dark: true,
-  colors: NAV_THEME.dark,
+type FontStyle = {
+  fontFamily: string;
+  fontWeight:
+  | 'normal'
+  | 'bold'
+  | '100'
+  | '200'
+  | '300'
+  | '400'
+  | '500'
+  | '600'
+  | '700'
+  | '800'
+  | '900';
 };
 
 export {
@@ -34,14 +44,52 @@ interface Props {
 const ThemeProvider = (props: Props) => {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+  const [fontsLoaded] = useFonts({
+    regular: BeVietnam_400Regular,
+    medium: BeVietnam_500Medium,
+    bold: BeVietnam_600SemiBold,
+    heavy: BeVietnam_700Bold,
+  });
+
+  const FONTS: {
+    regular: FontStyle;
+    medium: FontStyle;
+    bold: FontStyle;
+    heavy: FontStyle;
+  } = {
+    regular: {
+      fontFamily: 'BeVietnam_400Regular',
+      fontWeight: 'normal',
+    },
+    medium: {
+      fontFamily: 'BeVietnam_500Medium',
+      fontWeight: '500',
+    },
+    bold: {
+      fontFamily: 'BeVietnam_600SemiBold',
+      fontWeight: '600',
+    },
+    heavy: {
+      fontFamily: 'BeVietnam_700Bold',
+      fontWeight: '700',
+    },
+  };
+
+  const LIGHT_THEME: Theme = {
+    dark: false,
+    colors: NAV_THEME.light,
+    fonts: FONTS,
+  };
+  const DARK_THEME: Theme = {
+    dark: true,
+    colors: NAV_THEME.dark,
+    fonts: FONTS,
+  };
 
   React.useEffect(() => {
     (async () => {
       const theme = await AsyncStorage.getItem('theme');
-      if (Platform.OS === 'web') {
-        // Adds the background color to the html element to prevent white background on overscroll.
-        document.documentElement.classList.add('bg-background');
-      }
+      if (Platform.OS === 'web') document.documentElement.classList.add('bg-background')
 
       if (!theme) {
         AsyncStorage.setItem('theme', colorScheme);
@@ -62,14 +110,16 @@ const ThemeProvider = (props: Props) => {
     });
   }, []);
 
-  if (!isColorSchemeLoaded) {
+  if (!isColorSchemeLoaded || !fontsLoaded) {
     return null;
   }
 
   return (
     <RNThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-      {props.children}
+      <View className="bg-background flex-1">
+        <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+        {props.children}
+      </View>
     </RNThemeProvider>
   );
 };

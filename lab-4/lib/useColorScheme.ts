@@ -1,21 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useColorScheme as useNativewindColorScheme } from 'nativewind';
+import { colorScheme } from 'nativewind';
 import { useCallback } from 'react';
 
 import { setAndroidNavigationBar } from './android-navigation-bar';
 
 export function useColorScheme() {
-  const { colorScheme, setColorScheme: setNativewindColorScheme } = useNativewindColorScheme();
-  const safetyColorScheme = colorScheme ?? 'dark';
+  // const { setColorScheme: setNativewindColorScheme } = useNativewindColorScheme();
+  const safetyColorScheme = colorScheme.get() ?? 'light';
 
-  const setColorScheme = useCallback(
-    (newColorScheme: 'light' | 'dark') => {
-      setNativewindColorScheme(newColorScheme);
-      setAndroidNavigationBar(newColorScheme);
-      AsyncStorage.setItem('theme', newColorScheme);
-    },
-    [setNativewindColorScheme]
-  );
+  const setColorScheme = useCallback((newColorScheme: 'light' | 'dark') => {
+    colorScheme.set(newColorScheme);
+    setAndroidNavigationBar(newColorScheme);
+    AsyncStorage.setItem('theme', newColorScheme);
+  }, []);
 
   const toggleColorScheme = () => {
     const newTheme = safetyColorScheme === 'dark' ? 'light' : 'dark';

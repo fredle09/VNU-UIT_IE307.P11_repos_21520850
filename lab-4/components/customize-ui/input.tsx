@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { TextInput, View } from 'react-native';
 
-import { Input as RNRInput } from '~/components/ui/input';
+import { Input as RNRInput } from '../ui/input';
+
 import { cn } from '~/lib/utils';
 
 const Input = React.forwardRef<
