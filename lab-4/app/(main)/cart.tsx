@@ -35,7 +35,7 @@ export default function BaiTap3FavoritesScreen() {
       )}
       {data.length > 0 && (
         <View className='absolute bottom-0 p-4 w-full h-16 border-t-2 border-zinc-50 flex flex-row justify-between items-center bg-white'>
-          <Text>Total: ${data.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)}</Text>
+          <Text>Total: ${data.reduce((acc, item) => acc + item.price * item.quantity, 0)?.toFixed(2)}</Text>
           <Button size="sm" disabled={!data.length} onPress={() => { }}>
             <Text>Checkout</Text>
           </Button>
