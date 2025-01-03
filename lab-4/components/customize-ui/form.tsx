@@ -137,15 +137,15 @@ const FormMessage = React.forwardRef<TextRef, SlottableTextProps>(
     if (!body) return null;
 
     return (
-      <Animated.View entering={FadeInDown} exiting={FadeOut.duration(275)}>
-        <Text
-          ref={ref}
-          id={formMessageId}
-          className={cn('text-xs font-medium text-red-500', className)}
-          {...props}>
-          {body}
-        </Text>
-      </Animated.View>
+      // <Animated.View entering={FadeInDown} exiting={FadeOut.duration(275)}>
+      <Text
+        ref={ref}
+        id={formMessageId}
+        className={cn('text-xs font-medium text-red-500', className)}
+        {...props}>
+        {body}
+      </Text>
+      // </Animated.View>
     );
   }
 );

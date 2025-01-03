@@ -1,10 +1,11 @@
 import { Session } from '@supabase/supabase-js';
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 
 import { supabase } from '~/utils/supabase';
 
 interface IAuthContext {
   session: Session | null;
+  refreshUser: () => Promise<void>;
   isLoading: boolean;
   signOut: () => Promise<void>;
 }
@@ -27,10 +28,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setSession(null);
   }, [setSession]);
 
+  const refreshUser = useCallback(async () => {
+    try {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) throw error;
+
+      if (data) {
+        // Update session user with fresh data
+        setSession((prev) => {
+          if (prev) {
+            return { ...prev, user: data.user };
+          }
+          return prev;
+        });
+      }
+    } catch (error) {
+      console.error('Error refreshing user info:', error);
+    }
+  }, []);
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      setIsLoading(false); // Set loading to false after fetching
+      setIsLoading(false);
     });
 
     const {
@@ -39,13 +59,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSession(session);
     });
 
-    // Cleanup subscription on unmount
     return () => {
       subscription?.unsubscribe();
     };
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, isLoading, signOut }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ session, isLoading, signOut, refreshUser }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
