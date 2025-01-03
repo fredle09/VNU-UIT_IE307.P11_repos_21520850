@@ -85,7 +85,7 @@ export function CartProvider({ children }: PropsWithChildren) {
         error: "Failed to delete",
       });
     },
-    [setCart, debouncedSyncCart]
+    [session, setCart, debouncedSyncCart]
   );
 
   const increasedQuantity = useCallback(
