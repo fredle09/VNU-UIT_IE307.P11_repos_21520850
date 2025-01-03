@@ -18,6 +18,7 @@ export default function BaiTap3MainLayout() {
       screenOptions={{
         tabBarActiveTintColor: isDarkColorScheme ? 'white' : 'black',
         tabBarInactiveTintColor: isDarkColorScheme ? 'gray' : '#a9a9a9',
+        headerShown: false,
       }}>
       <Tabs.Screen
         name="index"

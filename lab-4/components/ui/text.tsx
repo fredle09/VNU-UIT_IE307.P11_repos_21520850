@@ -62,7 +62,7 @@ const Text = React.forwardRef<TextRef, SlottableTextProps>(
         className={cn('text-foreground web:select-text', textClass, className)}
         ref={ref}
         style={{
-          fontFamily: `${textClass} ${className}`.indexOf('font-bold') !== -1 ? 'heavy' : 'regular',
+          fontFamily: `${textClass} ${className}`.indexOf('font-bold') !== -1 ? 'bold' : 'regular',
           fontSize: adjustedFontSize,
           lineHeight: adjustedLineHeight,
         }}

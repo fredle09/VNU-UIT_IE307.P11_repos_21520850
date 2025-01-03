@@ -1,53 +1,105 @@
-import { SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import React from 'react';
+import { ReactNode } from 'react';
+import { Platform, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import useSWR from 'swr';
 
 import { Carousel } from '~/components/carousel';
 import { ProductCard } from '~/components/product-card';
+import { cn } from '~/lib/utils';
 
 const carouselItemsData = [
   {
     image:
-      'https://images.unsplash.com/photo-1678436748951-ef6d381e7a25?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDN8YWV1NnJMLWo2ZXd8fGVufDB8fHx8fA%3D%3D',
-    ar: 0.7,
+      'https://cf.shopee.vn/file/sg-11134258-7ra2j-m4ifjwcctitffd_xxhdpi',
+    ar: 0.33,
   },
   {
     image:
-      'https://images.unsplash.com/photo-1680813977591-5518e78445a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    ar: 0.67,
+      'https://cf.shopee.vn/file/sg-11134258-7ra3h-m4iqr1lmfbpg37_xxhdpi',
+    ar: 0.33,
   },
   {
     image:
-      'https://images.unsplash.com/photo-1679508056887-5c76269dad54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    ar: 0.8,
+      'https://cf.shopee.vn/file/sg-11134258-7ra1n-m4in0iszcjf6e6_xxhdpi',
+    ar: 0.33,
   },
   {
     image:
-      'https://images.unsplash.com/photo-1681243303374-72d01f749dfa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDczfGFldTZyTC1qNmV3fHxlbnwwfHx8fHw%3D',
-    ar: 0.68,
+      'https://cf.shopee.vn/file/vn-11134258-7ras8-m4iwhxalml1j03_xxhdpi',
+    ar: 0.33,
   },
   {
     image:
-      'https://images.unsplash.com/photo-1675185741953-18b60234cb79?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    ar: 0.67,
+      'https://cf.shopee.vn/file/vn-11134258-7ras8-m4ft96aewlhr84_xxhdpi',
+    ar: 0.33,
   },
   {
     image:
-      'https://images.unsplash.com/photo-1685725083464-26cab8f2da1e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    ar: 0.67,
+      'https://cf.shopee.vn/file/vn-11134258-7ras8-m4ft96aewlhr84_xxhdpi',
+    ar: 0.33,
   },
-];
+] as const;
+
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to fetch data');
+
+  return res.json();
+}
 
 export default function HomeScreen() {
-  return (
-    <SafeAreaView className="flex flex-1 flex-col">
-      <ScrollView>
-        <Text className="text-3xl font-bold">Hehe</Text>
-        <Carousel items={carouselItemsData} />
+  const { data, isLoading, error } = useSWR<any[]>('https://fakestoreapi.com/products', fetcher)
+  const section = ({ start, end, title }: { start: number, end: number, title: ReactNode }) => (
+    <View className='bg-white -mx-2 px-2 mb-4'>
+      <View className=' flex flex-row items-center gap-2 py-2'>{title}</View>
+      <View className="flex flex-row flex-wrap gap-2 pb-8">
+        {isLoading || error ? null : (
+          data?.slice(start, end).map((props, index) => (
+            <ProductCard key={index} {...props} />
+          ))
+        )}
+      </View>
+    </View>
+  );
 
-        <View className="flex flex-row flex-wrap gap-2 px-2">
-          {Array.from({ length: 8 }).map((__props, index) => (
-            <ProductCard key={index} />
-          ))}
+  return (
+    <SafeAreaView className={cn(Platform.OS === "android" ? "pt-16" : "", "flex flex-1 flex-col")}>
+      <ScrollView className='px-2 bg-zinc-200 space-y-4'>
+        <View className="bg-white -mx-2 px-2 mb-4">
+          <Text className="text-3xl font-bold text-center capitalize text-red-600">Sale kịch trần, Sắm tết vô lo</Text>
+          <Carousel items={[...carouselItemsData]} />
         </View>
+
+        {section({
+          start: 0,
+          end: 10,
+          title: (
+            <>
+              <Text className="text-3xl font-bold text-red-600">Flash sale</Text>
+              <Image
+                placeholder={require('~/assets/fire-happy-64.png')}
+                source={require('~/assets/fire-happy-64.png')}
+                style={{ width: 32, height: 32 }}
+              />
+            </>
+          )
+        })}
+
+        {section({
+          start: 10,
+          end: 20,
+          title: (
+            <>
+              <Text className="text-3xl font-bold text-red-600">Gợi ý hôm nay</Text>
+              <Image
+                placeholder={require('~/assets/star-light-64.png')}
+                source={require('~/assets/star-light-64.png')}
+                style={{ width: 32, height: 32 }}
+              />
+            </>
+          )
+        })}
       </ScrollView>
     </SafeAreaView>
   );
