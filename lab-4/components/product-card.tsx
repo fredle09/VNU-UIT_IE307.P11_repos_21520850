@@ -28,7 +28,7 @@ export const ProductCard = (props: Partial<Omit<IProductCardProps, "id">> & { id
           <View className="aspect-[3/4] w-full flex-1 overflow-hidden rounded">
             <Image
               contentFit="contain"
-              placeholder={require('~/assets/icon.png')}
+              placeholder={require('~/assets/splash.png')}
               source={{ uri: props.image }}
               style={styles.productImage}
             />

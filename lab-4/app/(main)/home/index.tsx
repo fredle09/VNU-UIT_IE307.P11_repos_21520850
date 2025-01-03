@@ -49,8 +49,9 @@ const fetcher = async (url: string) => {
 }
 
 export default function HomeScreen() {
-  const { data, isLoading, error } = useSWR<any[]>('https://fakestoreapi.com/products', fetcher)
-  const section = ({ start, end, title }: { start: number, end: number, title: ReactNode }) => (
+  const { data, isLoading, error } = useSWR<any[]>('https://fakestoreapi.com/products', fetcher);
+
+  const section = ({ data, start, end, title }: { data: any[] | undefined, start: number, end: number, title: ReactNode }) => (
     <View className='bg-white -mx-2 px-2 mb-4'>
       <View className=' flex flex-row items-center gap-2 py-2'>{title}</View>
       <View className="flex flex-row flex-wrap gap-2 pb-8">
@@ -76,6 +77,7 @@ export default function HomeScreen() {
         </View>
 
         {section({
+          data,
           start: 0,
           end: 10,
           title: (
@@ -91,6 +93,7 @@ export default function HomeScreen() {
         })}
 
         {section({
+          data,
           start: 10,
           end: 20,
           title: (

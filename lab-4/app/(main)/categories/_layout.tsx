@@ -5,8 +5,13 @@ import type {
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useTheme, type ParamListBase, type TabNavigationState } from '@react-navigation/native';
 import { withLayoutContext } from 'expo-router';
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions } from 'react-native';
 import { cn } from '~/lib/utils';
+import { Grid2X2 } from '~/lib/icons/Grid2x2';
+import { Cable } from '~/lib/icons/Cable';
+import { Gem } from '~/lib/icons/Gem';
+import { Shirt } from '~/lib/icons/Shirt';
+import React from 'react';
 
 const { Navigator } = createMaterialTopTabNavigator();
 
@@ -17,52 +22,49 @@ const MaterialTopTabs = withLayoutContext<
   MaterialTopTabNavigationEventMap
 >(Navigator);
 
+const TABS = [
+  ['all', 'All', Grid2X2],
+  ['electronics', 'Electronics', Cable],
+  ['jewelery', 'Jewelery', Gem],
+  ['men-clothing', 'Men\'s Clothes', Shirt],
+  ['women-clothing', 'Women\'s Clothes', Shirt],
+] as const;
+const width = Dimensions.get('window').width;
+
 export default function BaiTap3CategoriesLayoutScreen() {
   const { colors } = useTheme();
-  const width = Dimensions.get('window').width;
-  const TAB_COUNT = 3;
 
   return (
     <MaterialTopTabs
-      initialRouteName="category-1"
-      className={cn("flex-1")}
-      tabBarPosition="top"
+      initialRouteName='all'
+      className={cn('flex-1')}
+      tabBarPosition='top'
       screenOptions={{
-        tabBarStyle: { width, maxWidth: width, minWidth: width, marginTop: 16, shadowColor: 'transparent' },
+        tabBarStyle: { width, maxWidth: width, minWidth: width, marginTop: 12, shadowColor: 'transparent' },
         tabBarActiveTintColor: colors.text,
         tabBarInactiveTintColor: 'grey',
-        tabBarIndicatorStyle: {
-          minWidth: width / TAB_COUNT,
-          backgroundColor: colors.text,
-        },
+        tabBarIndicatorStyle: { backgroundColor: colors.text },
         tabBarScrollEnabled: true,
         tabBarLabelStyle: {
-          fontSize: 14,
+          fontSize: 12,
           alignItems: 'center',
           justifyContent: 'center',
           textTransform: 'capitalize',
           fontWeight: 'bold',
         },
-        tabBarItemStyle: { width: width / TAB_COUNT },
       }}>
-      <MaterialTopTabs.Screen
-        name="category-1"
-        options={{
-          title: 'Category 1',
-        }}
-      />
-      <MaterialTopTabs.Screen
-        name="category-2"
-        options={{
-          title: 'Category 2',
-        }}
-      />
-      <MaterialTopTabs.Screen
-        name="category-3"
-        options={{
-          title: 'Category 3',
-        }}
-      />
+      {TABS.map(([name, title, Icons]) => (
+        <MaterialTopTabs.Screen
+          key={name}
+          name={name}
+          options={{
+            title,
+            tabBarIcon: () => Icons
+              ? <Icons className="size-6 text-black" />
+              : <></>,
+          }}
+        />
+      ))}
     </MaterialTopTabs>
   );
 }
