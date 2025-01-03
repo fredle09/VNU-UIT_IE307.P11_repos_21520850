@@ -54,7 +54,11 @@ export default function HomeScreen() {
     <View className='bg-white -mx-2 px-2 mb-4'>
       <View className=' flex flex-row items-center gap-2 py-2'>{title}</View>
       <View className="flex flex-row flex-wrap gap-2 pb-8">
-        {isLoading || error ? null : (
+        {isLoading || error ? (
+          Array.from({ length: 4 }).map((_, i) => (
+            <ProductCard key={i} id={i} />
+          ))
+        ) : (
           data?.slice(start, end).map((props, index) => (
             <ProductCard key={index} {...props} />
           ))
@@ -65,7 +69,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className={cn(Platform.OS === "android" ? "pt-16" : "", "flex flex-1 flex-col")}>
-      <ScrollView className='px-2 bg-zinc-200 space-y-4'>
+      <ScrollView className='px-2 bg-zinc-200 space-y-4 z-0'>
         <View className="bg-white -mx-2 px-2 mb-4">
           <Text className="text-3xl font-bold text-center capitalize text-red-600">Sale kịch trần, Sắm tết vô lo</Text>
           <Carousel items={[...carouselItemsData]} />

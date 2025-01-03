@@ -10,10 +10,17 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PortalHost } from '@rn-primitives/portal';
 import { Toaster } from 'sonner-native';
 import { supabase } from '~/utils/supabase';
+import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
+import { CartProvider } from '~/providers/cart-provider';
 
 export const unstable_settings = {
   initialRouteName: '(drawer)',
 };
+
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: true, // Reanimated runs in strict mode by default
+});
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -39,16 +46,18 @@ export default function RootLayout() {
     <GestureHandlerRootView className="flex flex-1">
       <AuthProvider>
         <FontSizeProvider>
-          <ThemeProvider>
-            <Slot />
-            <PortalHost />
-            <Toaster
-              richColors
-              position="top-center"
-              visibleToasts={2}
-              offset={Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0 + 14) : 0}
-            />
-          </ThemeProvider>
+          <CartProvider>
+            <ThemeProvider>
+              <Slot />
+              <PortalHost />
+              <Toaster
+                richColors
+                position="top-center"
+                visibleToasts={2}
+                offset={Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0 + 14) : 0}
+              />
+            </ThemeProvider>
+          </CartProvider>
         </FontSizeProvider>
       </AuthProvider>
     </GestureHandlerRootView>

@@ -5,7 +5,8 @@ import type {
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useTheme, type ParamListBase, type TabNavigationState } from '@react-navigation/native';
 import { withLayoutContext } from 'expo-router';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
+import { cn } from '~/lib/utils';
 
 const { Navigator } = createMaterialTopTabNavigator();
 
@@ -24,10 +25,10 @@ export default function BaiTap3CategoriesLayoutScreen() {
   return (
     <MaterialTopTabs
       initialRouteName="category-1"
-      className="flex-1"
+      className={cn("flex-1")}
       tabBarPosition="top"
       screenOptions={{
-        tabBarStyle: { width, maxWidth: width, minWidth: width },
+        tabBarStyle: { width, maxWidth: width, minWidth: width, marginTop: 16, shadowColor: 'transparent' },
         tabBarActiveTintColor: colors.text,
         tabBarInactiveTintColor: 'grey',
         tabBarIndicatorStyle: {
