@@ -1,5 +1,5 @@
 import { Redirect, Tabs } from 'expo-router';
-import { View } from 'lucide-react-native';
+import { View } from 'react-native';
 
 import { Home } from '~/lib/icons/Home';
 import { LayoutGrid } from '~/lib/icons/LayoutGrid';
@@ -25,7 +25,7 @@ export default function BaiTap3MainLayout() {
         headerShown: false,
       }}>
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <Home color={color} />,
@@ -36,7 +36,7 @@ export default function BaiTap3MainLayout() {
         options={{
           title: 'Categories',
           tabBarIcon: ({ color }) => <LayoutGrid color={color} />,
-          header: () => <View />,
+          header: () => <View className="pt-8" />,
           headerShown: true,
         }}
       />

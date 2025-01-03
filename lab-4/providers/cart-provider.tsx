@@ -24,7 +24,7 @@ export function CartProvider({ children }: PropsWithChildren) {
 
   const addProductToCart = useCallback(async (product: TProduct) => {
     const user_id = session?.user.id;
-    if (!user_id) return;
+    if (!user_id) { setCart([]); return; }
 
     const promise = async () => {
       const { data, error } = await supabase

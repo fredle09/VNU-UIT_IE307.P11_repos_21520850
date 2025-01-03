@@ -18,7 +18,7 @@ export default function AuthLayoutScreen() {
   }
 
   if (session) {
-    return <Redirect href="/(main)" />;
+    return <Redirect href="/(main)/home" />;
   }
 
   return (

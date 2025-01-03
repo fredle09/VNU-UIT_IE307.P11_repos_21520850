@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { Text } from './ui/text';
@@ -7,6 +7,7 @@ import { Star } from '~/lib/icons/Star';
 import { ShoppingCart } from '~/lib/icons/ShoppingCart';
 import { Button } from './ui/button';
 import { useCartContext } from '~/providers/cart-provider';
+import { router } from 'expo-router';
 
 const PRODUCT_CARD_DEFAULT_PROPS: Partial<IProductCardProps> = {
   title: 'Product Name',
@@ -18,33 +19,40 @@ export const ProductCard = (props: Partial<Omit<IProductCardProps, "id">> & { id
   const { addProductToCart } = useCartContext();
 
   return (
-    <View className="w-full min-w-48 flex-1">
-      <View className="overflow-hidden">
-        <View className="aspect-[3/4] w-full flex-1 overflow-hidden rounded">
-          <Image
-            contentFit="contain"
-            placeholder={require('~/assets/icon.png')}
-            source={{ uri: props.image }}
-            style={styles.productImage}
-          />
-        </View>
-        <View className="flex flex-1">
-          <Text className="text-base font-bold line-clamp-2">{props.title}</Text>
-          <View className='flex flex-row gap-2 items-center justify-between'>
-            <View className="flex flex-col w-full justify-between flex-1">
-              <Text className="text-xl text-orange-500">${props.price}</Text>
-              <View className='flex flex-row items-center gap-2'>
-                <Star className='size-6 text-yellow-500' />
-                <Text className="text-yellow-500">{props?.rating?.rate} ({props?.rating?.count})</Text>
+    <Pressable className="w-full min-w-48 flex-1" onPress={() => router.push({
+      pathname: '/(main)/home/products/[id]',
+      params: { id: props.id }
+    })}>
+      <View>
+        <View className="overflow-hidden">
+          <View className="aspect-[3/4] w-full flex-1 overflow-hidden rounded">
+            <Image
+              contentFit="contain"
+              placeholder={require('~/assets/icon.png')}
+              source={{ uri: props.image }}
+              style={styles.productImage}
+            />
+          </View>
+          <View className="flex flex-1">
+            <Text className="text-base font-bold line-clamp-2">{props.title}</Text>
+            <View className='flex flex-row gap-2 items-center justify-between'>
+              <View className="flex flex-col w-full justify-between flex-1">
+                <Text className="text-xl text-orange-500">${props.price}</Text>
+                {props.rating && (
+                  <View className='flex flex-row items-center gap-2'>
+                    <Star className='size-6 text-yellow-500' />
+                    <Text className="text-yellow-500">{props?.rating?.rate} ({props?.rating?.count})</Text>
+                  </View>
+                )}
               </View>
+              <Button variant="ghost" size="icon" onPress={() => addProductToCart({ id: props.id })}>
+                <ShoppingCart className="text-black" />
+              </Button>
             </View>
-            <Button variant="ghost" size="icon" onPress={() => addProductToCart({ id: props.id })}>
-              <ShoppingCart className="text-black" />
-            </Button>
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
