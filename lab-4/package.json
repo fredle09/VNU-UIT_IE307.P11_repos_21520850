@@ -22,6 +22,7 @@
     "@react-navigation/drawer": "^7.0.0",
     "@react-navigation/material-top-tabs": "^7.0.18",
     "@react-navigation/native": "^7.0.13",
+    "@rn-primitives/alert-dialog": "^1.1.0",
     "@rn-primitives/label": "^1.1.0",
     "@rn-primitives/portal": "^1.1.0",
     "@rn-primitives/separator": "^1.1.0",
@@ -59,6 +60,7 @@
     "swr": "^2.2.5",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
+    "use-debounce": "^10.0.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {
