@@ -2,7 +2,7 @@ import React from 'react';
 import { Stack, useLocalSearchParams } from "expo-router";
 import useSWR, { useSWRConfig } from "swr";
 import { Text } from "~/components/ui/text";
-import { ScrollView } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
 import { View } from 'react-native';
 import { Star } from '~/lib/icons/Star';
@@ -31,30 +31,32 @@ export default function ProductDetailPage() {
     return NotFoundScreen();
 
   return (
-    isLoading ? (
-      <Text>Loading...</Text>
-    ) : (
-      <>
-        <Stack.Screen options={{
-          title: (data || cacheProductData)?.title || "Product Detail",
-          headerShown: true,
-        }} />
-        <ScrollView className='flex flex-1 flex-col gap-4 space-y-4 p-4'>
-          <Image
-            source={finalData.image}
-            contentFit="contain"
-            style={{ aspectRatio: 1 }}
-          />
-          <Text className='text-xl font-bold'>{finalData.title}</Text>
-          <Text>{finalData.description}</Text>
-          <Text className='text-xl font-bold'>Price: ${finalData.price}</Text>
-          <View className="flex flex-row gap-2 items-center">
-            <Text className="font-bold text-base">Rating:</Text>
-            <Star className='size-6 text-yellow-500' />
-            <Text className="text-yellow-500">{finalData?.rating?.rate} ({finalData?.rating?.count})</Text>
-          </View>
-        </ScrollView>
-      </>
-    )
+    <SafeAreaView className="flex-1">
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <>
+          <Stack.Screen options={{
+            title: (data || cacheProductData)?.title || "Product Detail",
+            headerShown: true,
+          }} />
+          <ScrollView className='flex flex-1 flex-col gap-4 space-y-4 p-4 pb-16'>
+            <Image
+              source={finalData.image}
+              contentFit="contain"
+              style={{ aspectRatio: 1 }}
+            />
+            <Text className='text-xl font-bold'>{finalData.title}</Text>
+            <Text>{finalData.description}</Text>
+            <Text className='text-xl font-bold'>Price: ${finalData.price}</Text>
+            <View className="flex flex-row gap-2 items-center">
+              <Text className="font-bold text-base">Rating:</Text>
+              <Star className='size-6 text-yellow-500' />
+              <Text className="text-yellow-500">{finalData?.rating?.rate} ({finalData?.rating?.count})</Text>
+            </View>
+          </ScrollView>
+        </>
+      )}
+    </SafeAreaView>
   )
 };
