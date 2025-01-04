@@ -10,7 +10,9 @@ This repository contains the code and documentation for the VNU-UIT IE307.P11 co
 <div>
 <h3>Video demo</h3>
 
-https://github.com/user-attachments/assets/fecc778e-887d-4983-94f7-ff8b7becf161
+
+https://github.com/user-attachments/assets/cfac7c8b-a121-41c2-84d4-60ecd5dea4e7
+
 
 </div>
 </div>
