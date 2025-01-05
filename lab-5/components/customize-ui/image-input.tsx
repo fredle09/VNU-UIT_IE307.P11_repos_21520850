@@ -85,7 +85,9 @@ const ImageInput = forwardRef(({ value, onChangeText }: ImageInputProps, ref) =>
   return (
     <View className='flex flex-1 items-center justify-center gap-4'>
       {!value ? (
-        <Image source={{ uri: value || 'https://placehold.co/400x300' }} style={styles.image} />
+        <View className='aspect-[4/3] w-full flex-1 items-center justify-center bg-zinc-100 dark:bg-zinc-800'>
+          <Text className='text-center'>No Image selected</Text>
+        </View>
       ) : (
         <View className='relative'>
           <Image source={{ uri: value }} style={styles.image} />
