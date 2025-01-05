@@ -90,7 +90,7 @@ const ImageInput = forwardRef(({ value, onChangeText }: ImageInputProps, ref) =>
         <View className='relative'>
           <Image source={{ uri: value }} style={styles.image} />
           <Button
-            onPress={() => onChangeText(null)}
+            onPress={() => onChangeText('')}
             size='icon'
             variant='destructive'
             className='absolute right-2 top-2'>
