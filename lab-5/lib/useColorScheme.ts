@@ -5,7 +5,6 @@ import { useCallback } from 'react';
 import { setAndroidNavigationBar } from './android-navigation-bar';
 
 export function useColorScheme() {
-  // const { setColorScheme: setNativewindColorScheme } = useNativewindColorScheme();
   const safetyColorScheme = colorScheme.get() ?? 'light';
 
   const setColorScheme = useCallback((newColorScheme: 'light' | 'dark') => {
