@@ -161,7 +161,7 @@ const FormController = <
 }: Omit<ControllerProps<TFieldValues, TName>, 'render'> & {
   render: (props: {
     field: Omit<ControllerRenderProps<TFieldValues, TName>, 'onChange'> & {
-      onChangeText: (value: string) => void;
+      onChangeText: (value: any) => void;
     };
     fieldState: ControllerFieldState;
     formState: UseFormStateReturn<TFieldValues>;
