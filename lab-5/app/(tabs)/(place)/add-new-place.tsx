@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { z } from 'zod';
@@ -18,6 +18,7 @@ import {
 
 export default function AddMyPlace() {
   const [isLoading, setIsLoading] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
   const form = useForm<z.infer<typeof addNewPlaceFormSchema>>({
     defaultValues: DEFAULT_ADD_NEW_PLACE_FORM_VALUES,
     resolver: zodResolver(addNewPlaceFormSchema),
@@ -34,7 +35,7 @@ export default function AddMyPlace() {
   };
 
   return (
-    <ScrollView>
+    <ScrollView ref={scrollViewRef}>
       <View className='p-4'>
         <Form {...form}>
           <FormController
@@ -64,6 +65,7 @@ export default function AddMyPlace() {
                 value={field.value}
                 onChange={field.onChangeText}
                 disabled={isLoading}
+                scrollViewRef={scrollViewRef}
               />
             )}
           />

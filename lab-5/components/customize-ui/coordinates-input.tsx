@@ -1,6 +1,7 @@
 import * as Location from 'expo-location';
 import {
   Dispatch,
+  RefObject,
   SetStateAction,
   forwardRef,
   useCallback,
@@ -8,7 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import MapView, { Marker, Region } from 'react-native-maps';
 import { toast } from 'sonner-native';
 
@@ -17,6 +18,9 @@ import { Text } from '../ui/text';
 
 import { Locate } from '~/lib/icons/Locate';
 import { MapPin } from '~/lib/icons/MapPin';
+import { MapPinCheckInside } from '~/lib/icons/MapPinCheckInside';
+import { Maximize } from '~/lib/icons/Maximize';
+import { Minimize } from '~/lib/icons/Minimize';
 
 type Coordinates = [number, number] | null;
 
@@ -24,6 +28,7 @@ interface CoordinatesInputProps {
   value: Coordinates;
   onChange: Dispatch<SetStateAction<Coordinates>>;
   disabled?: boolean;
+  scrollViewRef?: RefObject<ScrollView>;
 }
 
 const MAP_REGION_DEFAULT: Region = {
@@ -34,15 +39,16 @@ const MAP_REGION_DEFAULT: Region = {
 };
 
 const CoordinatesInput = forwardRef(
-  ({ value, onChange, disabled = false }: CoordinatesInputProps, ref) => {
+  ({ value, onChange, disabled = false, scrollViewRef }: CoordinatesInputProps, ref) => {
     const mapRef = useRef<MapView>(null);
+    const mapContainerRef = useRef<View>(null);
     const [isPicking, setIsPicking] = useState(false);
     const [mapCenter, setMapCenter] = useState<Coordinates>([
       MAP_REGION_DEFAULT.latitude,
       MAP_REGION_DEFAULT.longitude,
     ]);
     const [address, setAddress] = useState<string | null>(null);
-
+    const [isFullscreen, setIsFullscreen] = useState(false);
     const reverseGeocode = useCallback(
       async (latitude: number, longitude: number) => {
         try {
@@ -113,12 +119,15 @@ const CoordinatesInput = forwardRef(
       pickOnMap: handlePickOnMapToggle,
     }));
 
+    const MapIcon = isPicking ? MapPinCheckInside : MapPin;
+    const ScreenIcon = isFullscreen ? Minimize : Maximize;
+
     return (
-      <View>
+      <View className='relative' ref={mapContainerRef}>
         {(isPicking && mapCenter?.length === 2) || value?.length === 2 ? (
           <MapView
             ref={mapRef}
-            style={styles.map}
+            style={[styles.map, isFullscreen && styles.fullscreen]}
             initialRegion={MAP_REGION_DEFAULT}
             onRegionChange={handleRegionChange}>
             {value?.length === 2 && (
@@ -140,13 +149,30 @@ const CoordinatesInput = forwardRef(
           </View>
         )}
 
+        <Button
+          className='absolute right-2 top-2'
+          onPress={() =>
+            setIsFullscreen((prev) => {
+              const newValue = !prev;
+              if (newValue) {
+                // TODO: change to dynamic value
+                scrollViewRef?.current?.scrollTo({ y: 450 });
+              }
+              return newValue;
+            })
+          }
+          size='icon'
+          variant='secondary'>
+          <ScreenIcon className='size-6 text-black dark:text-white' />
+        </Button>
+
         <View className='mt-4 flex flex-row items-center justify-center gap-4'>
           <Button
             onPress={handlePickOnMapToggle}
             variant='outline'
             className='flex flex-row items-center gap-2'
             disabled={disabled}>
-            <MapPin className='-ml-1.5 size-6 text-black dark:text-white' />
+            <MapIcon className='-ml-1.5 size-6 text-black dark:text-white' />
             <Text className='text-black dark:text-white'>
               {isPicking ? 'Finish Picking' : 'Pick on Map'}
             </Text>
@@ -170,9 +196,8 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: '4/3',
   },
-  fullscreenMap: {
-    position: 'fixed',
-    inset: 0,
+  fullscreen: {
+    aspectRatio: '2/3',
   },
 });
 
