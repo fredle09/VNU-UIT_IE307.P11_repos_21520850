@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { toast } from 'sonner-native';
+import { useSWRConfig } from 'swr';
 import { z } from 'zod';
 
 import { CoordinatesInput } from '~/components/customize-ui/coordinates-input';
@@ -19,6 +20,7 @@ import {
   addNewPlaceFormSchema,
   DEFAULT_ADD_NEW_PLACE_FORM_VALUES,
 } from '~/utils/form/add-new-place';
+import { unicodeToAscii } from '~/utils/functions';
 import { supabase } from '~/utils/supabase';
 
 export default function AddMyPlace() {
@@ -29,19 +31,25 @@ export default function AddMyPlace() {
     defaultValues: DEFAULT_ADD_NEW_PLACE_FORM_VALUES,
     resolver: zodResolver(addNewPlaceFormSchema),
   });
+  const { mutate } = useSWRConfig();
 
   const insertPlace = useCallback(
     async ({ locate, ...data }: z.infer<typeof addNewPlaceFormSchema>) => {
       try {
         setIsLoading(true);
         if (!session?.user?.id) return;
-        const _data = await uploadFileFromUri('places', `${data.title}.jpg`, data.imageUri);
+        const _data = await uploadFileFromUri(
+          'places',
+          `${unicodeToAscii(data.title)}.${new Date().getTime()}.jpg`,
+          data.imageUri
+        );
         const fullPath = getPublicUrl('places', _data.path);
         const { error } = await supabase
           .from('places')
           .insert({ ...data, imageUri: fullPath, user_id: session.user.id, ...locate });
         if (error) throw error;
-        router.push('/(tabs)/(place)');
+        mutate('places');
+        router.back();
       } finally {
         setIsLoading(false);
       }
