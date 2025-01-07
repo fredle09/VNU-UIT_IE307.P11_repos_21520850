@@ -1,10 +1,12 @@
-import { Image, View } from 'react-native';
+import { router } from 'expo-router';
+import { Image, Pressable, View } from 'react-native';
 
 import { Text } from './ui/text';
 
 import { capitalizeFirstChar } from '~/utils/functions';
 
 export interface IPlaceItemProps {
+  id: number;
   title: string | null;
   imageUri: string | null;
   address: string | null;
@@ -12,7 +14,14 @@ export interface IPlaceItemProps {
 
 export default function PlaceItem(props: IPlaceItemProps) {
   return (
-    <View className='flex flex-row overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800'>
+    <Pressable
+      className='flex flex-row overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800'
+      onPress={() =>
+        router.push({
+          pathname: '/place-detail/[id]',
+          params: { id: props.id },
+        })
+      }>
       <Image
         source={{ uri: props.imageUri ?? 'https://placehold.co/100x100' }}
         className='aspect-square w-1/3 object-contain'
@@ -23,6 +32,6 @@ export default function PlaceItem(props: IPlaceItemProps) {
         </Text>
         <Text className='line-clamp-2'>{props.address}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }

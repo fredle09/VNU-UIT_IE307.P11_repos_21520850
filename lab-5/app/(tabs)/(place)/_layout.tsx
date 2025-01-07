@@ -25,7 +25,7 @@ export default function PlaceLayout() {
       />
       <Stack.Screen name='camera' />
       <Stack.Screen name='pick-on-map' />
-      <Stack.Screen name='detail-item' />
+      <Stack.Screen name='place-details/[id]' />
       <Stack.Screen name='view-on-map' />
     </Stack>
   );
