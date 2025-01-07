@@ -3,6 +3,7 @@ import { Image, Pressable, View } from 'react-native';
 
 import { Text } from './ui/text';
 
+import { getPublicUrl } from '~/lib/storage';
 import { capitalizeFirstChar } from '~/utils/functions';
 
 export interface IPlaceItemProps {
@@ -23,7 +24,7 @@ export default function PlaceItem(props: IPlaceItemProps) {
         })
       }>
       <Image
-        source={{ uri: props.imageUri ?? 'https://placehold.co/100x100' }}
+        source={{ uri: getPublicUrl('places', props.imageUri!) ?? 'https://placehold.co/100x100' }}
         className='aspect-square w-1/3 object-contain'
       />
       <View className='flex w-2/3 flex-col gap-2 p-2 px-3'>

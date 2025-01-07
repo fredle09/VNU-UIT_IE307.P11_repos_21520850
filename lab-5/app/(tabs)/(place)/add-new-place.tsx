@@ -14,7 +14,7 @@ import { Input } from '~/components/customize-ui/input';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { User } from '~/lib/icons/User';
-import { getPublicUrl, uploadFileFromUri } from '~/lib/storage';
+import { uploadFileFromUri } from '~/lib/storage';
 import { useAuthSession } from '~/providers/auth-provider';
 import {
   addNewPlaceFormSchema,
@@ -43,10 +43,9 @@ export default function AddMyPlace() {
           `${unicodeToAscii(data.title)}.${new Date().getTime()}.jpg`,
           data.imageUri
         );
-        const fullPath = getPublicUrl('places', _data.path);
         const { error } = await supabase
           .from('places')
-          .insert({ ...data, imageUri: fullPath, user_id: session.user.id, ...locate });
+          .insert({ ...data, imageUri: _data.path, user_id: session.user.id, ...locate });
         if (error) throw error;
         mutate('places');
         router.back();

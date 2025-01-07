@@ -17,6 +17,7 @@ import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { Locate } from '~/lib/icons/Locate';
 import { Trash2 } from '~/lib/icons/Trash2';
+import { getPublicUrl } from '~/lib/storage';
 import { capitalizeFirstChar } from '~/utils/functions';
 import { supabase } from '~/utils/supabase';
 
@@ -97,7 +98,7 @@ export default function DetailItem() {
         ) : (
           <>
             <Image
-              source={{ uri: finalData.imageUri }}
+              source={{ uri: getPublicUrl('places', finalData.imageUri!) }}
               resizeMode='contain'
               className='aspect-[4_/_3] w-full'
             />
