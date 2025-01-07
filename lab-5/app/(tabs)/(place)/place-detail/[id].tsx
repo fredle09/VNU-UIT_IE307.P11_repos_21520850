@@ -1,6 +1,7 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, View } from 'react-native';
+import MapView, { Marker, Region } from 'react-native-maps';
 import useSWR, { useSWRConfig } from 'swr';
 
 import {
@@ -104,7 +105,19 @@ export default function DetailItem() {
             />
             <View className='flex gap-4 p-4'>
               <Text className='text-center text-2xl font-bold'>{finalData.address}</Text>
-              <Button className='flex flex-row gap-2' disabled={isPending}>
+              <Button
+                className='flex flex-row gap-2'
+                disabled={isPending}
+                onPress={() =>
+                  router.push({
+                    pathname: '/(tabs)/(place)/view-on-map',
+                    params: {
+                      lat: finalData.coordinates[0],
+                      long: finalData.coordinates[1],
+                      address: finalData.address,
+                    },
+                  })
+                }>
                 <Locate className='-ml-1.5 size-6 text-white dark:text-black' />
                 <Text>View on Map</Text>
               </Button>

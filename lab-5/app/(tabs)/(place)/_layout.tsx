@@ -23,10 +23,8 @@ export default function PlaceLayout() {
           title: 'Add New Place',
         }}
       />
-      <Stack.Screen name='camera' />
-      <Stack.Screen name='pick-on-map' />
-      <Stack.Screen name='place-details/[id]' />
-      <Stack.Screen name='view-on-map' />
+      <Stack.Screen name='place-detail/[id]' />
+      <Stack.Screen name='view-on-map' options={{ title: 'View on Map' }} />
     </Stack>
   );
 }
