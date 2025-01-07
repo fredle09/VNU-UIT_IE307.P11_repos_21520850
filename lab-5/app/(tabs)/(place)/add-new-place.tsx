@@ -11,6 +11,7 @@ import { Input } from '~/components/customize-ui/input';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { User } from '~/lib/icons/User';
+import { uploadFileFromUri } from '~/lib/storage';
 import {
   addNewPlaceFormSchema,
   DEFAULT_ADD_NEW_PLACE_FORM_VALUES,
@@ -27,7 +28,7 @@ export default function AddMyPlace() {
   const onSubmit = async (data: z.infer<typeof addNewPlaceFormSchema>) => {
     setIsLoading(true);
     try {
-      // const _data = await uploadFileFromUri('places', `${data.title}.jpg`, data.imageUri);
+      const _data = await uploadFileFromUri('places', `${data.title}.jpg`, data.imageUri);
       console.log('🚀 ~ onSubmit ~ _data:', _data);
     } finally {
       setIsLoading(false);
