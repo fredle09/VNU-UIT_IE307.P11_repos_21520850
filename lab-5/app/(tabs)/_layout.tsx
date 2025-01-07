@@ -34,6 +34,7 @@ export default function TabLayout() {
         options={{
           title: 'Media',
           tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
+          headerShown: false,
         }}
       />
     </Tabs>
