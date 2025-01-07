@@ -11,17 +11,20 @@ import React, {
 } from 'react';
 import { Platform } from 'react-native';
 
-// Define context
-const NotificationContext = createContext({});
+interface NotificationContextType {
+  showNotification: (title: string, body: string) => Promise<void>;
+  expoPushToken: string;
+  notification: Notifications.Notification | null;
+}
 
-// Notification Provider component
+const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
+
 export const NotificationProvider: FC<PropsWithChildren> = ({ children }) => {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState<Notifications.Notification | null>(null);
   const notificationListener = useRef<Notifications.EventSubscription | null>(null);
   const responseListener = useRef<Notifications.EventSubscription | null>(null);
 
-  // Register for push notifications and handle responses
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => setExpoPushToken(token ?? ''));
 

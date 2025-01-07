@@ -11,8 +11,10 @@ import { Text } from '~/components/ui/text';
 import { Square } from '~/lib/icons/Square';
 import { Video as VideoIcon } from '~/lib/icons/Video';
 import { cn } from '~/lib/utils';
+import { useNotification } from '~/providers/notification-provider';
 
 export default function RecordVideo() {
+  const { showNotification } = useNotification();
   const cameraRef = useRef<CameraView>(null);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -71,6 +73,7 @@ export default function RecordVideo() {
     try {
       await MediaLibrary.saveToLibraryAsync(video);
       setVideo(null);
+      showNotification('Video Saved!', 'Your video has been successfully saved');
     } catch (error) {
       console.error('Save error:', error);
     } finally {
