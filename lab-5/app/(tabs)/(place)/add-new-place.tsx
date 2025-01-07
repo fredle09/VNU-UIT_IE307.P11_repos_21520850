@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRef, useState } from 'react';
+import { router } from 'expo-router';
+import { useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
+import { toast } from 'sonner-native';
 import { z } from 'zod';
 
 import { CoordinatesInput } from '~/components/customize-ui/coordinates-input';
@@ -11,13 +13,16 @@ import { Input } from '~/components/customize-ui/input';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { User } from '~/lib/icons/User';
-import { uploadFileFromUri } from '~/lib/storage';
+import { getPublicUrl, uploadFileFromUri } from '~/lib/storage';
+import { useAuthSession } from '~/providers/auth-provider';
 import {
   addNewPlaceFormSchema,
   DEFAULT_ADD_NEW_PLACE_FORM_VALUES,
 } from '~/utils/form/add-new-place';
+import { supabase } from '~/utils/supabase';
 
 export default function AddMyPlace() {
+  const { session } = useAuthSession();
   const [isLoading, setIsLoading] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const form = useForm<z.infer<typeof addNewPlaceFormSchema>>({
@@ -25,14 +30,32 @@ export default function AddMyPlace() {
     resolver: zodResolver(addNewPlaceFormSchema),
   });
 
-  const onSubmit = async (data: z.infer<typeof addNewPlaceFormSchema>) => {
-    setIsLoading(true);
-    try {
-      const _data = await uploadFileFromUri('places', `${data.title}.jpg`, data.imageUri);
-      console.log('🚀 ~ onSubmit ~ _data:', _data);
-    } finally {
-      setIsLoading(false);
-    }
+  const insertPlace = useCallback(
+    async ({ locate, ...data }: z.infer<typeof addNewPlaceFormSchema>) => {
+      try {
+        setIsLoading(true);
+        if (!session?.user?.id) return;
+        const _data = await uploadFileFromUri('places', `${data.title}.jpg`, data.imageUri);
+        const fullPath = getPublicUrl('places', _data.path);
+        const { error } = await supabase
+          .from('places')
+          .insert({ ...data, imageUri: fullPath, user_id: session.user.id, ...locate });
+        if (error) throw error;
+        router.push('/(tabs)/(place)');
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [session]
+  );
+
+  const onSubmit = async ({ locate, ...data }: z.infer<typeof addNewPlaceFormSchema>) => {
+    if (!session?.user?.id) return;
+    toast.promise(insertPlace({ locate, ...data }), {
+      loading: 'Adding new place...',
+      success: () => 'New place added successfully',
+      error: 'Failed to add new place',
+    });
   };
 
   return (
@@ -59,8 +82,8 @@ export default function AddMyPlace() {
           />
 
           <FormController
-            name='coordinates'
-            label='Coordinates:'
+            name='locate'
+            label='Locate:'
             render={({ field }) => (
               <CoordinatesInput
                 value={field.value}

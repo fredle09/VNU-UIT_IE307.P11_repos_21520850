@@ -22,11 +22,16 @@ import { MapPinCheckInside } from '~/lib/icons/MapPinCheckInside';
 import { Maximize } from '~/lib/icons/Maximize';
 import { Minimize } from '~/lib/icons/Minimize';
 
-type Coordinates = [number, number] | null;
+type TCoordinates = [number, number];
+type TAddress = string;
+type TLocateValueProps = {
+  coordinates: TCoordinates;
+  address: TAddress;
+};
 
-interface CoordinatesInputProps {
-  value: Coordinates;
-  onChange: Dispatch<SetStateAction<Coordinates>>;
+interface LocateInputProps {
+  value: TLocateValueProps | null;
+  onChange: Dispatch<SetStateAction<TLocateValueProps | null>>;
   disabled?: boolean;
   scrollViewRef?: RefObject<ScrollView>;
 }
@@ -38,58 +43,43 @@ const MAP_REGION_DEFAULT: Region = {
   longitudeDelta: 0.05,
 };
 
-const CoordinatesInput = forwardRef(
-  ({ value, onChange, disabled = false, scrollViewRef }: CoordinatesInputProps, ref) => {
+const LocateInput = forwardRef(
+  ({ value, onChange, disabled = false, scrollViewRef }: LocateInputProps, ref) => {
     const mapRef = useRef<MapView>(null);
     const mapContainerRef = useRef<View>(null);
     const [isPicking, setIsPicking] = useState(false);
-    const [mapCenter, setMapCenter] = useState<Coordinates>([
+    const [isFullscreen, setIsFullscreen] = useState(false);
+    const [mapCenter, setMapCenter] = useState<TCoordinates>([
       MAP_REGION_DEFAULT.latitude,
       MAP_REGION_DEFAULT.longitude,
     ]);
-    const [address, setAddress] = useState<string | null>(null);
-    const [isFullscreen, setIsFullscreen] = useState(false);
-    const reverseGeocode = useCallback(
-      async (latitude: number, longitude: number) => {
-        try {
-          const [result] = await Location.reverseGeocodeAsync({ latitude, longitude });
-          if (!result) throw new Error('Unable to fetch address');
-          setAddress(result.formattedAddress);
-        } catch {
-          setAddress('Unable to fetch address');
-        }
-      },
-      [setAddress]
-    );
+
+    const onChangeCoords = useCallback(async (coords: { latitude: number; longitude: number }) => {
+      const newCoordinates: TCoordinates = [coords.latitude, coords.longitude];
+      setMapCenter(newCoordinates);
+      onChange({ coordinates: newCoordinates, address: 'Unknown address' });
+      const [result] = await Location.reverseGeocodeAsync(coords);
+      if (!result) return;
+      onChange({ coordinates: newCoordinates, address: result.formattedAddress ?? '' });
+    }, []);
 
     const handleUseCurrentLocation = useCallback(async () => {
       toast.promise(
         (async () => {
           const { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== 'granted') {
-            throw new Error('Permission to access location was denied');
-          }
-
+          if (status !== 'granted') throw new Error('Permission to access location was denied');
           const location = await Location.getCurrentPositionAsync({
             accuracy: Location.Accuracy.High,
           });
-          const newCoordinates: Coordinates = [location.coords.latitude, location.coords.longitude];
-
-          onChange(newCoordinates);
-
-          await reverseGeocode(newCoordinates[0], newCoordinates[1]);
-
+          await onChangeCoords(location.coords);
           mapRef.current?.animateToRegion(
             {
-              latitude: newCoordinates[0],
-              longitude: newCoordinates[1],
+              ...location.coords,
               latitudeDelta: 0.005,
               longitudeDelta: 0.005,
             },
             1000
           );
-
-          return newCoordinates;
         })(),
         {
           loading: 'Getting current location...',
@@ -97,15 +87,13 @@ const CoordinatesInput = forwardRef(
           error: (err) => (err instanceof Error ? err.message : 'Unknown error'),
         }
       );
-    }, [reverseGeocode, onChange, mapRef]);
+    }, [onChangeCoords, mapRef]);
 
     const handlePickOnMapToggle = useCallback(() => {
       setIsPicking((prev) => !prev);
-      if (isPicking && mapCenter) {
-        onChange(mapCenter);
-        reverseGeocode(mapCenter[0], mapCenter[1]);
-      }
-    }, [setIsPicking, isPicking, mapCenter, onChange, reverseGeocode]);
+      if (!isPicking || !mapCenter) return;
+      onChangeCoords({ latitude: mapCenter[0], longitude: mapCenter[1] });
+    }, [setIsPicking, isPicking, mapCenter, onChangeCoords]);
 
     const handleRegionChange = useCallback(
       (region: Region) => {
@@ -124,16 +112,16 @@ const CoordinatesInput = forwardRef(
 
     return (
       <View className='relative' ref={mapContainerRef}>
-        {(isPicking && mapCenter?.length === 2) || value?.length === 2 ? (
+        {(isPicking && mapCenter?.length === 2) || value?.coordinates?.length === 2 ? (
           <MapView
             ref={mapRef}
             style={[styles.map, isFullscreen && styles.fullscreen]}
             initialRegion={MAP_REGION_DEFAULT}
             onRegionChange={handleRegionChange}>
-            {value?.length === 2 && (
+            {value?.coordinates?.length === 2 && (
               <Marker
-                coordinate={{ latitude: value[0], longitude: value[1] }}
-                title={address ?? 'Selected Location'}
+                coordinate={{ latitude: value.coordinates[0], longitude: value.coordinates[1] }}
+                title={value.address ?? 'Selected Location'}
               />
             )}
             {isPicking && mapCenter?.length === 2 && (
@@ -189,7 +177,7 @@ const CoordinatesInput = forwardRef(
     );
   }
 );
-CoordinatesInput.displayName = 'CoordinatesInput';
+LocateInput.displayName = 'CoordinatesInput';
 
 const styles = StyleSheet.create({
   map: {
@@ -201,4 +189,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { CoordinatesInput };
+export { LocateInput as CoordinatesInput };
