@@ -20,9 +20,10 @@ import { LibraryBig } from '~/lib/icons/LibraryBig';
 interface ImageInputProps {
   value: any;
   onChangeText: Dispatch<SetStateAction<any>>;
+  disabled?: boolean;
 }
 
-const ImageInput = forwardRef(({ value, onChangeText }: ImageInputProps, ref) => {
+const ImageInput = forwardRef(({ value, onChangeText, disabled = false }: ImageInputProps, ref) => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -101,11 +102,18 @@ const ImageInput = forwardRef(({ value, onChangeText }: ImageInputProps, ref) =>
         </View>
       )}
       <View className='flex flex-row items-center justify-center gap-4'>
-        <Button onPress={pickImage} variant='outline' className='flex flex-row items-center gap-2'>
+        <Button
+          onPress={pickImage}
+          variant='outline'
+          className='flex flex-row items-center gap-2'
+          disabled={disabled}>
           <LibraryBig className='-ml-1.5 size-6 text-black dark:text-white' />
           <Text>Pick an image</Text>
         </Button>
-        <Button onPress={takePicture} className='flex flex-row items-center gap-2'>
+        <Button
+          onPress={takePicture}
+          className='flex flex-row items-center gap-2'
+          disabled={disabled}>
           <CameraIcon className='-ml-1.5 size-6 text-white dark:text-black' />
           <Text>Take a picture</Text>
         </Button>

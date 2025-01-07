@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { z } from 'zod';
@@ -16,10 +17,21 @@ import {
 } from '~/utils/form/add-new-place';
 
 export default function AddMyPlace() {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof addNewPlaceFormSchema>>({
     defaultValues: DEFAULT_ADD_NEW_PLACE_FORM_VALUES,
     resolver: zodResolver(addNewPlaceFormSchema),
   });
+
+  const onSubmit = async (data: z.infer<typeof addNewPlaceFormSchema>) => {
+    setIsLoading(true);
+    try {
+      // const _data = await uploadFileFromUri('places', `${data.title}.jpg`, data.imageUri);
+      console.log('🚀 ~ onSubmit ~ _data:', _data);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <ScrollView>
@@ -41,18 +53,22 @@ export default function AddMyPlace() {
           <FormController
             name='imageUri'
             label='Image:'
-            render={({ field }) => <ImageInput {...field} />}
+            render={({ field }) => <ImageInput {...field} disabled={isLoading} />}
           />
 
           <FormController
             name='coordinates'
             label='Coordinates:'
             render={({ field }) => (
-              <CoordinatesInput value={field.value} onChange={field.onChangeText} />
+              <CoordinatesInput
+                value={field.value}
+                onChange={field.onChangeText}
+                disabled={isLoading}
+              />
             )}
           />
 
-          <Button onPress={form.handleSubmit((data) => console.log(data))}>
+          <Button onPress={form.handleSubmit(onSubmit)} className='mt-4' disabled={isLoading}>
             <Text>Add New Place</Text>
           </Button>
         </Form>
