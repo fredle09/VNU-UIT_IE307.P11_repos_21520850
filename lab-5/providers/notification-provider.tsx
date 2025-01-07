@@ -19,6 +19,14 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
 export const NotificationProvider: FC<PropsWithChildren> = ({ children }) => {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState<Notifications.Notification | null>(null);
@@ -47,7 +55,7 @@ export const NotificationProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const showNotification = async (title: string, body: string) => {
-    const deviceName = Device.deviceName || 'Your Device';
+    const deviceName = (await Device.getDeviceTypeAsync()) || 'Your Device';
     await Notifications.scheduleNotificationAsync({
       content: {
         title,
@@ -59,7 +67,8 @@ export const NotificationProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   async function registerForPushNotificationsAsync() {
-    let token;
+    let token: string | undefined;
+
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync('default', {
         name: 'default',

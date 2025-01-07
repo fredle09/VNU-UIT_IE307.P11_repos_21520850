@@ -2,7 +2,7 @@ import { ResizeMode, Video } from 'expo-av';
 import { CameraView, Camera } from 'expo-camera';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
-import { useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useState, useRef, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 
@@ -74,6 +74,7 @@ export default function RecordVideo() {
       await MediaLibrary.saveToLibraryAsync(video);
       setVideo(null);
       showNotification('Video Saved!', 'Your video has been successfully saved');
+      router.back();
     } catch (error) {
       console.error('Save error:', error);
     } finally {
