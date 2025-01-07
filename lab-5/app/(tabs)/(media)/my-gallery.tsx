@@ -10,7 +10,10 @@ import { Text } from '~/components/ui/text';
 const fetcher = async () => {
   const { status } = await MediaLibrary.requestPermissionsAsync();
   if (status !== 'granted') throw new Error('Permission denied');
-  const payload = await MediaLibrary.getAssetsAsync({ mediaType: ['photo', 'video'] });
+  const payload = await MediaLibrary.getAssetsAsync({
+    mediaType: ['photo', 'video'],
+    sortBy: [[MediaLibrary.SortBy.creationTime, false]],
+  });
   return payload.assets;
 };
 
