@@ -1,7 +1,6 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, View } from 'react-native';
-import MapView, { Marker, Region } from 'react-native-maps';
 import useSWR, { useSWRConfig } from 'swr';
 
 import {

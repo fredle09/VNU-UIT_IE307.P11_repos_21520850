@@ -1,3 +1,4 @@
+import { useFocusEffect } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import useSWR from 'swr';
 
@@ -21,7 +22,10 @@ const signOut = async () => {
 };
 
 export default function MyPlace() {
-  const { data, isLoading, error } = useSWR('places', fetcher);
+  const { data, isLoading, error, mutate } = useSWR('places', fetcher);
+  useFocusEffect(() => {
+    mutate();
+  });
 
   return (
     <ScrollView>
